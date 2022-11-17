@@ -1,4 +1,19 @@
-import React from 'react'
+import React, {useState} from 'react'
+import { createEditor } from 'slate'
+import { Slate, Editable, withReact } from 'slate-react'
+import { BaseEditor, Descendant } from 'slate'
+import { ReactEditor } from 'slate-react'
+
+type CustomElement = { type: 'paragraph'; children: CustomText[] }
+type CustomText = { text: string }
+
+declare module 'slate' {
+    interface CustomTypes {
+        Editor: BaseEditor & ReactEditor
+        Element: CustomElement
+        Text: CustomText
+    }
+}
 
 /**
  * Props for the MarkdownEditor component.
@@ -20,5 +35,16 @@ export interface MarkdownEditorProps {
  * @constructor
  */
 export const MarkdownEditor = (props: MarkdownEditorProps) => {
-    return <div>{ props.markdown }</div>;
+    const [editor] = useState(() => withReact(createEditor()))
+
+    // Render the Slate context.
+    return (
+        <Slate editor={editor} value={[ {
+            type: 'paragraph',
+            children: [{ text: 'A line of text in a paragraph.' }],
+        }]}>
+            <Editable />
+        </Slate>
+    );
+
 };

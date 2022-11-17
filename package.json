@@ -28,11 +28,15 @@
     "@rollup/plugin-typescript": "^9.0.2",
     "@types/react": "^18.0.25",
     "npm-watch": "^0.11.0",
-    "react": "^18.2.0",
     "rollup": "^3.3.0",
     "rollup-plugin-dts": "^5.0.0",
+    "slate": "^0.85.0",
+    "slate-react": "^0.83.2",
     "tslib": "^2.4.1",
     "typescript": "^4.9.3"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0"
   },
   "watch": {
     "build": {
