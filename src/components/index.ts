@@ -1,1 +1,2 @@
-export { ReMaWy } from "./ReMaWy/ReMaWy";
+export { MarkdownEditor } from "./MarkdownEditor/MarkdownEditor";
+export { MarkdownView } from "./MarkdownView/MarkdownView";
