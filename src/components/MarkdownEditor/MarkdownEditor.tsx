@@ -69,20 +69,28 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
 
     /**
      * Returns the name of the custom element behind a markdown shortcut.
+     * If no shortcut can be found, null will be returned.
      */
-    const SHORTCUT_TYPE_MAP: Record<string, CustomElementName> = useMemo(() => {
-        return {
-            '#': 'heading-1',
-            '##': 'heading-2',
-            '###': 'heading-3',
-            '####': 'heading-4',
-            '#####': 'heading-5',
-            '######': 'heading-6',
-            '>': 'blockquote',
-            '```': 'code',
-            '*': 'list-item',
-            '.': 'list-item' // for ordered lists
+    const typeByShortcut = useCallback((shortcut: string): CustomElementName | null => {
+        switch (shortcut) {
+            case '#': { return 'heading-1' }
+            case '##': { return 'heading-2' }
+            case '###': { return 'heading-3' }
+            case '####': { return 'heading-4' }
+            case '#####': { return 'heading-5' }
+            case '######': { return 'heading-6' }
+            case '>': { return 'blockquote' }
+            case '```': { return 'code' }
+            case '*': { return 'list-item' }
+            default: {
+                // for ordered lists: 1. 2. ...
+                if (/^\d+\.$/.test(shortcut)) {
+                    return 'list-item';
+                }
+            }
         }
+
+        return null;
     }, []);
 
     const TYPE_HELPER_MAP: Record<CustomElementName, CustomHelper> = useMemo(() => {
@@ -151,7 +159,7 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
      */
     const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
         switch (event.key) {
-            // Bold or italic
+            // Format based components, handled as leafes
             case '_':
             case '*': {
                 CustomLeafHelper.handleBoldAndItalic(editor, event);
@@ -159,20 +167,25 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
                 break;
             }
 
-            // Shortcut based components for space, Dead key is a special case for `, because javascript can not handle this key, because javascript is just HUEHUEHUEHUEHUEHUEHUEHUEHUEHUE
+            // Shortcut based components for space, Dead key is a special case for `,
+            // because javascript can not handle this key, because HUEHUEHUEHUEHUEHUEHUEHUEHUEHUE
             case ' ':
             case 'Dead': {
+                // We want to see if the text since block start is a markdown shortcut
                 const shortcutText = SlateUtils.textSinceBlockStart(editor)
                 if (!shortcutText) { break; }
 
-                const shortcutType = SHORTCUT_TYPE_MAP[shortcutText];
+                // If the typed in characters define a shortcut, get it
+                const shortcutType = typeByShortcut(shortcutText);
                 if (!shortcutType) { break; }
 
+                // Render the corresponding markdown element
                 TYPE_HELPER_MAP[shortcutType].toggle(editor, { actor: "shortcut", actorShortcut: shortcutText })
 
                 // remove the shortcut text
                 SlateUtils.deleteFromLeft(editor, shortcutText.length);
 
+                // Prevent the newest key from being printed
                 event.preventDefault();
 
                 break;

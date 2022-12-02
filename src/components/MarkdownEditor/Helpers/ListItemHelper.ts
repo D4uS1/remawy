@@ -42,7 +42,7 @@ const toggle = (editor: CustomEditor, options?: ToggleOptions) => {
         if (!SlateUtils.isChildOf(editor, 'unordered-list')) {
             Transforms.wrapNodes(editor, {type: 'unordered-list', children: []})
         }
-    } else if (options?.actor === 'shortcut' && options?.actorShortcut === '.') {
+    } else if (options?.actor === 'shortcut' && /^\d+\.$/.test(options?.actorShortcut || '')) {
         if (!SlateUtils.isChildOf(editor, 'ordered-list')) {
             Transforms.wrapNodes(editor, {type: 'ordered-list', children: []})
         }
