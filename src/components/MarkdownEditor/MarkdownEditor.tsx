@@ -190,6 +190,20 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
 
                 break;
             }
+
+            // Some components like list actions react on a tab press.
+            case 'Tab': {
+                const currentBlockType = SlateUtils.currentElementType(editor);
+                if (!currentBlockType) { break; }
+
+                const onTabFunc = TYPE_HELPER_MAP[currentBlockType].onTab
+                if (!onTabFunc) { break; }
+
+                onTabFunc(editor, event);
+
+                // prevent focus from getting into another field
+                event.preventDefault();
+            }
         }
     }
 

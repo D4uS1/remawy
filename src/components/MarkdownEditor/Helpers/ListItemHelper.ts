@@ -2,6 +2,7 @@ import {CustomHelper, ToggleOptions} from "../Types/CustomHelper";
 import {CustomEditor} from "../Types/CustomEditor";
 import {Editor, Element, Transforms} from "slate";
 import {SlateUtils} from "../Utils/SlateUtils";
+import {KeyboardEvent} from 'react';
 
 /**
  * Returns whether the ListItemElement is currently active in the specified editor.
@@ -55,7 +56,38 @@ const toggle = (editor: CustomEditor, options?: ToggleOptions) => {
     )
 }
 
+/**
+ * Called if the user presses tab in a list-item element.
+ * Forces the list to get into a sub list, to enable indent behavior.
+ *
+ * @param editor
+ */
+const onTab = (editor: CustomEditor, event: KeyboardEvent) => {
+    const parentElement = SlateUtils.parentElement(editor);
+    if (!parentElement) { return; }
+
+    // if shift is pressed, the list current list should be unintended
+    if (event.shiftKey) {
+        if (['ordered-list', 'unordered-list'].includes(parentElement.type)) {
+            Transforms.liftNodes(editor);
+        }
+    // if shift is not pressed, the list should be intended
+    } else {
+        const currentElement = SlateUtils.currentElement(editor);
+        if (!currentElement ) { return; }
+
+        if (parentElement.type === 'ordered-list') {
+            // @ts-ignore
+            Transforms.wrapNodes(editor, { type: 'ordered-list', children: [currentElement] })
+        } else if (parentElement.type === 'unordered-list') {
+            // @ts-ignore
+            Transforms.wrapNodes(editor, { type: 'unordered-list', children: [currentElement] })
+        }
+    }
+}
+
 export const ListItemHelper: CustomHelper = {
     active: active,
-    toggle: toggle
+    toggle: toggle,
+    onTab: onTab
 }

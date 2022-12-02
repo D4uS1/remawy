@@ -1,6 +1,6 @@
 import {CustomEditor} from "../Types/CustomEditor";
 import {Editor, Node, NodeEntry, Point, Text, Transforms, Element} from "slate";
-import {CustomElementName} from "../Types/CustomElement";
+import {CustomElement, CustomElementName} from "../Types/CustomElement";
 
 /**
  * Returns whether the editors selection is a cursor, meaining the user did not select any text,
@@ -220,6 +220,103 @@ const isChildOf = (editor: CustomEditor, elementName: CustomElementName): boolea
     ) !== undefined;
 }
 
+/**
+ * Returns the current element of the cursor the user is currently located.
+ * If the user selected some text or the element could not be found, null will be returned.
+ * Note that this method does not return leafes. It only returns the nearest element the user is located in.
+ *
+ * @param editor
+ */
+const currentElement = (editor: CustomEditor): CustomElement | null => {
+    if (!isCursor(editor) || !editor.selection) { return null; }
+
+    const nodeEntry = Editor.above(editor, { match: (n) => Editor.isBlock(editor, n) })
+    if (!nodeEntry) { return null }
+
+    if (!isElement(nodeEntry[0])) { return null }
+
+    return nodeEntry[0] as CustomElement;
+}
+
+/**
+ * Returns the path to the current element, meaning the next element not being a leaf.
+ * If the user selected some text of the path could not be found, null will be returned.
+ *
+ * @param editor
+ */
+const currentElementPath = (editor: CustomEditor): number[] | null => {
+    if (!isCursor(editor) || !editor.selection) { return null; }
+
+    // This is based on the assumption that the users cursor is always in some leaf node
+    return editor.selection.anchor.path.slice(0, -1);
+}
+
+
+/**
+ * Returns the type name of the node the user is currently located in.
+ * If the user selected some text or the type could not be found, null will be returned.
+ *
+ * @param editor
+ */
+const currentElementType = (editor: CustomEditor): CustomElementName | null => {
+    if (!isCursor(editor) || !editor.selection) { return null; }
+
+    const element = currentElement(editor);
+    if (!element) { return null }
+
+    return element.type;
+}
+
+/**
+ * Returns the parent element of the current cursors position in the editor.
+ * If the user selected some text or the parent could not be specified, null will be returned.
+ * Note that this method does not return leafes. It only returns the nearest parent of
+ * the element the user is located in.
+ *
+ * @param editor
+ */
+const parentElement = (editor: CustomEditor): CustomElement | null => {
+    if (!isCursor(editor) || !editor.selection) { return null; }
+
+    const currentPath = currentElementPath(editor)
+    if (!currentPath) { return null; }
+
+    const parentEntry = Editor.parent(editor, currentPath)
+    if (!parentEntry) { return null; }
+
+    if (!isElement(parentEntry[0])) { return null }
+
+    return parentEntry[0] as CustomElement;
+}
+
+/**
+ * Returns the type of the parent of the current cursors position in the editor.
+ * If the user selected some text or the parent could not be specified, null will be returned.
+ *
+ * @param editor
+ */
+const parentElementType = (editor: CustomEditor): CustomElementName | null => {
+    if (!isCursor(editor)) { return null; }
+
+    const element = parentElement(editor);
+    if (!element) { return null; }
+
+    return element.type;
+}
+
+/**
+ * Returns whether the specified node is an element.
+ *
+ * @param node
+ */
+const isElement = (node: Node): boolean => {
+    // guessing that if a type is available, it is an element
+    const element = node as CustomElement
+    if (element && element["type"]) { return true }
+
+    return false;
+}
+
 export const SlateUtils = {
     isCursor: isCursor,
     isSelection: isSelection,
@@ -232,5 +329,11 @@ export const SlateUtils = {
     deleteFromLeft: deleteFromLeft,
     deleteFromRight: deleteFromRight,
     deleteAt: deleteAt,
-    isChildOf: isChildOf
+    isChildOf: isChildOf,
+    currentElement: currentElement,
+    currentElementType: currentElementType,
+    currentElementPath: currentElementPath,
+    parentElement: parentElement,
+    parentElementType: parentElementType,
+    isElement: isElement
 }
