@@ -79,7 +79,9 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
             '#####': 'heading-5',
             '######': 'heading-6',
             '>': 'blockquote',
-            '```': 'code'
+            '```': 'code',
+            '*': 'list-item',
+            '.': 'list-item' // for ordered lists
         }
     }, []);
 
@@ -166,7 +168,7 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
                 const shortcutType = SHORTCUT_TYPE_MAP[shortcutText];
                 if (!shortcutType) { break; }
 
-                TYPE_HELPER_MAP[shortcutType].toggle(editor)
+                TYPE_HELPER_MAP[shortcutType].toggle(editor, { actor: "shortcut", actorShortcut: shortcutText })
 
                 // remove the shortcut text
                 SlateUtils.deleteFromLeft(editor, shortcutText.length);

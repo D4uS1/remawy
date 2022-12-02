@@ -1,5 +1,6 @@
 import {CustomEditor} from "../Types/CustomEditor";
-import {Editor, Node, Point, Text, Transforms} from "slate";
+import {Editor, Node, NodeEntry, Point, Text, Transforms, Element} from "slate";
+import {CustomElementName} from "../Types/CustomElement";
 
 /**
  * Returns whether the editors selection is a cursor, meaining the user did not select any text,
@@ -201,6 +202,24 @@ const deleteAt = (editor: CustomEditor, start: Point, numChars: number) => {
     });
 }
 
+/**
+ * Checks whether the cursor is in a node being a child of a node having the specified type elementName.
+ * This checks recursively in the tree, not only one parent.
+ * This only works for cursors, not for text selections. If the user selected some text, false will always be returned.
+ *
+ * @param editor
+ * @param elementName
+ */
+const isChildOf = (editor: CustomEditor, elementName: CustomElementName): boolean => {
+    if (!isCursor(editor) || !editor.selection) { return false }
+
+    return Editor.above(editor,
+        {
+            match: (n) => (n as Element).type === elementName,
+        }
+    ) !== undefined;
+}
+
 export const SlateUtils = {
     isCursor: isCursor,
     isSelection: isSelection,
@@ -213,4 +232,5 @@ export const SlateUtils = {
     deleteFromLeft: deleteFromLeft,
     deleteFromRight: deleteFromRight,
     deleteAt: deleteAt,
+    isChildOf: isChildOf
 }
