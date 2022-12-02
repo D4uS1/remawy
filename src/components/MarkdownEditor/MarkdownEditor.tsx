@@ -1,15 +1,11 @@
-import React, {useCallback, useState, KeyboardEvent, CompositionEvent} from 'react'
-import {createEditor, Editor, Transforms, Element, Descendant} from 'slate'
+import React, {useCallback, useState, KeyboardEvent, CompositionEvent, useMemo} from 'react'
+import {createEditor, Editor, Transforms, Descendant, Text, Node} from 'slate'
 import {Slate, Editable, withReact, RenderElementProps, RenderLeafProps} from 'slate-react'
 import {CodeElement} from "./Elements/CodeElement";
 import {ParagraphElement} from "./Elements/ParagraphElement";
-import {CustomElement} from "./Types/CustomElement";
-import {BoldElement} from "./Elements/BoldElement";
-import {ItalicElement} from "./Elements/ItalicElement";
-import {DefaultLeaf} from "./Leafs/DefaultLeaf";
+import {CustomElement, CustomElementName} from "./Types/CustomElement";
 import {CustomText} from "./Types/CustomText";
 import {CustomEditor} from "./Types/CustomEditor";
-import {ItalicHelper} from "./Helpers/ItalicHelper";
 import {BlockquoteElement} from "./Elements/BlockquoteElement";
 import {Heading1Element} from "./Elements/Heading1Element";
 import {Heading2Element} from "./Elements/Heading2Element";
@@ -20,7 +16,6 @@ import {Heading6Element} from "./Elements/Heading6Element";
 import {OrderedListElement} from "./Elements/OrderedListElement";
 import {UnorderedListElement} from "./Elements/UnorderedListElement";
 import {ListItemElement} from "./Elements/ListItemElement";
-import {BoldHelper} from "./Helpers/BoldHelper";
 import {Heading2Helper} from "./Helpers/Heading2Helper";
 import {Heading3Helper} from "./Helpers/Heading3Helper";
 import {Heading4Helper} from "./Helpers/Heading4Helper";
@@ -29,6 +24,14 @@ import {Heading6Helper} from "./Helpers/Heading6Helper";
 import {Heading1Helper} from "./Helpers/Heading1Helper";
 import {BlockquoteHelper} from "./Helpers/BlockquoteHelper";
 import {CodeHelper} from "./Helpers/CodeHelper";
+import {UnorderedListHelper} from "./Helpers/UnorderedListHelper";
+import {SlateUtils} from "./Utils/SlateUtils";
+import {CustomHelper} from "./Types/CustomHelper";
+import {ListItemHelper} from "./Helpers/ListItemHelper";
+import {OrderedListHelper} from "./Helpers/OrderedListHelper";
+import {ParagraphHelper} from "./Helpers/ParagraphHelper";
+import {CustomLeafProps, CustomLeaf} from "./Leafs/CustomLeaf";
+import {CustomLeafHelper} from "./Helpers/CustomLeafHelper";
 
 
 /**
@@ -63,29 +66,39 @@ export interface MarkdownEditorProps {
  */
 export const MarkdownEditor = (props: MarkdownEditorProps) => {
     const [editor] = useState(() => withReact(createEditor()))
-    const [keyTimesTrack, setKeyTimesTrack] = useState<{ key: string, times: number, timer: NodeJS.Timeout } | null>(null)
-
-    const KEY_TIMES_THRESHOLD = 1000;
 
     /**
-     * Returns whether the specified key was pressed n times in the last KEY_TIMES_THRESHOLD milliseconds.
-     *
-     * @param key
-     * @param n
+     * Returns the name of the custom element behind a markdown shortcut.
      */
-    const keyPressedTimes = (key: string, n: number): boolean => {
-        if (!keyTimesTrack) return false;
-        if (keyTimesTrack.key !== key) return false;
+    const SHORTCUT_TYPE_MAP: Record<string, CustomElementName> = useMemo(() => {
+        return {
+            '#': 'heading-1',
+            '##': 'heading-2',
+            '###': 'heading-3',
+            '####': 'heading-4',
+            '#####': 'heading-5',
+            '######': 'heading-6',
+            '>': 'blockquote',
+            '```': 'code'
+        }
+    }, []);
 
-        return keyTimesTrack.times === n;
-     }
-
-    /**
-     * Resets the state that counts the number a key was pressed multiple times.
-     */
-    const resetKeyTimesTrack = () => {
-        setKeyTimesTrack(null)
-     }
+    const TYPE_HELPER_MAP: Record<CustomElementName, CustomHelper> = useMemo(() => {
+        return {
+            'blockquote': BlockquoteHelper,
+            'code':  CodeHelper,
+            'heading-1': Heading1Helper,
+            'heading-2': Heading2Helper,
+            'heading-3': Heading3Helper,
+            'heading-4': Heading4Helper,
+            'heading-5': Heading5Helper,
+            'heading-6': Heading6Helper,
+            'list-item': ListItemHelper,
+            'ordered-list': OrderedListHelper,
+            'paragraph': ParagraphHelper,
+            'unordered-list': UnorderedListHelper,
+        }
+    }, [])
 
     /**
      * Defines all custom renderers for elements, based on its element type given by the props.
@@ -94,8 +107,6 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
         switch (props.element.type) {
             case 'blockquote':
                 return <BlockquoteElement {...props} />;
-            case 'bold':
-                return <BoldElement {...props} />;
             case 'code':
                 return <CodeElement {...props} />;
             case 'heading-1':
@@ -110,8 +121,6 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
                 return <Heading5Element {...props} />;
             case 'heading-6':
                 return <Heading6Element {...props} />;
-            case 'italic':
-                return <ItalicElement {...props} />;
             case 'list-item':
                 return <ListItemElement {...props} />;
             case 'ordered-list':
@@ -128,8 +137,8 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
      * Leaves are part of text that can contain custom styles.
      * Usually this is not needed in case of markdown, but it is added for completition here.
      */
-    const renderLeaf = useCallback((props: RenderLeafProps) => {
-        return <DefaultLeaf {...props} />
+    const renderLeaf = useCallback((props: CustomLeafProps) => {
+        return <CustomLeaf {...props} />
     }, []);
 
     /**
@@ -138,59 +147,29 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
      *
      * @param event
      */
-    const onKeyDown = (event: KeyboardEvent) => {
-        // The removes the shortcut keys from the text if they are pressed
-        if (['_', '#', '>', 'Dead', '*'].includes(event.key)) {
-            event.preventDefault()
-        }
-
+    const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
         switch (event.key) {
-            case '_': {
-                // Key was pressed second time, hence use bold instead italic
-                if (keyPressedTimes('_', 1)) {
-                    BoldHelper.toggle(editor);
-                } else {
-                    ItalicHelper.toggle(editor);
-                }
-                break;
-            }
-            case '#': {
-                // Key was pressed more than one time
-                if (keyPressedTimes('#', 1)) {
-                    Heading2Helper.toggle(editor);
-                } else if (keyPressedTimes('#', 2)) {
-                    Heading3Helper.toggle(editor);
-                } else if (keyPressedTimes('#', 3)) {
-                    Heading4Helper.toggle(editor);
-                } else if (keyPressedTimes('#', 4)) {
-                    Heading5Helper.toggle(editor);
-                } else if (keyPressedTimes('#', 5)) {
-                    Heading6Helper.toggle(editor);
-                } else {
-                    Heading1Helper.toggle(editor);
-                }
-            }
-            case '>': {
-                BlockquoteHelper.toggle(editor);
+            // Bold or italic
+            case '_':
+            case '*': {
+                CustomLeafHelper.handleBoldAndItalic(editor, event);
+
                 break;
             }
 
-            // The ` key can not be used because it is marked as Dead key. Because no other dead key is used for markdown shortcuts, this should work
+            // Shortcut based components for space, Dead key is a special case for `, because javascript can not handle this key, because javascript is just HUEHUEHUEHUEHUEHUEHUEHUEHUEHUE
+            case ' ':
             case 'Dead': {
-                if (keyPressedTimes('Dead', 2)) {
-                    CodeHelper.toggle(editor);
-                }
+                const shortcutText = SlateUtils.textSinceBlockStart(editor)
+                if (!shortcutText) { break; }
+
+                const shortcutType = SHORTCUT_TYPE_MAP[shortcutText];
+                if (!shortcutType) { break; }
+
+                TYPE_HELPER_MAP[shortcutType].toggle(editor)
 
                 break;
             }
-        }
-
-        // Handle checking if a user pressed a key multiple times in a threshold
-        if (!keyTimesTrack || keyTimesTrack.key !== event.key) {
-            setKeyTimesTrack({ key: event.key, times: 1, timer: setTimeout(resetKeyTimesTrack, KEY_TIMES_THRESHOLD) })
-        } else if (keyTimesTrack.key === event.key) {
-            clearTimeout(keyTimesTrack.timer)
-            setKeyTimesTrack({ key: event.key, times: keyTimesTrack.times + 1, timer: setTimeout(resetKeyTimesTrack, KEY_TIMES_THRESHOLD) })
         }
     }
 
@@ -225,7 +204,6 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
                 <button
                     onMouseDown={event => {
                         event.preventDefault()
-                        ItalicHelper.toggle(editor)
                     }}
                 >
                     Italic
