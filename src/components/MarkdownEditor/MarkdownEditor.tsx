@@ -168,6 +168,11 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
 
                 TYPE_HELPER_MAP[shortcutType].toggle(editor)
 
+                // remove the shortcut text
+                SlateUtils.deleteFromLeft(editor, shortcutText.length);
+
+                event.preventDefault();
+
                 break;
             }
         }

@@ -142,12 +142,21 @@ const handleBoldAndItalic = (editor: Editor, event: KeyboardEvent<HTMLDivElement
 
         CustomLeafHelper.setBold(editor, { anchor: lastPos, focus: editor.selection.anchor });
 
+        // Remove shortcuts
+        SlateUtils.deleteAt(editor, lastPos, 2)
+        SlateUtils.deleteFromRight(editor, 1);
+        SlateUtils.deleteAt(editor, editor.selection.anchor, 1);
+        event.preventDefault();
     } else {
         // Find the beginning position of the text that should be italic
         const lastPos = SlateUtils.lastPosOf(editor, event.key, { isolated: true })
         if (!lastPos || !editor.selection) { return }
 
         CustomLeafHelper.setItalic(editor, { anchor: lastPos, focus: editor.selection.anchor });
+
+        // Remove shortcuts
+        SlateUtils.deleteAt(editor, lastPos, 1)
+        event.preventDefault();
     }
 
     // This is a hack to reset the format at the cursor position.
