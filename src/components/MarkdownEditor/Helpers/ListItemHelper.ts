@@ -61,27 +61,32 @@ const toggle = (editor: CustomEditor, options?: ToggleOptions) => {
  * Forces the list to get into a sub list, to enable indent behavior.
  *
  * @param editor
+ * @param event
  */
 const onTab = (editor: CustomEditor, event: KeyboardEvent) => {
-    const parentElement = SlateUtils.parentElement(editor);
-    if (!parentElement) { return; }
 
     // if shift is pressed, the list current list should be unintended
     if (event.shiftKey) {
-        if (['ordered-list', 'unordered-list'].includes(parentElement.type)) {
-            Transforms.liftNodes(editor);
+        Transforms.liftNodes(editor);
+
+        // If the parent is no list (after lifting), convert it to paragraph
+        // If the parentElement is null, it is assumed that the parent element is the root node, hence
+        // we want to convert it back here, too
+        const parentElement = SlateUtils.parentElement(editor);
+        if (!parentElement || !['ordered-list', 'unordered-list'].includes(parentElement.type)) {
+            Transforms.setNodes(editor, { type: 'paragraph' })
         }
-    // if shift is not pressed, the list should be intended
+
+        // if shift is not pressed, the list should be intended
     } else {
+        const parentElement = SlateUtils.parentElement(editor);
         const currentElement = SlateUtils.currentElement(editor);
-        if (!currentElement ) { return; }
+        if (!currentElement || !parentElement ) { return; }
 
         if (parentElement.type === 'ordered-list') {
-            // @ts-ignore
-            Transforms.wrapNodes(editor, { type: 'ordered-list', children: [currentElement] })
+            Transforms.wrapNodes(editor, { type: 'ordered-list', children: [] })
         } else if (parentElement.type === 'unordered-list') {
-            // @ts-ignore
-            Transforms.wrapNodes(editor, { type: 'unordered-list', children: [currentElement] })
+            Transforms.wrapNodes(editor, { type: 'unordered-list', children: [] })
         }
     }
 }
