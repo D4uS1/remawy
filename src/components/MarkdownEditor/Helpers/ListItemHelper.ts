@@ -91,8 +91,35 @@ const onTab = (editor: CustomEditor, event: KeyboardEvent) => {
     event.preventDefault();
 }
 
+/**
+ * Overwrites the default behavior if the user presses enter in a list item.
+ * If the curent textnode is empty, a new paragraph will be created. This should be the case if the user
+ * is inside an empty list-entry.
+ * Otherwise a new list entry will be created. This is done by just doing nothing, because this shoul cause slate
+ * to do its default action that is creating a new list-entry.
+ *
+ * @param editor
+ * @param event
+ */
+const onEnter = (editor: CustomEditor, event: KeyboardEvent) => {
+    const textSinceBlockStart = SlateUtils.textSinceBlockStart(editor);
+    if (textSinceBlockStart !== '') { return; }
+
+    // Remove lists and indented lists until we are in the "root"
+    do {
+        Transforms.liftNodes(editor);
+    } while (['ordered-list', 'unordered-list'].includes(SlateUtils.parentElementType(editor) || ''))
+
+    // Change the list-item element to paragraph
+    toggle(editor);
+
+    // Prevent default slate action
+    event.preventDefault();
+}
+
 export const ListItemHelper: CustomHelper = {
     active: active,
     toggle: toggle,
-    onTab: onTab
+    onTab: onTab,
+    onEnter: onEnter
 }

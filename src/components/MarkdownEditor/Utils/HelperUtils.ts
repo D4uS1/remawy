@@ -1,6 +1,8 @@
 import {CustomElementName} from "../Types/CustomElement";
 import {Editor, Element, Transforms} from "slate";
 import {CustomEditor} from "../Types/CustomEditor";
+import {SlateUtils} from "./SlateUtils";
+import {KeyboardEvent} from 'react';
 
 /**
  * Can be used by helpers to check whether the element of the specified elementType is
@@ -34,7 +36,25 @@ const defaultToggle = (editor: CustomEditor, elementType: CustomElementName): vo
     )
 }
 
+/**
+ * Can be used by helpers in onEnter callbacks to create a new paragraph if the user presses
+ * enter, but create only a newline if the user presses shift and enter.
+ *
+ * @param editor
+ * @param event
+ */
+const onEnterWithShiftLinebreak = (editor: CustomEditor, event: KeyboardEvent) => {
+    if (event.shiftKey) {
+        SlateUtils.createNewline(editor)
+    } else {
+        SlateUtils.createNewParagraph(editor)
+    }
+
+    event.preventDefault();
+}
+
 export const HelperUtils = {
     defaultIsActive: defaultIsActive,
-    defaultToggle: defaultToggle
+    defaultToggle: defaultToggle,
+    onEnterWithShiftLinebreak: onEnterWithShiftLinebreak
 }

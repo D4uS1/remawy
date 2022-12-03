@@ -355,7 +355,7 @@ const isEmpty = (editor: CustomEditor): boolean => {
   if (isSelection(editor) || !editor.selection) { return false; }
 
   const leaf = currentLeaf(editor);
-  if (!leaf) { return false; }
+  if (!leaf) { return true; }
 
   return leaf.text === '';
 }

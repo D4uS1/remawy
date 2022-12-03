@@ -3,6 +3,7 @@ import {CustomEditor} from "../Types/CustomEditor";
 import {Editor, Element, Transforms} from "slate";
 import {KeyboardEvent} from 'react';
 import {SlateUtils} from "../Utils/SlateUtils";
+import {HelperUtils} from "../Utils/HelperUtils";
 
 /**
  * Returns whether the ParagraphElement is currently active in the specified editor.
@@ -10,11 +11,7 @@ import {SlateUtils} from "../Utils/SlateUtils";
  * @param editor
  */
 const active = (editor: CustomEditor): boolean => {
-    const [match] = Editor.nodes(editor, {
-        match: n => (n as Element).type === 'paragraph',
-    })
-
-    return !!match;
+    return HelperUtils.defaultIsActive(editor, 'paragraph');
 }
 
 /**
@@ -31,7 +28,7 @@ const toggle = (editor: CustomEditor) => {
 }
 
 /**
- * Overwrites the behavior of the editor on pressing enter.
+ * Overwrites the behavior of the editor on pressing enter in a paragraph element.
  * If the user presses shift and enter, a new line will be created.
  * If the user only presses enter, a new empty paragraph will be created.
  *
@@ -39,13 +36,7 @@ const toggle = (editor: CustomEditor) => {
  * @param event
  */
 const onEnter = (editor: CustomEditor, event: KeyboardEvent) => {
-    if (event.shiftKey) {
-        SlateUtils.createNewline(editor)
-    } else {
-        SlateUtils.createNewParagraph(editor)
-    }
-
-    event.preventDefault();
+    HelperUtils.onEnterWithShiftLinebreak(editor, event)
 }
 
 export const ParagraphHelper: CustomHelper = {
