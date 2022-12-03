@@ -3,6 +3,7 @@ import {CustomEditor} from "../Types/CustomEditor";
 import {Editor, Element, Transforms} from "slate";
 import {SlateUtils} from "../Utils/SlateUtils";
 import {KeyboardEvent} from 'react';
+import {HelperUtils} from "../Utils/HelperUtils";
 
 /**
  * Returns whether the ListItemElement is currently active in the specified editor.
@@ -10,11 +11,7 @@ import {KeyboardEvent} from 'react';
  * @param editor
  */
 const active = (editor: CustomEditor): boolean => {
-    const [match] = Editor.nodes(editor, {
-        match: n => (n as Element).type === 'list-item',
-    })
-
-    return !!match;
+    return HelperUtils.defaultIsActive(editor, 'list-item');
 }
 
 /**
@@ -89,6 +86,9 @@ const onTab = (editor: CustomEditor, event: KeyboardEvent) => {
             Transforms.wrapNodes(editor, { type: 'unordered-list', children: [] })
         }
     }
+
+    // prevent default tab handler from being processed
+    event.preventDefault();
 }
 
 export const ListItemHelper: CustomHelper = {

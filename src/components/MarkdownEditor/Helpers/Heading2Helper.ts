@@ -1,6 +1,7 @@
 import {CustomHelper} from "../Types/CustomHelper";
 import {CustomEditor} from "../Types/CustomEditor";
 import {Editor, Element, Transforms} from "slate";
+import {HelperUtils} from "../Utils/HelperUtils";
 
 /**
  * Returns whether the Heading2Element is currently active in the specified editor.
@@ -8,11 +9,7 @@ import {Editor, Element, Transforms} from "slate";
  * @param editor
  */
 const active = (editor: CustomEditor): boolean => {
-    const [match] = Editor.nodes(editor, {
-        match: n => (n as Element).type === 'heading-2',
-    })
-
-    return !!match;
+    return HelperUtils.defaultIsActive(editor, 'heading-2');
 }
 
 /**
@@ -21,13 +18,7 @@ const active = (editor: CustomEditor): boolean => {
  * @param editor
  */
 const toggle = (editor: CustomEditor) => {
-    const isActive = active(editor);
-
-    Transforms.setNodes(
-        editor,
-        { type: isActive ? 'paragraph' : 'heading-2' },
-        { match: n => Editor.isBlock(editor, n) }
-    )
+    HelperUtils.defaultToggle(editor, 'heading-2');
 }
 
 export const Heading2Helper: CustomHelper = {

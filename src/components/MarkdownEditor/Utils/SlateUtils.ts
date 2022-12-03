@@ -1,6 +1,7 @@
 import {CustomEditor} from "../Types/CustomEditor";
 import {Editor, Node, NodeEntry, Point, Text, Transforms, Element} from "slate";
 import {CustomElement, CustomElementName} from "../Types/CustomElement";
+import {CustomText} from "../Types/CustomText";
 
 /**
  * Returns whether the editors selection is a cursor, meaining the user did not select any text,
@@ -305,16 +306,76 @@ const parentElementType = (editor: CustomEditor): CustomElementName | null => {
 }
 
 /**
+ * Returns the leaf at the current editors cursor.
+ * If the user selected some text or the leaf could not be found, null will be returned.
+ *
+ * @param editor
+ */
+const currentLeaf = (editor: CustomEditor): CustomText | null => {
+    if (!isCursor(editor) || !editor.selection) { return null; }
+
+    const nodeEntry = Editor.node(editor, editor.selection.anchor)
+    if (!nodeEntry || !isLeaf(nodeEntry[0])) { return null; }
+
+    return nodeEntry[0] as CustomText;
+}
+
+/**
  * Returns whether the specified node is an element.
  *
  * @param node
  */
 const isElement = (node: Node): boolean => {
-    // guessing that if a type is available, it is an element
+    // assuming that if a type is available, it is an element
     const element = node as CustomElement
     if (element && element["type"]) { return true }
 
     return false;
+}
+
+/**
+ * Returns whether the specified node is a leaf node having only text.
+ *
+ * @param node
+ */
+const isLeaf = (node: Node): boolean => {
+    // assuming that if a text is available, it is an leaf
+    const leaf = node as CustomText
+    if (leaf && leaf["text"]) { return true }
+
+    return false;
+}
+
+/**
+ * Returns whether the current text node the users cursors is located in is empty or not.
+ *
+ * @param editor
+ */
+const isEmpty = (editor: CustomEditor): boolean => {
+  if (isSelection(editor) || !editor.selection) { return false; }
+
+  const leaf = currentLeaf(editor);
+  if (!leaf) { return false; }
+
+  return leaf.text === '';
+}
+
+/**
+ * Creates a new default paragraph element at the cursor position of the editor.
+ *
+ * @param editor
+ */
+const createNewParagraph = (editor: CustomEditor): void => {
+    Transforms.insertNodes(editor, { type: 'paragraph', children: [{ text: ''}] });
+}
+
+/**
+ * Creates a newline at the cursor position of the editor.
+ *
+ * @param editor
+ */
+const createNewline = (editor: CustomEditor): void => {
+    Transforms.insertText(editor, '\n')
 }
 
 export const SlateUtils = {
@@ -335,5 +396,10 @@ export const SlateUtils = {
     currentElementPath: currentElementPath,
     parentElement: parentElement,
     parentElementType: parentElementType,
-    isElement: isElement
+    currentLeaf: currentLeaf,
+    isElement: isElement,
+    isLeaf: isLeaf,
+    isEmpty: isEmpty,
+    createNewParagraph: createNewParagraph,
+    createNewline: createNewline
 }

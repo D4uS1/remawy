@@ -201,8 +201,33 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
 
                 onTabFunc(editor, event);
 
-                // prevent focus from getting into another field
+                // prevent default is not called here, because the onTab handlers should be able to
+                // decide whether the slate default action will be processed
+                break;
+            }
+            // Normally pressing enter should create a new paragraph, but for some cases this should not be the case.
+            // If some onEnter callback for the current block type exists, this will be handled instead of the default case
+            case 'Enter': {
+                const currentBlockType = SlateUtils.currentElementType(editor);
+                if (!currentBlockType) { break; }
+
+                // onEnter exists on current type => call onEnter
+                const onEnterFunc = TYPE_HELPER_MAP[currentBlockType].onEnter
+                if (onEnterFunc) {
+                    onEnterFunc(editor, event);
+
+                    // prevent default is not called here, because the onEnter handlers should be able to
+                    // decide whether the slate default action will be processed
+                    break;
+                }
+
+                // onEnter does not exist on current type => create paragraph
+                SlateUtils.createNewParagraph(editor);
+
+                // prevent default action of slate
                 event.preventDefault();
+
+                break;
             }
         }
     }

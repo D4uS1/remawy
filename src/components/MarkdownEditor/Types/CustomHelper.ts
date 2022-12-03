@@ -26,6 +26,14 @@ export interface CustomHelper {
     // Activating the element means that it is shown in the editor.
     toggle: (editor: CustomEditor, options?: ToggleOptions) => void;
 
-    // Called if the user presses tab insie the component
+    // Called if the user presses tab inside the component to overwrite the default behavior
+    // of the editor on pressing tab.
+    // Note that the onTab method has to decide whether the preventDefault metho of the evet should be called.
     onTab?: (editor: CustomEditor, event: KeyboardEvent) => void;
+
+    // Called if the user presses enter inside the component
+    // This should only be handled if the components behavior on pressing enter should be
+    // different than the default behavior, that is just adding a new paragraph.
+    // Note that the onTab method has to decide whether the preventDefault metho of the evet should be called.
+    onEnter?: (editor: CustomEditor, event: KeyboardEvent) => void;
 }
