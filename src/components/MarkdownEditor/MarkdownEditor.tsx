@@ -213,20 +213,12 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
 
                 // onEnter exists on current type => call onEnter
                 const onEnterFunc = TYPE_HELPER_MAP[currentBlockType].onEnter
-                if (onEnterFunc) {
-                    onEnterFunc(editor, event);
+                if (!onEnterFunc) { break; }
 
-                    // prevent default is not called here, because the onEnter handlers should be able to
-                    // decide whether the slate default action will be processed
-                    break;
-                }
+                onEnterFunc(editor, event);
 
-                // onEnter does not exist on current type => create paragraph
-                SlateUtils.createNewParagraph(editor);
-
-                // prevent default action of slate
-                event.preventDefault();
-
+                // prevent default is not called here, because the onEnter handlers should be able to
+                // decide whether the slate default action will be processed
                 break;
             }
         }
