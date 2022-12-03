@@ -45,6 +45,24 @@ const currentBlockStart = (editor: CustomEditor): Point => {
 }
 
 /**
+ * Returns the end location of the current seleczed block.
+ *
+ * @param editor
+ */
+const currentBlockEnd = (editor: CustomEditor): Point => {
+    // Get the nearest block from the selection
+    const block = Editor.above(editor, {
+        match: n => Editor.isBlock(editor, n),
+    })
+
+    // The path to the block is located in the second item of the result
+    const path = block ? block[1] : []
+
+    // Find the end point of the block
+    return Editor.end(editor, path)
+}
+
+/**
  * Returns the text from the start of the block of the current cursor in the specified slate editor.
  * Returns null if the text could not be found.
  *
@@ -58,6 +76,25 @@ const textSinceBlockStart = (editor: CustomEditor): string | null => {
 
     // Build a range object from the current selection to the start point
     const range = { anchor: editor.selection.anchor, focus: start }
+
+    // extract the text from the range
+    return Editor.string(editor, range);
+}
+
+/**
+ * Returns the text from the current cursor of the slate editor to the block end.
+ * Returns null if the text could not be found.
+ *
+ * @param editor
+ */
+const textToBlockEnd = (editor: CustomEditor): string | null => {
+    if (!editor.selection || !isCursor(editor)) { return null }
+
+    // Find the end point of the block
+    const end = currentBlockEnd(editor);
+
+    // Build a range object from the current selection to the start point
+    const range = { anchor: editor.selection.focus, focus: end }
 
     // extract the text from the range
     return Editor.string(editor, range);
@@ -382,7 +419,9 @@ export const SlateUtils = {
     isCursor: isCursor,
     isSelection: isSelection,
     currentBlockStart: currentBlockStart,
+    currentBlockEnd: currentBlockEnd,
     textSinceBlockStart: textSinceBlockStart,
+    textToBlockEnd: textToBlockEnd,
     lastPosOf: lastPosOf,
     cursorIsBehind: cursorIsBehind,
     currentBlockText: currentBlockText,
