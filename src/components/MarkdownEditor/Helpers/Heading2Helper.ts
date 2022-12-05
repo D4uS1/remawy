@@ -2,6 +2,8 @@ import {CustomHelper} from "../Types/CustomHelper";
 import {CustomEditor} from "../Types/CustomEditor";
 import {Editor, Element, Transforms} from "slate";
 import {HelperUtils} from "../Utils/HelperUtils";
+import {KeyboardEvent} from "react";
+import {SlateUtils} from "../Utils/SlateUtils";
 
 /**
  * Returns whether the Heading2Element is currently active in the specified editor.
@@ -21,7 +23,22 @@ const toggle = (editor: CustomEditor) => {
     HelperUtils.defaultToggle(editor, 'heading-2');
 }
 
+/**
+ * Replaces the default behavior of pressing enter.
+ * Always creates a new paragraph instead of creating a new header.
+ *
+ * @param editor
+ * @param event
+ */
+const onEnter = (editor: CustomEditor, event: KeyboardEvent) => {
+    SlateUtils.createRootParagraph(editor)
+
+    // prevent the default slate action from creating a new heading
+    event.preventDefault();
+}
+
 export const Heading2Helper: CustomHelper = {
     active: active,
-    toggle: toggle
+    toggle: toggle,
+    onEnter: onEnter
 }

@@ -37,8 +37,9 @@ const defaultToggle = (editor: CustomEditor, elementType: CustomElementName): vo
 }
 
 /**
- * Can be used by helpers in onEnter callbacks to create a new paragraph if the user presses
- * enter, but create only a newline if the user presses shift and enter.
+ * Can be used by helpers in onEnter callbacks to create a newline in the current block if the
+ * user pressed shift and enter at once. If the user did not press shift, a new paragraph at
+ * root level will be created.
  *
  * @param editor
  * @param event
@@ -47,7 +48,7 @@ const onEnterWithShiftLinebreak = (editor: CustomEditor, event: KeyboardEvent) =
     if (event.shiftKey) {
         SlateUtils.createNewline(editor)
     } else {
-        SlateUtils.createNewParagraph(editor)
+        SlateUtils.createRootParagraph(editor)
     }
 
     event.preventDefault();

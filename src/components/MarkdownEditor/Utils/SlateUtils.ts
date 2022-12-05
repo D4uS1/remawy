@@ -384,6 +384,21 @@ const isLeaf = (node: Node): boolean => {
 }
 
 /**
+ * Returns whether the current node is the root node.
+ *
+ * @param node
+ */
+const isRoot = (node: Node): boolean => {
+    const leaf = node as CustomText
+    const element = node as CustomElement
+
+    // assuming that if no text and type is available, it is the root node
+    if (!leaf["text"] && !element['type']) { return true }
+
+    return false;
+}
+
+/**
  * Returns whether the current text node the users cursors is located in is empty or not.
  *
  * @param editor
@@ -398,12 +413,24 @@ const isEmpty = (editor: CustomEditor): boolean => {
 }
 
 /**
- * Creates a new default paragraph element at the cursor position of the editor.
+ * Creates a new paragraph at root level in the current cursors block.
+ * If the block contains text from the cursor to the block end, this text will be added to the new
+ * paragraph.
  *
  * @param editor
  */
-const createNewParagraph = (editor: CustomEditor): void => {
-    Transforms.insertNodes(editor, { type: 'paragraph', children: [{ text: ''}] });
+const createRootParagraph = (editor: CustomEditor): void => {
+    if (!editor.selection) { return; }
+
+    // splitting should cause to create a new node at the correct position
+    Transforms.splitNodes(editor, { always: true })
+
+    // set the type to paragraph
+    Transforms.setNodes(
+        editor,
+        { type: 'paragraph' },
+        { match: n => Editor.isBlock(editor, n) }
+    )
 }
 
 /**
@@ -439,6 +466,6 @@ export const SlateUtils = {
     isElement: isElement,
     isLeaf: isLeaf,
     isEmpty: isEmpty,
-    createNewParagraph: createNewParagraph,
+    createRootParagraph: createRootParagraph,
     createNewline: createNewline
 }
