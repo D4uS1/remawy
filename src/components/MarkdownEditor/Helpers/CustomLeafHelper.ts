@@ -136,11 +136,14 @@ const handleBoldAndItalic = (editor: Editor, event: KeyboardEvent<HTMLDivElement
 
     // If the cursor is behind a _ the user typed __, hence he wants to have bold text
     if (SlateUtils.cursorIsBehind(editor, event.key)) {
-        // Find the beginning position of the text that should be italic
+        // Find the beginning position of the text that should be bold
         const lastPos = SlateUtils.lastPosOf(editor, `${event.key}${event.key}`)
         if (!lastPos || !editor.selection) { return }
 
-        CustomLeafHelper.setBold(editor, { anchor: lastPos, focus: editor.selection.anchor });
+        setBold(editor, { anchor: lastPos, focus: editor.selection.anchor });
+
+        // This forces the editor at the cursors position to not write bold further
+        Editor.addMark(editor, 'bold', false)
 
         // Remove shortcuts
         SlateUtils.deleteAt(editor, lastPos, 2)
@@ -152,7 +155,10 @@ const handleBoldAndItalic = (editor: Editor, event: KeyboardEvent<HTMLDivElement
         const lastPos = SlateUtils.lastPosOf(editor, event.key, { isolated: true })
         if (!lastPos || !editor.selection) { return }
 
-        CustomLeafHelper.setItalic(editor, { anchor: lastPos, focus: editor.selection.anchor });
+        setItalic(editor, { anchor: lastPos, focus: editor.selection.anchor });
+
+        // This forces the editor at the cursors position to not write italic further
+        Editor.addMark(editor, 'italic', false)
 
         // Remove shortcuts
         SlateUtils.deleteAt(editor, lastPos, 1)
