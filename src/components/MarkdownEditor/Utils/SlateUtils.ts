@@ -465,6 +465,7 @@ export const SlateUtils = {
     currentLeaf: currentLeaf,
     isElement: isElement,
     isLeaf: isLeaf,
+    isRoot: isRoot,
     isEmpty: isEmpty,
     createRootParagraph: createRootParagraph,
     createNewline: createNewline

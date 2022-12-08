@@ -2,7 +2,6 @@ import {CustomEditor} from "../Types/CustomEditor";
 import {Editor, Point, Text, Transforms} from "slate";
 import {SlateUtils} from "../Utils/SlateUtils";
 import { KeyboardEvent } from 'react';
-import {CustomLeaf} from "../Leafs/CustomLeaf";
 
 /**
  * Returns whether the text at the editors selection is bold.
@@ -94,32 +93,31 @@ const unsetItalic = (editor: CustomEditor) => {
 
 /**
  * Toggles the text at the editors selection to be bold or not, depending on whether
- * bold is currently active or not.
- * If no range is given, the toggle will be set between the specified start and focus point.
- * If range is not given, the toggle will on selection.
+ * bold is currently active or not. Note that this method does not use setBold and unsetBold,
+ * it sets marks to the editor because this is the method that should be used by the toolbar.
  *
  * @param editor
- * @param range
  */
-const toggleBold = (editor: CustomEditor, range?: { anchor: Point, focus: Point }) => {
+const toggleBold = (editor: CustomEditor) => {
     if (isBoldActive(editor)) {
-        unsetBold(editor)
+        Editor.removeMark(editor, 'bold');
     } else {
-        setBold(editor, range)
+        Editor.addMark(editor, 'bold', true);
     }
 }
 
 /**
  * Toggles the text at the editors selection to be italic or not, depending on whether
- * italic is currently active or not.
+ * italic is currently active or not. Note that this method does not use setItalic and unsetItalic,
+ * it sets marks to the editor because this is the method that should be used by the toolbar.
  *
  * @param editor
  */
 const toggleItalic = (editor: CustomEditor) => {
     if (isItalicActive(editor)) {
-        unsetItalic(editor)
+        Editor.removeMark(editor, 'italic');
     } else {
-        setItalic(editor)
+        Editor.addMark(editor, 'italic', true);
     }
 }
 

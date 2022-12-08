@@ -1,0 +1,8 @@
+.button {
+    flex: 1;
+    color: gray;
+}
+
+.button:global(.active),.button:active {
+    color: lightgray;
+}

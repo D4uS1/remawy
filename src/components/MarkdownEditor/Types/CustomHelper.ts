@@ -13,6 +13,11 @@ export interface ToggleOptions {
 }
 
 /**
+ * Type for one function to toggle the rendering of an element.
+ */
+export type CustomHelperToggleFunc = (editor: CustomEditor, options?: ToggleOptions) => void;
+
+/**
  * Defines a helper that is used to provide functionality related to Elements.
  * Each Element should have its corresponding Helper.
  * The helper eg. is able to toggle the rendering if an element inside an editor, or can check whether it is currently rendered.
@@ -24,7 +29,7 @@ export interface CustomHelper {
 
     // Toggles the activation of the element this helper belongs to.
     // Activating the element means that it is shown in the editor.
-    toggle: (editor: CustomEditor, options?: ToggleOptions) => void;
+    toggle: CustomHelperToggleFunc
 
     // Called if the user presses tab inside the component to overwrite the default behavior
     // of the editor on pressing tab.

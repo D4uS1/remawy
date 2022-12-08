@@ -1,6 +1,7 @@
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import typescript from "@rollup/plugin-typescript";
+import postcss from 'rollup-plugin-postcss';
 import dts from "rollup-plugin-dts";
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
@@ -9,6 +10,7 @@ const external = [
     ...Object.keys(packageJson.dependencies || {}),
     ...Object.keys(packageJson.peerDependencies || {}),
 ];
+
 
 export default [
     {
@@ -29,6 +31,10 @@ export default [
             resolve(),
             commonjs(),
             typescript({ tsconfig: "./tsconfig.json" }),
+            postcss({
+                extract: false,
+                modules: true
+            }),
         ],
         external
     },

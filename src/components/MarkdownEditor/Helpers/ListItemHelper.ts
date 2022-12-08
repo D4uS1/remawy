@@ -1,4 +1,4 @@
-import {CustomHelper, ToggleOptions} from "../Types/CustomHelper";
+import {CustomHelper, CustomHelperToggleFunc, ToggleOptions} from "../Types/CustomHelper";
 import {CustomEditor} from "../Types/CustomEditor";
 import {Editor, Element, Transforms} from "slate";
 import {SlateUtils} from "../Utils/SlateUtils";
@@ -15,35 +15,42 @@ const active = (editor: CustomEditor): boolean => {
 }
 
 /**
- * Toggles the rendering of the ListItemElement in the specified editor.
+ * Deactivates the list item at the cursor position of the editor, by setting it to paragraph
+ * and removing all indents.
  *
  * @param editor
+ */
+const deactivateListItem = (editor: CustomEditor) => {
+    // Remove lists and indented lists until we are in the "root"
+    do {
+        Transforms.liftNodes(editor);
+    } while (['ordered-list', 'unordered-list'].includes(SlateUtils.parentElementType(editor) || ''))
+
+    // Change the list-item element to paragraph
+    Transforms.setNodes(
+        editor,
+        { type: 'paragraph' },
+        { match: n => Editor.isBlock(editor, n) }
+    )
+
+}
+
+/**
+ * Toggles the rendering of the ListItemElement in the specified editor.
+ * If the listItem is not yet in an list of the specified type, it will be wrapped into one.
+ *
+ * @param editor
+ * @param list
  * @param options
  */
-const toggle = (editor: CustomEditor, options?: ToggleOptions) => {
-    const isActive = active(editor);
-
+const toggleInList = (editor: CustomEditor, list: 'ordered-list' | 'unordered-list', options?: ToggleOptions) => {
     // currently we are in a list item, hence we need to deactivate it.
-    if (isActive) {
-        Transforms.setNodes(
-            editor,
-            { type: 'paragraph' },
-            { match: n => Editor.isBlock(editor, n) }
-        )
-
-        return;
+    if (active(editor)) {
+       return deactivateListItem(editor);
     }
 
-    // if the list-item is not yet in a list, find the correct list to render (ordered or unordered) and
-    // create a list wrapper around the item.
-    if (options?.actor === 'shortcut' && options?.actorShortcut === '*') {
-        if (!SlateUtils.isChildOf(editor, 'unordered-list')) {
-            Transforms.wrapNodes(editor, {type: 'unordered-list', children: []})
-        }
-    } else if (options?.actor === 'shortcut' && /^\d+\.$/.test(options?.actorShortcut || '')) {
-        if (!SlateUtils.isChildOf(editor, 'ordered-list')) {
-            Transforms.wrapNodes(editor, {type: 'ordered-list', children: []})
-        }
+    if (!SlateUtils.isChildOf(editor, list)) {
+        Transforms.wrapNodes(editor, {type: list, children: []})
     }
 
     Transforms.setNodes(
@@ -51,6 +58,44 @@ const toggle = (editor: CustomEditor, options?: ToggleOptions) => {
         { type: 'list-item' },
         { match: n => Editor.isBlock(editor, n) }
     )
+}
+
+/**
+ * Toggles the rendering of the ListItemElement in the specified editor.
+ * If the listItem is not yet in an orderedList, it will be wrapped into one.
+ *
+ * @param editor
+ * @param options
+ */
+const toggleOrderedListItem = (editor: CustomEditor, options?: ToggleOptions) => {
+    toggleInList(editor, 'ordered-list', options);
+}
+
+/**
+ * Toggles the rendering of the ListItemElement in the specified editor.
+ * If the listItem is not yet in an unorderedList, it will be wrapped into one.
+ *
+ * @param editor
+ * @param options
+ */
+const toggleUnorderedListItem = (editor: CustomEditor, options?: ToggleOptions) => {
+    toggleInList(editor, 'unordered-list', options);
+}
+
+/**
+ * Toggles the rendering of the ListItemElement in the specified editor.
+ *
+ * @param editor
+ * @param options
+ */
+const toggle = (editor: CustomEditor, options?: ToggleOptions) => {
+    // if the list-item is not yet in a list, find the correct list to render (ordered or unordered) and
+    // create a list wrapper around the item.
+    if (options?.actor === 'shortcut' && options?.actorShortcut === '*') {
+        toggleUnorderedListItem(editor, options)
+    } else if (options?.actor === 'shortcut' && /^\d+\.$/.test(options?.actorShortcut || '')) {
+        toggleOrderedListItem(editor, options)
+    }
 }
 
 /**
@@ -102,24 +147,24 @@ const onTab = (editor: CustomEditor, event: KeyboardEvent) => {
  * @param event
  */
 const onEnter = (editor: CustomEditor, event: KeyboardEvent) => {
+    // only remove list item it enter was pressed twice
     const textSinceBlockStart = SlateUtils.textSinceBlockStart(editor);
     if (textSinceBlockStart !== '') { return; }
 
-    // Remove lists and indented lists until we are in the "root"
-    do {
-        Transforms.liftNodes(editor);
-    } while (['ordered-list', 'unordered-list'].includes(SlateUtils.parentElementType(editor) || ''))
-
-    // Change the list-item element to paragraph
-    toggle(editor);
+    deactivateListItem(editor)
 
     // Prevent default slate action
     event.preventDefault();
 }
 
-export const ListItemHelper: CustomHelper = {
+export const ListItemHelper: CustomHelper & {
+    toggleOrderedListItem: CustomHelperToggleFunc,
+    toggleUnorderedListItem: CustomHelperToggleFunc
+} = {
     active: active,
     toggle: toggle,
+    toggleOrderedListItem: toggleOrderedListItem,
+    toggleUnorderedListItem: toggleUnorderedListItem,
     onTab: onTab,
     onEnter: onEnter
 }

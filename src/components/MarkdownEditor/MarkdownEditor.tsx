@@ -1,6 +1,6 @@
-import React, {useCallback, useState, KeyboardEvent, CompositionEvent, useMemo} from 'react'
-import {createEditor, Editor, Transforms, Descendant, Text, Node} from 'slate'
-import {Slate, Editable, withReact, RenderElementProps, RenderLeafProps} from 'slate-react'
+import React, {useCallback, useState, KeyboardEvent} from 'react'
+import {createEditor, Descendant} from 'slate'
+import {Slate, Editable, withReact, RenderElementProps} from 'slate-react'
 import {CodeElement} from "./Elements/CodeElement";
 import {ParagraphElement} from "./Elements/ParagraphElement";
 import {CustomElement, CustomElementName} from "./Types/CustomElement";
@@ -16,22 +16,11 @@ import {Heading6Element} from "./Elements/Heading6Element";
 import {OrderedListElement} from "./Elements/OrderedListElement";
 import {UnorderedListElement} from "./Elements/UnorderedListElement";
 import {ListItemElement} from "./Elements/ListItemElement";
-import {Heading2Helper} from "./Helpers/Heading2Helper";
-import {Heading3Helper} from "./Helpers/Heading3Helper";
-import {Heading4Helper} from "./Helpers/Heading4Helper";
-import {Heading5Helper} from "./Helpers/Heading5Helper";
-import {Heading6Helper} from "./Helpers/Heading6Helper";
-import {Heading1Helper} from "./Helpers/Heading1Helper";
-import {BlockquoteHelper} from "./Helpers/BlockquoteHelper";
-import {CodeHelper} from "./Helpers/CodeHelper";
-import {UnorderedListHelper} from "./Helpers/UnorderedListHelper";
 import {SlateUtils} from "./Utils/SlateUtils";
-import {CustomHelper} from "./Types/CustomHelper";
-import {ListItemHelper} from "./Helpers/ListItemHelper";
-import {OrderedListHelper} from "./Helpers/OrderedListHelper";
-import {ParagraphHelper} from "./Helpers/ParagraphHelper";
 import {CustomLeafProps, CustomLeaf} from "./Leafs/CustomLeaf";
 import {CustomLeafHelper} from "./Helpers/CustomLeafHelper";
+import {Toolbar} from "./Toolbar/Toolbar";
+import {Helpers} from "./Helpers/Helpers";
 
 
 /**
@@ -92,23 +81,6 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
 
         return null;
     }, []);
-
-    const TYPE_HELPER_MAP: Record<CustomElementName, CustomHelper> = useMemo(() => {
-        return {
-            'blockquote': BlockquoteHelper,
-            'code':  CodeHelper,
-            'heading-1': Heading1Helper,
-            'heading-2': Heading2Helper,
-            'heading-3': Heading3Helper,
-            'heading-4': Heading4Helper,
-            'heading-5': Heading5Helper,
-            'heading-6': Heading6Helper,
-            'list-item': ListItemHelper,
-            'ordered-list': OrderedListHelper,
-            'paragraph': ParagraphHelper,
-            'unordered-list': UnorderedListHelper,
-        }
-    }, [])
 
     /**
      * Defines all custom renderers for elements, based on its element type given by the props.
@@ -180,7 +152,7 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
                 if (!shortcutType) { break; }
 
                 // Render the corresponding markdown element
-                TYPE_HELPER_MAP[shortcutType].toggle(editor, { actor: "shortcut", actorShortcut: shortcutText })
+                Helpers[shortcutType].toggle(editor, { actor: "shortcut", actorShortcut: shortcutText })
 
                 // remove the shortcut text
                 SlateUtils.deleteFromLeft(editor, shortcutText.length);
@@ -196,7 +168,7 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
                 const currentBlockType = SlateUtils.currentElementType(editor);
                 if (!currentBlockType) { break; }
 
-                const onTabFunc = TYPE_HELPER_MAP[currentBlockType].onTab
+                const onTabFunc = Helpers[currentBlockType].onTab
                 if (!onTabFunc) { break; }
 
                 onTabFunc(editor, event);
@@ -212,7 +184,7 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
                 if (!currentBlockType) { break; }
 
                 // onEnter exists on current type => call onEnter
-                const onEnterFunc = TYPE_HELPER_MAP[currentBlockType].onEnter
+                const onEnterFunc = Helpers[currentBlockType].onEnter
                 if (!onEnterFunc) { break; }
 
                 onEnterFunc(editor, event);
@@ -251,15 +223,8 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
                 }]}
                onChange={onSlateChange}
         >
-            <div>
-                <button
-                    onMouseDown={event => {
-                        event.preventDefault()
-                    }}
-                >
-                    Italic
-                </button>
-            </div>
+            <Toolbar editor={editor} />
+
             <Editable
                 renderElement={renderElement}
                 renderLeaf={renderLeaf}
