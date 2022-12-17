@@ -9,6 +9,10 @@ import { KeyboardEvent } from 'react';
  * @param editor
  */
 const isBoldActive = (editor: CustomEditor): boolean => {
+    // This is true if the user activated to write bold "in the future" by clicking the bold button
+    // without selection
+    if (Editor.marks(editor)?.bold) { return true }
+
     const [match] = Editor.nodes(editor, {
         match: n => Text.isText(n) && n.bold === true
     })
@@ -22,6 +26,10 @@ const isBoldActive = (editor: CustomEditor): boolean => {
  * @param editor
  */
 const isItalicActive = (editor: CustomEditor): boolean => {
+    // This is true if the user activated to write italic "in the future" by clicking the italic button
+    // without selection
+    if (Editor.marks(editor)?.italic) { return true }
+
     const [match] = Editor.nodes(editor, {
         match: n => Text.isText(n) && n.italic === true
     })

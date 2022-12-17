@@ -21,7 +21,7 @@ import {CustomLeafProps, CustomLeaf} from "./Leafs/CustomLeaf";
 import {CustomLeafHelper} from "./Helpers/CustomLeafHelper";
 import {Toolbar} from "./Toolbar/Toolbar";
 import {Helpers} from "./Helpers/Helpers";
-
+import styles from './MarkdownEditor.module.css';
 
 /**
  * Extend the CustomTypes in the slate module to tell slate what custom elements we have.
@@ -43,6 +43,18 @@ export interface MarkdownEditorProps {
 
     // Called if the Markdown content was changed and submitted
     onSubmit: (markdown: string) => void;
+
+    // Optional class name that is passed to the container.
+    className?: string;
+
+    // Optional css class name that is passed to the toolbar container
+    toolbarClassName?: string;
+
+    // Optional css class name that is passed to the toolbar buttons
+    toolbarButtonClassName?: string;
+
+    // Optional css class name that is passed to the editor container
+    editorClassName?: string;
 }
 
 /**
@@ -223,13 +235,16 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
                 }]}
                onChange={onSlateChange}
         >
-            <Toolbar editor={editor} />
+            <div className={`${styles.container} ${props.className || ''}`}>
+                <Toolbar className={props.toolbarClassName} buttonClassName={props.toolbarButtonClassName} />
 
-            <Editable
-                renderElement={renderElement}
-                renderLeaf={renderLeaf}
-                onKeyDown={onKeyDown}
-            />
+                <Editable
+                    className={props.editorClassName}
+                    renderElement={renderElement}
+                    renderLeaf={renderLeaf}
+                    onKeyDown={onKeyDown}
+                />
+            </div>
         </Slate>
     );
 

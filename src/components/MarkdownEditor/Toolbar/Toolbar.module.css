@@ -1,6 +1,19 @@
+@value colors: "../../../colors.module.css";
+@value remawy-border-color, remawy-toolbar-background-color from colors;
+
 .container {
+    display: flex;
+    lex-direction: column;
+    justify-content: stretch;
+    align-items: flex-start;
+    background-color: remawy-toolbar-background-color;
+    border-bottom: remawy-border-color 1px solid;
+}
+
+.innerContainer {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
+    overflow: scroll;
 }

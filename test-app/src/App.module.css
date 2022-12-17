@@ -5,3 +5,8 @@
     align-items: flex-start;
     gap: 3em;
 }
+
+.editorContainer {
+    min-width: 50%;
+    min-height: 30em;
+}

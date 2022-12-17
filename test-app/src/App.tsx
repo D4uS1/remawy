@@ -10,7 +10,7 @@ function App() {
         <div className={styles.container}>
             <div>
                 <span>Editor: </span>
-                <MarkdownEditor markdown={markdown} onSubmit={setMarkdown} />
+                <MarkdownEditor markdown={markdown} onSubmit={setMarkdown} className={styles.editorContainer} />
             </div>
 
             <div>

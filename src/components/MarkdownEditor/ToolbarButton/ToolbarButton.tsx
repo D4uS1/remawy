@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, {useMemo, MouseEvent} from 'react';
 import styles from './ToolbarButton.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faBold, faItalic, faListOl, faList, faQuoteLeft, faCode} from '@fortawesome/free-solid-svg-icons'
@@ -18,6 +18,9 @@ interface ToolbarButtonProps {
 
     // Called if the user clicks the button
     onClick: () => void;
+
+    // Optional class name that is passed to the button
+    className?: string;
 }
 
 /**
@@ -38,8 +41,18 @@ export const ToolbarButton = (props: ToolbarButtonProps) => {
         }
     }, [props.icon]);
 
+    /**
+     * Called if the mousedown event of the button was triggered.
+     * Calls preventDefault to make the editor window not to loose focus if the button was pressed.
+     *
+     * @param event
+     */
+    const onMouseDown = (event: MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+    }
+
     return (
-        <button className={`${styles.button} ${props.active ? '.active' : ''}`} onClick={props.onClick}>
+        <button onMouseDown={onMouseDown} className={`${styles.button} ${props.className || ''} ${props.active ? 'active' : ''}`} onClick={props.onClick}>
             { icon ? icon : props.text }
         </button>
     )
