@@ -384,6 +384,19 @@ const isLeaf = (node: Node): boolean => {
 }
 
 /**
+ * Returns whether the current selection in the editor is at the root node,
+ * meaning not being wrapped in any element.
+ *
+ * @param editor
+ */
+const isAtRoot = (editor: CustomEditor): boolean => {
+    const pos = editor.selection?.anchor || editor.selection?.focus;
+    if (!pos) return false;
+
+    return pos.path.length <= 2
+}
+
+/**
  * Returns whether the current node is the root node.
  *
  * @param node
@@ -467,6 +480,7 @@ export const SlateUtils = {
     isLeaf: isLeaf,
     isRoot: isRoot,
     isEmpty: isEmpty,
+    isAtRoot: isAtRoot,
     createRootParagraph: createRootParagraph,
     createNewline: createNewline
 }

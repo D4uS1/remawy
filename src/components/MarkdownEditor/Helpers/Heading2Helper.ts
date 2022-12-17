@@ -20,7 +20,7 @@ const active = (editor: CustomEditor): boolean => {
  * @param editor
  */
 const toggle = (editor: CustomEditor) => {
-    HelperUtils.defaultToggle(editor, 'heading-2');
+    HelperUtils.defaultToggleAtRoot(editor, 'heading-2');
 }
 
 /**
