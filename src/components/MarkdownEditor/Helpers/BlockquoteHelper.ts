@@ -19,7 +19,7 @@ const active = (editor: CustomEditor): boolean => {
  * @param editor
  */
 const toggle = (editor: CustomEditor) => {
-    HelperUtils.defaultToggle(editor, 'blockquote');
+    HelperUtils.toggleWithListAllowed(editor, 'blockquote');
 }
 
 /**
@@ -31,7 +31,7 @@ const toggle = (editor: CustomEditor) => {
  * @param event
  */
 const onEnter = (editor: CustomEditor, event: KeyboardEvent) => {
-    HelperUtils.onEnterWithShiftLinebreak(editor, event)
+    HelperUtils.onEnterWithListAndNewlineAllowed(editor, event)
 }
 
 export const BlockquoteHelper: CustomHelper = {

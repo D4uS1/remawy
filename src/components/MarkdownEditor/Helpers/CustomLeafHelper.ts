@@ -32,11 +32,7 @@ const isItalicActive = (editor: CustomEditor): boolean => {
 const setBold = (editor: CustomEditor, range?: { anchor: Point, focus: Point }) => {
     if (!editor.selection) { return }
 
-    Transforms.setNodes(editor, { bold: true }, {
-        at: range ? range : editor.selection,
-        match: (n) => Text.isText(n),
-        split: true
-    })
+    SlateUtils.setLeafFormat(editor, { bold: true }, range);
 }
 
 /**
@@ -45,11 +41,7 @@ const setBold = (editor: CustomEditor, range?: { anchor: Point, focus: Point }) 
  * @param editor
  */
 const unsetBold = (editor: CustomEditor) => {
-    Transforms.setNodes(
-        editor,
-        { bold: undefined },
-        { match: n => Text.isText(n), split: true }
-    )
+    SlateUtils.setLeafFormat(editor, { bold: undefined });
 }
 
 /**
@@ -63,11 +55,7 @@ const unsetBold = (editor: CustomEditor) => {
 const setItalic = (editor: CustomEditor, range?: { anchor: Point, focus: Point }) => {
     if (!editor.selection) { return }
 
-    Transforms.setNodes(editor, { italic: true }, {
-        at: range ? range : editor.selection,
-        match: (n) => Text.isText(n),
-        split: true
-    })
+    SlateUtils.setLeafFormat(editor, { italic: true }, range);
 }
 
 /**
@@ -76,11 +64,7 @@ const setItalic = (editor: CustomEditor, range?: { anchor: Point, focus: Point }
  * @param editor
  */
 const unsetItalic = (editor: CustomEditor) => {
-    Transforms.setNodes(
-        editor,
-        { italic: undefined },
-        { match: n => Text.isText(n), split: true }
-    )
+    SlateUtils.setLeafFormat(editor, { italic: undefined });
 }
 
 /**

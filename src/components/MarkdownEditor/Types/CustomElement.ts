@@ -10,4 +10,4 @@ export type CustomElementName = 'blockquote' | 'code' | 'heading-1' | 'heading-2
 /**
  * Defines one definition of an element in our editor.
  */
-export type CustomElement = { type: CustomElementName; children: CustomText[] }
+export type CustomElement = { type: CustomElementName; children?: CustomText[] }

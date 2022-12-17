@@ -23,16 +23,11 @@ const active = (editor: CustomEditor): boolean => {
 const deactivateListItem = (editor: CustomEditor) => {
     // Remove lists and indented lists until we are in the "root"
     do {
-        Transforms.liftNodes(editor);
+        SlateUtils.unwrapNode(editor);
     } while (['ordered-list', 'unordered-list'].includes(SlateUtils.parentElementType(editor) || ''))
 
     // Change the list-item element to paragraph
-    Transforms.setNodes(
-        editor,
-        { type: 'paragraph' },
-        { match: n => Editor.isBlock(editor, n) }
-    )
-
+    SlateUtils.changeCurrentNodeType(editor, 'paragraph')
 }
 
 /**
@@ -50,14 +45,10 @@ const toggleInList = (editor: CustomEditor, list: 'ordered-list' | 'unordered-li
     }
 
     if (!SlateUtils.isChildOf(editor, list)) {
-        Transforms.wrapNodes(editor, {type: list, children: []})
+        SlateUtils.wrapNode(editor, list);
     }
 
-    Transforms.setNodes(
-        editor,
-        { type: 'list-item' },
-        { match: n => Editor.isBlock(editor, n) }
-    )
+    SlateUtils.changeCurrentNodeType(editor, 'list-item');
 }
 
 /**
@@ -109,26 +100,26 @@ const onTab = (editor: CustomEditor, event: KeyboardEvent) => {
 
     // if shift is pressed, the list current list should be unintended
     if (event.shiftKey) {
-        Transforms.liftNodes(editor);
+        SlateUtils.unwrapNode(editor);
 
         // If the parent is no list (after lifting), convert it to paragraph
         // If the parentElement is null, it is assumed that the parent element is the root node, hence
         // we want to convert it back here, too
         const parentElement = SlateUtils.parentElement(editor);
         if (!parentElement || !['ordered-list', 'unordered-list'].includes(parentElement.type)) {
-            Transforms.setNodes(editor, { type: 'paragraph' })
+            SlateUtils.changeCurrentNodeType(editor, 'paragraph');
         }
 
-        // if shift is not pressed, the list should be intended
+    // if shift is not pressed, the list should be intended
     } else {
         const parentElement = SlateUtils.parentElement(editor);
         const currentElement = SlateUtils.currentElement(editor);
         if (!currentElement || !parentElement ) { return; }
 
         if (parentElement.type === 'ordered-list') {
-            Transforms.wrapNodes(editor, { type: 'ordered-list', children: [] })
+            SlateUtils.wrapNode(editor, 'ordered-list');
         } else if (parentElement.type === 'unordered-list') {
-            Transforms.wrapNodes(editor, { type: 'unordered-list', children: [] })
+            SlateUtils.wrapNode(editor, 'unordered-list');
         }
     }
 

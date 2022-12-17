@@ -1,7 +1,61 @@
 import {CustomEditor} from "../Types/CustomEditor";
-import {Editor, Node, NodeEntry, Point, Text, Transforms, Element} from "slate";
+import {Editor, Node, Point, Transforms, Element, Text} from "slate";
 import {CustomElement, CustomElementName} from "../Types/CustomElement";
 import {CustomText} from "../Types/CustomText";
+
+/**
+ * Changes the type of the current node to the specified elementType.
+ * The content will not be changed.
+ *
+ * @param editor
+ * @param elementType
+ */
+const changeCurrentNodeType = (editor: CustomEditor, elementType: CustomElementName) => {
+    // set the type to paragraph
+    Transforms.setNodes(
+        editor,
+        { type: elementType },
+        { match: n => Editor.isBlock(editor, n) }
+    )
+}
+
+/**
+ * Creates a new node of the same type at the current cursors position.
+ *
+ * @param editor
+ */
+const createNewNodeOfCurrentType = (editor: CustomEditor) => {
+    // Splitting should force the editor to create a new node
+    Transforms.splitNodes(editor, { always: true })
+}
+
+/**
+ * Wraps the node of the current editors position in a new node of the specified elementType.
+ *
+ * @param editor
+ * @param elementType
+ */
+const wrapNode = (editor: CustomEditor, elementType: CustomElementName) => {
+    Transforms.wrapNodes(editor, {type: elementType})
+}
+
+/**
+ * Unwraps the current node (not leaf) at the editors selection, hence the current node is located in the parent.
+ *
+ * @param editor
+ */
+const unwrapNode = (editor: CustomEditor) => {
+    Transforms.liftNodes(editor)
+}
+
+/**
+ * Unwraps the current leaf at the editors selection, hence the current leaf is located in the parent node.
+ *
+ * @param editor
+ */
+const unwrapLeaf = (editor: CustomEditor) => {
+    Transforms.unwrapNodes(editor)
+}
 
 /**
  * Returns whether the editors selection is a cursor, meaining the user did not select any text,
@@ -435,15 +489,12 @@ const isEmpty = (editor: CustomEditor): boolean => {
 const createRootParagraph = (editor: CustomEditor): void => {
     if (!editor.selection) { return; }
 
-    // splitting should cause to create a new node at the correct position
-    Transforms.splitNodes(editor, { always: true })
+    createNewNodeOfCurrentType(editor)
 
     // set the type to paragraph
-    Transforms.setNodes(
-        editor,
-        { type: 'paragraph' },
-        { match: n => Editor.isBlock(editor, n) }
-    )
+    changeCurrentNodeType(editor, 'paragraph');
+
+    liftToRoot(editor);
 }
 
 /**
@@ -455,7 +506,42 @@ const createNewline = (editor: CustomEditor): void => {
     Transforms.insertText(editor, '\n')
 }
 
+/**
+ * Moves the node at the current editors selection to root level.
+ *
+ * @param editor
+ */
+const liftToRoot = (editor: CustomEditor): void => {
+    while (!SlateUtils.isAtRoot(editor)) {
+        Transforms.liftNodes(editor)
+    }
+}
+
+/**
+ * Sets the formatting of the leaf node at the specified range.
+ * If range is not defined, the current editors selection will be used for the operation.
+ *
+ * @param editor
+ * @param formatOptions
+ * @param range
+ */
+const setLeafFormat = (editor: CustomEditor, formatOptions: { bold?: boolean, italic?: boolean }, range?: { anchor: Point, focus: Point }) => {
+    if (!editor.selection) { return }
+
+    Transforms.setNodes(editor, formatOptions, {
+        at: range ? range : editor.selection,
+        match: (n) => Text.isText(n),
+        split: true
+    })
+}
+
+
 export const SlateUtils = {
+    changeCurrentNodeType: changeCurrentNodeType,
+    createNewNodeOfCurrentType: createNewNodeOfCurrentType,
+    wrapNode: wrapNode,
+    unwrapNode: unwrapNode,
+    unwrapLeaf: unwrapLeaf,
     isCursor: isCursor,
     isSelection: isSelection,
     currentBlockStart: currentBlockStart,
@@ -482,5 +568,7 @@ export const SlateUtils = {
     isEmpty: isEmpty,
     isAtRoot: isAtRoot,
     createRootParagraph: createRootParagraph,
-    createNewline: createNewline
+    createNewline: createNewline,
+    liftToRoot: liftToRoot,
+    setLeafFormat: setLeafFormat
 }

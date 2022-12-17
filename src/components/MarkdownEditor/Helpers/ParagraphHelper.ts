@@ -20,11 +20,7 @@ const active = (editor: CustomEditor): boolean => {
  * @param editor
  */
 const toggle = (editor: CustomEditor) => {
-    Transforms.setNodes(
-        editor,
-        { type: 'paragraph' },
-        { match: n => Editor.isBlock(editor, n) }
-    )
+    SlateUtils.changeCurrentNodeType(editor, 'paragraph');
 }
 
 /**
