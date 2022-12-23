@@ -1,9 +1,8 @@
-import {CustomHelper} from "../Types/CustomHelper";
-import {CustomEditor} from "../Types/CustomEditor";
-import {Editor, Element, Transforms} from "slate";
-import {KeyboardEvent} from 'react';
-import {SlateUtils} from "../Utils/SlateUtils";
-import {HelperUtils} from "../Utils/HelperUtils";
+import { CustomHelper } from '../Types/CustomHelper';
+import { CustomEditor } from '../Types/CustomEditor';
+import { KeyboardEvent } from 'react';
+import { SlateUtils } from '../Utils/SlateUtils';
+import { HelperUtils } from '../Utils/HelperUtils';
 
 /**
  * Returns whether the ParagraphElement is currently active in the specified editor.
@@ -12,7 +11,7 @@ import {HelperUtils} from "../Utils/HelperUtils";
  */
 const active = (editor: CustomEditor): boolean => {
     return HelperUtils.defaultIsActive(editor, 'paragraph');
-}
+};
 
 /**
  * Toggles the rendering of the ParagraphElement in the specified editor.
@@ -21,7 +20,7 @@ const active = (editor: CustomEditor): boolean => {
  */
 const toggle = (editor: CustomEditor) => {
     SlateUtils.changeCurrentNodeType(editor, 'paragraph');
-}
+};
 
 /**
  * Overwrites the behavior of the editor on pressing enter in a paragraph element.
@@ -32,11 +31,11 @@ const toggle = (editor: CustomEditor) => {
  * @param event
  */
 const onEnter = (editor: CustomEditor, event: KeyboardEvent) => {
-    HelperUtils.onEnterWithShiftLinebreak(editor, event)
-}
+    HelperUtils.onEnterWithShiftLinebreak(editor, event);
+};
 
 export const ParagraphHelper: CustomHelper = {
     active: active,
     toggle: toggle,
     onEnter: onEnter
-}
+};

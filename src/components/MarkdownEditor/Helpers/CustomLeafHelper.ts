@@ -1,6 +1,6 @@
-import {CustomEditor} from "../Types/CustomEditor";
-import {Editor, Point, Text, Transforms} from "slate";
-import {SlateUtils} from "../Utils/SlateUtils";
+import { CustomEditor } from '../Types/CustomEditor';
+import { Editor, Point } from 'slate';
+import { SlateUtils } from '../Utils/SlateUtils';
 import { KeyboardEvent } from 'react';
 
 /**
@@ -9,8 +9,8 @@ import { KeyboardEvent } from 'react';
  * @param editor
  */
 const isBoldActive = (editor: CustomEditor): boolean => {
-    return !!Editor.marks(editor)?.bold
-}
+    return !!Editor.marks(editor)?.bold;
+};
 
 /**
  * Returns whether the text at the editors selection is italic.
@@ -18,8 +18,8 @@ const isBoldActive = (editor: CustomEditor): boolean => {
  * @param editor
  */
 const isItalicActive = (editor: CustomEditor): boolean => {
-    return !!Editor.marks(editor)?.italic
-}
+    return !!Editor.marks(editor)?.italic;
+};
 
 /**
  * Sets the text at the editors selection to bold.
@@ -29,11 +29,13 @@ const isItalicActive = (editor: CustomEditor): boolean => {
  * @param editor
  * @param range
  */
-const setBold = (editor: CustomEditor, range?: { anchor: Point, focus: Point }) => {
-    if (!editor.selection) { return }
+const setBold = (editor: CustomEditor, range?: { anchor: Point; focus: Point }) => {
+    if (!editor.selection) {
+        return;
+    }
 
     SlateUtils.setLeafFormat(editor, { bold: true }, range);
-}
+};
 
 /**
  * Removes the bold rendering from the editors current cursor.
@@ -42,7 +44,7 @@ const setBold = (editor: CustomEditor, range?: { anchor: Point, focus: Point }) 
  */
 const unsetBold = (editor: CustomEditor) => {
     SlateUtils.setLeafFormat(editor, { bold: undefined });
-}
+};
 
 /**
  * Sets the text at the editors selection to italic.
@@ -52,11 +54,13 @@ const unsetBold = (editor: CustomEditor) => {
  * @param editor
  * @param range
  */
-const setItalic = (editor: CustomEditor, range?: { anchor: Point, focus: Point }) => {
-    if (!editor.selection) { return }
+const setItalic = (editor: CustomEditor, range?: { anchor: Point; focus: Point }) => {
+    if (!editor.selection) {
+        return;
+    }
 
     SlateUtils.setLeafFormat(editor, { italic: true }, range);
-}
+};
 
 /**
  * Removes the italic rendering from the editors current cursor.
@@ -65,7 +69,7 @@ const setItalic = (editor: CustomEditor, range?: { anchor: Point, focus: Point }
  */
 const unsetItalic = (editor: CustomEditor) => {
     SlateUtils.setLeafFormat(editor, { italic: undefined });
-}
+};
 
 /**
  * Toggles the text at the editors selection to be bold or not, depending on whether
@@ -80,7 +84,7 @@ const toggleBold = (editor: CustomEditor) => {
     } else {
         Editor.addMark(editor, 'bold', true);
     }
-}
+};
 
 /**
  * Toggles the text at the editors selection to be italic or not, depending on whether
@@ -95,7 +99,7 @@ const toggleItalic = (editor: CustomEditor) => {
     } else {
         Editor.addMark(editor, 'italic', true);
     }
-}
+};
 
 /**
  * Handles the bold or italic state at the editors cursor if the user typed a * or _.
@@ -106,41 +110,47 @@ const toggleItalic = (editor: CustomEditor) => {
  * @param event
  */
 const handleBoldAndItalic = (editor: Editor, event: KeyboardEvent<HTMLDivElement>) => {
-    if (!['_', '*'].includes(event.key)) { return }
+    if (!['_', '*'].includes(event.key)) {
+        return;
+    }
 
     // If the cursor is behind a _ the user typed __, hence he wants to have bold text
     if (SlateUtils.cursorIsBehind(editor, event.key)) {
         // Find the beginning position of the text that should be bold
-        const lastPos = SlateUtils.lastPosOf(editor, `${event.key}${event.key}`)
-        if (!lastPos || !editor.selection) { return }
+        const lastPos = SlateUtils.lastPosOf(editor, `${event.key}${event.key}`);
+        if (!lastPos || !editor.selection) {
+            return;
+        }
 
         setBold(editor, { anchor: lastPos, focus: editor.selection.anchor });
 
         // This forces the editor at the cursors position to not write bold further
-        Editor.addMark(editor, 'bold', false)
+        Editor.addMark(editor, 'bold', false);
 
         // Remove shortcuts
-        SlateUtils.deleteAt(editor, lastPos, 2)
+        SlateUtils.deleteAt(editor, lastPos, 2);
         SlateUtils.deleteFromRight(editor, 1);
         SlateUtils.deleteAt(editor, editor.selection.anchor, 1);
         event.preventDefault();
     } else {
         // Find the beginning position of the text that should be italic
-        const lastPos = SlateUtils.lastPosOf(editor, event.key, { isolated: true })
-        if (!lastPos || !editor.selection) { return }
+        const lastPos = SlateUtils.lastPosOf(editor, event.key, { isolated: true });
+        if (!lastPos || !editor.selection) {
+            return;
+        }
 
         setItalic(editor, { anchor: lastPos, focus: editor.selection.anchor });
 
         // This forces the editor at the cursors position to not write italic further
-        Editor.addMark(editor, 'italic', false)
+        Editor.addMark(editor, 'italic', false);
 
         // Remove shortcuts
-        SlateUtils.deleteAt(editor, lastPos, 1)
+        SlateUtils.deleteAt(editor, lastPos, 1);
         event.preventDefault();
     }
 
     // This is a hack to reset the format at the cursor position.
-}
+};
 
 export const CustomLeafHelper = {
     isBoldActive: isBoldActive,
@@ -151,5 +161,5 @@ export const CustomLeafHelper = {
     setItalic: setItalic,
     unsetBold: unsetBold,
     unsetItalic: unsetItalic,
-    handleBoldAndItalic: handleBoldAndItalic,
-}
+    handleBoldAndItalic: handleBoldAndItalic
+};

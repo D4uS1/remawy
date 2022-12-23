@@ -1,7 +1,7 @@
-import {CustomEditor} from "../Types/CustomEditor";
-import {Editor, Node, Point, Transforms, Element, Text} from "slate";
-import {CustomElement, CustomElementName} from "../Types/CustomElement";
-import {CustomText} from "../Types/CustomText";
+import { CustomEditor } from '../Types/CustomEditor';
+import { Editor, Node, Point, Transforms, Element, Text } from 'slate';
+import { CustomElement, CustomElementName } from '../Types/CustomElement';
+import { CustomText } from '../Types/CustomText';
 
 /**
  * Changes the type of the current node to the specified elementType.
@@ -12,12 +12,8 @@ import {CustomText} from "../Types/CustomText";
  */
 const changeCurrentNodeType = (editor: CustomEditor, elementType: CustomElementName) => {
     // set the type to paragraph
-    Transforms.setNodes(
-        editor,
-        { type: elementType },
-        { match: n => Editor.isBlock(editor, n) }
-    )
-}
+    Transforms.setNodes(editor, { type: elementType }, { match: (n) => Editor.isBlock(editor, n) });
+};
 
 /**
  * Creates a new node of the same type at the current cursors position.
@@ -26,8 +22,8 @@ const changeCurrentNodeType = (editor: CustomEditor, elementType: CustomElementN
  */
 const createNewNodeOfCurrentType = (editor: CustomEditor) => {
     // Splitting should force the editor to create a new node
-    Transforms.splitNodes(editor, { always: true })
-}
+    Transforms.splitNodes(editor, { always: true });
+};
 
 /**
  * Wraps the node of the current editors position in a new node of the specified elementType.
@@ -36,8 +32,8 @@ const createNewNodeOfCurrentType = (editor: CustomEditor) => {
  * @param elementType
  */
 const wrapNode = (editor: CustomEditor, elementType: CustomElementName) => {
-    Transforms.wrapNodes(editor, {type: elementType})
-}
+    Transforms.wrapNodes(editor, { type: elementType });
+};
 
 /**
  * Unwraps the current node (not leaf) at the editors selection, hence the current node is located in the parent.
@@ -45,8 +41,8 @@ const wrapNode = (editor: CustomEditor, elementType: CustomElementName) => {
  * @param editor
  */
 const unwrapNode = (editor: CustomEditor) => {
-    Transforms.liftNodes(editor)
-}
+    Transforms.liftNodes(editor);
+};
 
 /**
  * Unwraps the current leaf at the editors selection, hence the current leaf is located in the parent node.
@@ -54,8 +50,8 @@ const unwrapNode = (editor: CustomEditor) => {
  * @param editor
  */
 const unwrapLeaf = (editor: CustomEditor) => {
-    Transforms.unwrapNodes(editor)
-}
+    Transforms.unwrapNodes(editor);
+};
 
 /**
  * Returns whether the editors selection is a cursor, meaining the user did not select any text,
@@ -64,10 +60,12 @@ const unwrapLeaf = (editor: CustomEditor) => {
  * @param editor
  */
 const isCursor = (editor: CustomEditor): boolean => {
-    if (!editor.selection) { return false };
+    if (!editor.selection) {
+        return false;
+    }
 
     return Point.equals(editor.selection.anchor, editor.selection.focus);
-}
+};
 
 /**
  * Returns whether the user selected some text.
@@ -75,10 +73,12 @@ const isCursor = (editor: CustomEditor): boolean => {
  * @param editor
  */
 const isSelection = (editor: CustomEditor): boolean => {
-    if (!editor.selection) { return false }
+    if (!editor.selection) {
+        return false;
+    }
 
     return !isCursor(editor);
-}
+};
 
 /**
  * Returns the start location of the current selected block.
@@ -88,15 +88,15 @@ const isSelection = (editor: CustomEditor): boolean => {
 const currentBlockStart = (editor: CustomEditor): Point => {
     // Get the nearest block from the selection
     const block = Editor.above(editor, {
-        match: n => Editor.isBlock(editor, n),
-    })
+        match: (n) => Editor.isBlock(editor, n)
+    });
 
     // The path to the block is located in the second item of the result
-    const path = block ? block[1] : []
+    const path = block ? block[1] : [];
 
     // Find the start point of the block
-    return Editor.start(editor, path)
-}
+    return Editor.start(editor, path);
+};
 
 /**
  * Returns the end location of the current seleczed block.
@@ -106,15 +106,15 @@ const currentBlockStart = (editor: CustomEditor): Point => {
 const currentBlockEnd = (editor: CustomEditor): Point => {
     // Get the nearest block from the selection
     const block = Editor.above(editor, {
-        match: n => Editor.isBlock(editor, n),
-    })
+        match: (n) => Editor.isBlock(editor, n)
+    });
 
     // The path to the block is located in the second item of the result
-    const path = block ? block[1] : []
+    const path = block ? block[1] : [];
 
     // Find the end point of the block
-    return Editor.end(editor, path)
-}
+    return Editor.end(editor, path);
+};
 
 /**
  * Returns the text from the start of the block of the current cursor in the specified slate editor.
@@ -123,17 +123,19 @@ const currentBlockEnd = (editor: CustomEditor): Point => {
  * @param editor
  */
 const textSinceBlockStart = (editor: CustomEditor): string | null => {
-    if (!editor.selection || !isCursor(editor)) { return null }
+    if (!editor.selection || !isCursor(editor)) {
+        return null;
+    }
 
     // Find the start point of the block
     const start = currentBlockStart(editor);
 
     // Build a range object from the current selection to the start point
-    const range = { anchor: editor.selection.anchor, focus: start }
+    const range = { anchor: editor.selection.anchor, focus: start };
 
     // extract the text from the range
     return Editor.string(editor, range);
-}
+};
 
 /**
  * Returns the text from the current cursor of the slate editor to the block end.
@@ -142,17 +144,19 @@ const textSinceBlockStart = (editor: CustomEditor): string | null => {
  * @param editor
  */
 const textToBlockEnd = (editor: CustomEditor): string | null => {
-    if (!editor.selection || !isCursor(editor)) { return null }
+    if (!editor.selection || !isCursor(editor)) {
+        return null;
+    }
 
     // Find the end point of the block
     const end = currentBlockEnd(editor);
 
     // Build a range object from the current selection to the start point
-    const range = { anchor: editor.selection.focus, focus: end }
+    const range = { anchor: editor.selection.focus, focus: end };
 
     // extract the text from the range
     return Editor.string(editor, range);
-}
+};
 
 /**
  * Returns the location of the last occurence of the specified text from the editors current selection start
@@ -169,14 +173,18 @@ const textToBlockEnd = (editor: CustomEditor): string | null => {
  * @param searchText
  */
 const lastPosOf = (editor: CustomEditor, searchText: string, options?: { isolated?: true }): Point | null => {
-    if (!editor.selection || !isCursor(editor)) { return null }
+    if (!editor.selection || !isCursor(editor)) {
+        return null;
+    }
 
     // Select the text between start of the block and the current cursor position
-    const blockText = currentBlockText(editor)
-    if (!blockText) { return null; }
+    const blockText = currentBlockText(editor);
+    if (!blockText) {
+        return null;
+    }
 
     // Find last occurence of search text
-    let lastIndex = blockText.lastIndexOf(searchText);
+    const lastIndex = blockText.lastIndexOf(searchText);
 
     // If the isolated option is set to true, the searchText must not beside searchText
     if (options?.isolated) {
@@ -189,13 +197,15 @@ const lastPosOf = (editor: CustomEditor, searchText: string, options?: { isolate
         }
     }
 
-    if (lastIndex === -1) { return null }
+    if (lastIndex === -1) {
+        return null;
+    }
 
     return {
         path: editor.selection.anchor.path,
         offset: lastIndex
     };
-}
+};
 
 /**
  * Returns whether the current cursor is behind the specified searchText, meaninig that the searchText is
@@ -206,11 +216,12 @@ const lastPosOf = (editor: CustomEditor, searchText: string, options?: { isolate
  * @param searchText
  */
 const cursorIsBehind = (editor: CustomEditor, searchText: string): boolean => {
-    if (!editor.selection || !isCursor(editor)) { return false }
+    if (!editor.selection || !isCursor(editor)) {
+        return false;
+    }
 
     return !!textSinceBlockStart(editor)?.endsWith(searchText);
-}
-
+};
 
 /**
  * Returns the text of the block the user has currently selected.
@@ -219,14 +230,16 @@ const cursorIsBehind = (editor: CustomEditor, searchText: string): boolean => {
  * @param editor
  */
 const currentBlockText = (editor: CustomEditor): string | null => {
-    if (!editor.selection) { return null; }
+    if (!editor.selection) {
+        return null;
+    }
 
     // Select the text between start of the block and the current cursor position
     return Editor.string(editor, {
-        anchor: { path: editor.selection.anchor.path, offset: 0},
+        anchor: { path: editor.selection.anchor.path, offset: 0 },
         focus: editor.selection.anchor
     });
-}
+};
 
 /**
  * Sets the text of the block the user has currently selected.
@@ -235,7 +248,9 @@ const currentBlockText = (editor: CustomEditor): string | null => {
  * @param text
  */
 const setCurrentBlockText = (editor: CustomEditor, text: string): void => {
-    if (!editor.selection) { return; }
+    if (!editor.selection) {
+        return;
+    }
 
     const start = currentBlockStart(editor);
     if (!start) return;
@@ -250,7 +265,7 @@ const setCurrentBlockText = (editor: CustomEditor, text: string): void => {
     Transforms.insertText(editor, text, {
         at: start
     });
-}
+};
 
 /**
  * Removes the number of chars from the beginning of the block that is currently selected by the user.
@@ -260,12 +275,14 @@ const setCurrentBlockText = (editor: CustomEditor, text: string): void => {
  */
 const deleteFromLeft = (editor: CustomEditor, numChars: number): void => {
     let text = currentBlockText(editor);
-    if (!text) { return; }
+    if (!text) {
+        return;
+    }
 
     text = text.slice(numChars);
 
     setCurrentBlockText(editor, text);
-}
+};
 
 /**
  * Removes the number of chars from the current cursor in the editor (backwards).
@@ -277,7 +294,7 @@ const deleteFromRight = (editor: CustomEditor, numChars: number): void => {
     for (let i = 0; i < numChars; i++) {
         Editor.deleteBackward(editor, { unit: 'character' });
     }
-}
+};
 
 /**
  * Removes numChars characters from the text starting at the specified start point.
@@ -292,7 +309,7 @@ const deleteAt = (editor: CustomEditor, start: Point, numChars: number) => {
         distance: numChars,
         unit: 'character'
     });
-}
+};
 
 /**
  * Checks whether the cursor is in a node being a child of a node having the specified type elementName.
@@ -303,14 +320,16 @@ const deleteAt = (editor: CustomEditor, start: Point, numChars: number) => {
  * @param elementName
  */
 const isChildOf = (editor: CustomEditor, elementName: CustomElementName): boolean => {
-    if (!isCursor(editor) || !editor.selection) { return false }
+    if (!isCursor(editor) || !editor.selection) {
+        return false;
+    }
 
-    return Editor.above(editor,
-        {
-            match: (n) => (n as Element).type === elementName,
-        }
-    ) !== undefined;
-}
+    return (
+        Editor.above(editor, {
+            match: (n) => (n as Element).type === elementName
+        }) !== undefined
+    );
+};
 
 /**
  * Returns the current element of the cursor the user is currently located.
@@ -320,15 +339,21 @@ const isChildOf = (editor: CustomEditor, elementName: CustomElementName): boolea
  * @param editor
  */
 const currentElement = (editor: CustomEditor): CustomElement | null => {
-    if (!isCursor(editor) || !editor.selection) { return null; }
+    if (!isCursor(editor) || !editor.selection) {
+        return null;
+    }
 
-    const nodeEntry = Editor.above(editor, { match: (n) => Editor.isBlock(editor, n) })
-    if (!nodeEntry) { return null }
+    const nodeEntry = Editor.above(editor, { match: (n) => Editor.isBlock(editor, n) });
+    if (!nodeEntry) {
+        return null;
+    }
 
-    if (!isElement(nodeEntry[0])) { return null }
+    if (!isElement(nodeEntry[0])) {
+        return null;
+    }
 
     return nodeEntry[0] as CustomElement;
-}
+};
 
 /**
  * Returns the path to the current element, meaning the next element not being a leaf.
@@ -337,12 +362,13 @@ const currentElement = (editor: CustomEditor): CustomElement | null => {
  * @param editor
  */
 const currentElementPath = (editor: CustomEditor): number[] | null => {
-    if (!isCursor(editor) || !editor.selection) { return null; }
+    if (!isCursor(editor) || !editor.selection) {
+        return null;
+    }
 
     // This is based on the assumption that the users cursor is always in some leaf node
     return editor.selection.anchor.path.slice(0, -1);
-}
-
+};
 
 /**
  * Returns the type name of the node the user is currently located in.
@@ -351,13 +377,17 @@ const currentElementPath = (editor: CustomEditor): number[] | null => {
  * @param editor
  */
 const currentElementType = (editor: CustomEditor): CustomElementName | null => {
-    if (!isCursor(editor) || !editor.selection) { return null; }
+    if (!isCursor(editor) || !editor.selection) {
+        return null;
+    }
 
     const element = currentElement(editor);
-    if (!element) { return null }
+    if (!element) {
+        return null;
+    }
 
     return element.type;
-}
+};
 
 /**
  * Returns the parent element of the current cursors position in the editor.
@@ -368,18 +398,26 @@ const currentElementType = (editor: CustomEditor): CustomElementName | null => {
  * @param editor
  */
 const parentElement = (editor: CustomEditor): CustomElement | null => {
-    if (!isCursor(editor) || !editor.selection) { return null; }
+    if (!isCursor(editor) || !editor.selection) {
+        return null;
+    }
 
-    const currentPath = currentElementPath(editor)
-    if (!currentPath) { return null; }
+    const currentPath = currentElementPath(editor);
+    if (!currentPath) {
+        return null;
+    }
 
-    const parentEntry = Editor.parent(editor, currentPath)
-    if (!parentEntry) { return null; }
+    const parentEntry = Editor.parent(editor, currentPath);
+    if (!parentEntry) {
+        return null;
+    }
 
-    if (!isElement(parentEntry[0])) { return null }
+    if (!isElement(parentEntry[0])) {
+        return null;
+    }
 
     return parentEntry[0] as CustomElement;
-}
+};
 
 /**
  * Returns the type of the parent of the current cursors position in the editor.
@@ -388,13 +426,17 @@ const parentElement = (editor: CustomEditor): CustomElement | null => {
  * @param editor
  */
 const parentElementType = (editor: CustomEditor): CustomElementName | null => {
-    if (!isCursor(editor)) { return null; }
+    if (!isCursor(editor)) {
+        return null;
+    }
 
     const element = parentElement(editor);
-    if (!element) { return null; }
+    if (!element) {
+        return null;
+    }
 
     return element.type;
-}
+};
 
 /**
  * Returns the leaf at the current editors cursor.
@@ -403,13 +445,17 @@ const parentElementType = (editor: CustomEditor): CustomElementName | null => {
  * @param editor
  */
 const currentLeaf = (editor: CustomEditor): CustomText | null => {
-    if (!isCursor(editor) || !editor.selection) { return null; }
+    if (!isCursor(editor) || !editor.selection) {
+        return null;
+    }
 
-    const nodeEntry = Editor.node(editor, editor.selection.anchor)
-    if (!nodeEntry || !isLeaf(nodeEntry[0])) { return null; }
+    const nodeEntry = Editor.node(editor, editor.selection.anchor);
+    if (!nodeEntry || !isLeaf(nodeEntry[0])) {
+        return null;
+    }
 
     return nodeEntry[0] as CustomText;
-}
+};
 
 /**
  * Returns whether the specified node is an element.
@@ -418,11 +464,13 @@ const currentLeaf = (editor: CustomEditor): CustomText | null => {
  */
 const isElement = (node: Node): boolean => {
     // assuming that if a type is available, it is an element
-    const element = node as CustomElement
-    if (element && element["type"]) { return true }
+    const element = node as CustomElement;
+    if (element && element['type']) {
+        return true;
+    }
 
     return false;
-}
+};
 
 /**
  * Returns whether the specified node is a leaf node having only text.
@@ -431,11 +479,13 @@ const isElement = (node: Node): boolean => {
  */
 const isLeaf = (node: Node): boolean => {
     // assuming that if a text is available, it is an leaf
-    const leaf = node as CustomText
-    if (leaf && leaf["text"]) { return true }
+    const leaf = node as CustomText;
+    if (leaf && leaf['text']) {
+        return true;
+    }
 
     return false;
-}
+};
 
 /**
  * Returns whether the current selection in the editor is at the root node,
@@ -447,8 +497,8 @@ const isAtRoot = (editor: CustomEditor): boolean => {
     const pos = editor.selection?.anchor || editor.selection?.focus;
     if (!pos) return false;
 
-    return pos.path.length <= 2
-}
+    return pos.path.length <= 2;
+};
 
 /**
  * Returns whether the current node is the root node.
@@ -456,14 +506,16 @@ const isAtRoot = (editor: CustomEditor): boolean => {
  * @param node
  */
 const isRoot = (node: Node): boolean => {
-    const leaf = node as CustomText
-    const element = node as CustomElement
+    const leaf = node as CustomText;
+    const element = node as CustomElement;
 
     // assuming that if no text and type is available, it is the root node
-    if (!leaf["text"] && !element['type']) { return true }
+    if (!leaf['text'] && !element['type']) {
+        return true;
+    }
 
     return false;
-}
+};
 
 /**
  * Returns whether the current text node the users cursors is located in is empty or not.
@@ -471,13 +523,17 @@ const isRoot = (node: Node): boolean => {
  * @param editor
  */
 const isEmpty = (editor: CustomEditor): boolean => {
-  if (isSelection(editor) || !editor.selection) { return false; }
+    if (isSelection(editor) || !editor.selection) {
+        return false;
+    }
 
-  const leaf = currentLeaf(editor);
-  if (!leaf) { return true; }
+    const leaf = currentLeaf(editor);
+    if (!leaf) {
+        return true;
+    }
 
-  return leaf.text === '';
-}
+    return leaf.text === '';
+};
 
 /**
  * Creates a new paragraph at root level in the current cursors block.
@@ -487,15 +543,17 @@ const isEmpty = (editor: CustomEditor): boolean => {
  * @param editor
  */
 const createRootParagraph = (editor: CustomEditor): void => {
-    if (!editor.selection) { return; }
+    if (!editor.selection) {
+        return;
+    }
 
-    createNewNodeOfCurrentType(editor)
+    createNewNodeOfCurrentType(editor);
 
     // set the type to paragraph
     changeCurrentNodeType(editor, 'paragraph');
 
     liftToRoot(editor);
-}
+};
 
 /**
  * Creates a newline at the cursor position of the editor.
@@ -503,8 +561,8 @@ const createRootParagraph = (editor: CustomEditor): void => {
  * @param editor
  */
 const createNewline = (editor: CustomEditor): void => {
-    Transforms.insertText(editor, '\n')
-}
+    Transforms.insertText(editor, '\n');
+};
 
 /**
  * Moves the node at the current editors selection to root level.
@@ -513,9 +571,9 @@ const createNewline = (editor: CustomEditor): void => {
  */
 const liftToRoot = (editor: CustomEditor): void => {
     while (!SlateUtils.isAtRoot(editor)) {
-        Transforms.liftNodes(editor)
+        Transforms.liftNodes(editor);
     }
-}
+};
 
 /**
  * Sets the formatting of the leaf node at the specified range.
@@ -525,16 +583,21 @@ const liftToRoot = (editor: CustomEditor): void => {
  * @param formatOptions
  * @param range
  */
-const setLeafFormat = (editor: CustomEditor, formatOptions: { bold?: boolean, italic?: boolean }, range?: { anchor: Point, focus: Point }) => {
-    if (!editor.selection) { return }
+const setLeafFormat = (
+    editor: CustomEditor,
+    formatOptions: { bold?: boolean; italic?: boolean },
+    range?: { anchor: Point; focus: Point }
+) => {
+    if (!editor.selection) {
+        return;
+    }
 
     Transforms.setNodes(editor, formatOptions, {
         at: range ? range : editor.selection,
         match: (n) => Text.isText(n),
         split: true
-    })
-}
-
+    });
+};
 
 export const SlateUtils = {
     changeCurrentNodeType: changeCurrentNodeType,
@@ -571,4 +634,4 @@ export const SlateUtils = {
     createNewline: createNewline,
     liftToRoot: liftToRoot,
     setLeafFormat: setLeafFormat
-}
+};

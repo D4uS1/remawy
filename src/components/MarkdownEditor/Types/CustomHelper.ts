@@ -1,5 +1,5 @@
-import {CustomEditor} from "./CustomEditor";
-import {KeyboardEvent} from 'react';
+import { CustomEditor } from './CustomEditor';
+import { KeyboardEvent } from 'react';
 
 /**
  * Defines the toggle options that can be passed to the toggle function.
@@ -29,7 +29,7 @@ export interface CustomHelper {
 
     // Toggles the activation of the element this helper belongs to.
     // Activating the element means that it is shown in the editor.
-    toggle: CustomHelperToggleFunc
+    toggle: CustomHelperToggleFunc;
 
     // Called if the user presses tab inside the component to overwrite the default behavior
     // of the editor on pressing tab.

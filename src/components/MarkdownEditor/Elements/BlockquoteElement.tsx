@@ -1,10 +1,10 @@
-import React from 'react'
-import {RenderElementProps} from "slate-react";
+import React from 'react';
+import { RenderElementProps } from 'slate-react';
 
 /**
  * Props for the CodeElement component.
  */
-interface BlockquoteElementProps extends RenderElementProps { }
+type BlockquoteElementProps = RenderElementProps;
 
 /**
  * A Custom element for Slate for rendering a cite block.
@@ -13,9 +13,5 @@ interface BlockquoteElementProps extends RenderElementProps { }
  * @constructor
  */
 export const BlockquoteElement = (props: BlockquoteElementProps) => {
-    return (
-        <blockquote {...props.attributes}>
-          {props.children}
-        </blockquote>
-    )
-}
+    return <blockquote {...props.attributes}>{props.children}</blockquote>;
+};

@@ -1,2 +1,2 @@
-export { MarkdownEditor } from "./MarkdownEditor/MarkdownEditor";
-export { MarkdownView } from "./MarkdownView/MarkdownView";
+export { MarkdownEditor } from './MarkdownEditor/MarkdownEditor';
+export { MarkdownView } from './MarkdownView/MarkdownView';

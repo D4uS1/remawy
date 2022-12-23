@@ -1,10 +1,10 @@
-import React from 'react'
-import {RenderElementProps} from "slate-react";
+import React from 'react';
+import { RenderElementProps } from 'slate-react';
 
 /**
  * Props for the OrderedListElement component.
  */
-interface OrderedListElementProps extends RenderElementProps { }
+type OrderedListElementProps = RenderElementProps;
 
 /**
  * A Custom element for Slate for rendering an ordered list.
@@ -13,7 +13,5 @@ interface OrderedListElementProps extends RenderElementProps { }
  * @constructor
  */
 export const OrderedListElement = (props: OrderedListElementProps) => {
-    return (
-        <ol {...props.attributes}>{props.children}</ol>
-    )
-}
+    return <ol {...props.attributes}>{props.children}</ol>;
+};

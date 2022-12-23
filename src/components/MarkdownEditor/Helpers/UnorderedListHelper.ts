@@ -1,7 +1,6 @@
-import {CustomHelper} from "../Types/CustomHelper";
-import {CustomEditor} from "../Types/CustomEditor";
-import {Editor, Element, Transforms} from "slate";
-import {HelperUtils} from "../Utils/HelperUtils";
+import { CustomHelper } from '../Types/CustomHelper';
+import { CustomEditor } from '../Types/CustomEditor';
+import { HelperUtils } from '../Utils/HelperUtils';
 
 /**
  * Returns whether the UnorderedListElement is currently active in the specified editor.
@@ -10,7 +9,7 @@ import {HelperUtils} from "../Utils/HelperUtils";
  */
 const active = (editor: CustomEditor): boolean => {
     return HelperUtils.defaultIsActive(editor, 'unordered-list');
-}
+};
 
 /**
  * Toggles the rendering of the UnorderedListElement in the specified editor.
@@ -19,9 +18,9 @@ const active = (editor: CustomEditor): boolean => {
  */
 const toggle = (editor: CustomEditor) => {
     HelperUtils.defaultToggle(editor, 'unordered-list');
-}
+};
 
 export const UnorderedListHelper: CustomHelper = {
     active: active,
     toggle: toggle
-}
+};

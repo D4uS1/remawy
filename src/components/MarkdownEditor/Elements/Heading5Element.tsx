@@ -1,10 +1,10 @@
-import React from 'react'
-import {RenderElementProps} from "slate-react";
+import React from 'react';
+import { RenderElementProps } from 'slate-react';
 
 /**
  * Props for the Heading1Element component.
  */
-interface Heading5ElementProps extends RenderElementProps { }
+type Heading5ElementProps = RenderElementProps;
 
 /**
  * A Custom element for Slate for rendering a heading of size 5.
@@ -13,7 +13,5 @@ interface Heading5ElementProps extends RenderElementProps { }
  * @constructor
  */
 export const Heading5Element = (props: Heading5ElementProps) => {
-    return (
-        <h5 {...props.attributes}>{props.children}</h5>
-    )
-}
+    return <h5 {...props.attributes}>{props.children}</h5>;
+};

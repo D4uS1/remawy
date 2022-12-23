@@ -1,4 +1,4 @@
 /**
  * Defines some text that can be used in our editor.
  */
-export type CustomText = { text: string, bold?: boolean, italic?: boolean }
+export type CustomText = { text: string; bold?: boolean; italic?: boolean };

@@ -1,26 +1,26 @@
-import React, {useCallback, useState, KeyboardEvent} from 'react'
-import {createEditor, Descendant} from 'slate'
-import {Slate, Editable, withReact, RenderElementProps} from 'slate-react'
-import {CodeElement} from "./Elements/CodeElement";
-import {ParagraphElement} from "./Elements/ParagraphElement";
-import {CustomElement, CustomElementName} from "./Types/CustomElement";
-import {CustomText} from "./Types/CustomText";
-import {CustomEditor} from "./Types/CustomEditor";
-import {BlockquoteElement} from "./Elements/BlockquoteElement";
-import {Heading1Element} from "./Elements/Heading1Element";
-import {Heading2Element} from "./Elements/Heading2Element";
-import {Heading3Element} from "./Elements/Heading3Element";
-import {Heading4Element} from "./Elements/Heading4Element";
-import {Heading5Element} from "./Elements/Heading5Element";
-import {Heading6Element} from "./Elements/Heading6Element";
-import {OrderedListElement} from "./Elements/OrderedListElement";
-import {UnorderedListElement} from "./Elements/UnorderedListElement";
-import {ListItemElement} from "./Elements/ListItemElement";
-import {SlateUtils} from "./Utils/SlateUtils";
-import {CustomLeafProps, CustomLeaf} from "./Leafs/CustomLeaf";
-import {CustomLeafHelper} from "./Helpers/CustomLeafHelper";
-import {Toolbar} from "./Toolbar/Toolbar";
-import {Helpers} from "./Helpers/Helpers";
+import React, { useCallback, useState, KeyboardEvent } from 'react';
+import { createEditor, Descendant } from 'slate';
+import { Slate, Editable, withReact, RenderElementProps } from 'slate-react';
+import { CodeElement } from './Elements/CodeElement';
+import { ParagraphElement } from './Elements/ParagraphElement';
+import { CustomElement, CustomElementName } from './Types/CustomElement';
+import { CustomText } from './Types/CustomText';
+import { CustomEditor } from './Types/CustomEditor';
+import { BlockquoteElement } from './Elements/BlockquoteElement';
+import { Heading1Element } from './Elements/Heading1Element';
+import { Heading2Element } from './Elements/Heading2Element';
+import { Heading3Element } from './Elements/Heading3Element';
+import { Heading4Element } from './Elements/Heading4Element';
+import { Heading5Element } from './Elements/Heading5Element';
+import { Heading6Element } from './Elements/Heading6Element';
+import { OrderedListElement } from './Elements/OrderedListElement';
+import { UnorderedListElement } from './Elements/UnorderedListElement';
+import { ListItemElement } from './Elements/ListItemElement';
+import { SlateUtils } from './Utils/SlateUtils';
+import { CustomLeafProps, CustomLeaf } from './Leafs/CustomLeaf';
+import { CustomLeafHelper } from './Helpers/CustomLeafHelper';
+import { Toolbar } from './Toolbar/Toolbar';
+import { Helpers } from './Helpers/Helpers';
 import styles from './MarkdownEditor.module.css';
 
 /**
@@ -28,9 +28,9 @@ import styles from './MarkdownEditor.module.css';
  */
 declare module 'slate' {
     interface CustomTypes {
-        Editor: CustomEditor
-        Element: CustomElement
-        Text: CustomText
+        Editor: CustomEditor;
+        Element: CustomElement;
+        Text: CustomText;
     }
 }
 
@@ -66,7 +66,7 @@ export interface MarkdownEditorProps {
  * @constructor
  */
 export const MarkdownEditor = (props: MarkdownEditorProps) => {
-    const [editor] = useState(() => withReact(createEditor()))
+    const [editor] = useState(() => withReact(createEditor()));
 
     /**
      * Returns the name of the custom element behind a markdown shortcut.
@@ -74,15 +74,42 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
      */
     const typeByShortcut = useCallback((shortcut: string): CustomElementName | null => {
         switch (shortcut) {
-            case '#': { return 'heading-1' }
-            case '##': { return 'heading-2' }
-            case '###': { return 'heading-3' }
-            case '####': { return 'heading-4' }
-            case '#####': { return 'heading-5' }
-            case '######': { return 'heading-6' }
-            case '>': { return 'blockquote' }
-            case '```': { return 'code' }
-            case '*': { return 'list-item' }
+            case '#': {
+                return 'heading-1';
+            }
+
+            case '##': {
+                return 'heading-2';
+            }
+
+            case '###': {
+                return 'heading-3';
+            }
+
+            case '####': {
+                return 'heading-4';
+            }
+
+            case '#####': {
+                return 'heading-5';
+            }
+
+            case '######': {
+                return 'heading-6';
+            }
+
+            case '>': {
+                return 'blockquote';
+            }
+
+            case '```': {
+                return 'code';
+            }
+
+            case '*': {
+                return 'list-item';
+            }
+
             default: {
                 // for ordered lists: 1. 2. ...
                 if (/^\d+\.$/.test(shortcut)) {
@@ -132,7 +159,7 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
      * Usually this is not needed in case of markdown, but it is added for completition here.
      */
     const renderLeaf = useCallback((props: CustomLeafProps) => {
-        return <CustomLeaf {...props} />
+        return <CustomLeaf {...props} />;
     }, []);
 
     /**
@@ -156,15 +183,19 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
             case ' ':
             case 'Dead': {
                 // We want to see if the text since block start is a markdown shortcut
-                const shortcutText = SlateUtils.textSinceBlockStart(editor)
-                if (!shortcutText) { break; }
+                const shortcutText = SlateUtils.textSinceBlockStart(editor);
+                if (!shortcutText) {
+                    break;
+                }
 
                 // If the typed in characters define a shortcut, get it
                 const shortcutType = typeByShortcut(shortcutText);
-                if (!shortcutType) { break; }
+                if (!shortcutType) {
+                    break;
+                }
 
                 // Render the corresponding markdown element
-                Helpers[shortcutType].toggle(editor, { actor: "shortcut", actorShortcut: shortcutText })
+                Helpers[shortcutType].toggle(editor, { actor: 'shortcut', actorShortcut: shortcutText });
 
                 // remove the shortcut text
                 SlateUtils.deleteFromLeft(editor, shortcutText.length);
@@ -178,10 +209,14 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
             // Some components like list actions react on a tab press.
             case 'Tab': {
                 const currentBlockType = SlateUtils.currentElementType(editor);
-                if (!currentBlockType) { break; }
+                if (!currentBlockType) {
+                    break;
+                }
 
-                const onTabFunc = Helpers[currentBlockType].onTab
-                if (!onTabFunc) { break; }
+                const onTabFunc = Helpers[currentBlockType].onTab;
+                if (!onTabFunc) {
+                    break;
+                }
 
                 onTabFunc(editor, event);
 
@@ -189,15 +224,20 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
                 // decide whether the slate default action will be processed
                 break;
             }
+
             // Normally pressing enter should create a new paragraph, but for some cases this should not be the case.
             // If some onEnter callback for the current block type exists, this will be handled instead of the default case
             case 'Enter': {
                 const currentBlockType = SlateUtils.currentElementType(editor);
-                if (!currentBlockType) { break; }
+                if (!currentBlockType) {
+                    break;
+                }
 
                 // onEnter exists on current type => call onEnter
-                const onEnterFunc = Helpers[currentBlockType].onEnter
-                if (!onEnterFunc) { break; }
+                const onEnterFunc = Helpers[currentBlockType].onEnter;
+                if (!onEnterFunc) {
+                    break;
+                }
 
                 onEnterFunc(editor, event);
 
@@ -206,7 +246,7 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
                 break;
             }
         }
-    }
+    };
 
     /**
      * Called if the value of the slate component changes.
@@ -216,24 +256,25 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
      * @param value
      */
     const onSlateChange = (value: Descendant[]) => {
-        const isAstChange = editor.operations.some(
-            op => 'set_selection' !== op.type
-        )
+        const isAstChange = editor.operations.some((op) => 'set_selection' !== op.type);
 
         if (isAstChange) {
             // Save the value to Local Storage.
-            const content = JSON.stringify(value)
-            console.log('Change', content)
+            const content = JSON.stringify(value);
+            console.log('Change', content);
         }
-    }
+    };
 
     return (
-        <Slate editor={editor}
-               value={[{
+        <Slate
+            editor={editor}
+            value={[
+                {
                     type: 'paragraph',
-                    children: [{ text: 'A line of text in a paragraph.' }],
-                }]}
-               onChange={onSlateChange}
+                    children: [{ text: 'A line of text in a paragraph.' }]
+                }
+            ]}
+            onChange={onSlateChange}
         >
             <div className={`${styles.container} ${props.className || ''}`}>
                 <Toolbar className={props.toolbarClassName} buttonClassName={props.toolbarButtonClassName} />
@@ -247,5 +288,4 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
             </div>
         </Slate>
     );
-
 };

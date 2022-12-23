@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 /**
  * Props for the Editor component.
@@ -15,5 +15,5 @@ export interface MarkdownViewProps {
  * @constructor
  */
 export const MarkdownView = (props: MarkdownViewProps) => {
-    return <div>{ props.markdown }</div>;
+    return <div>{props.markdown}</div>;
 };

@@ -1,10 +1,10 @@
-import React from 'react'
-import {RenderElementProps} from "slate-react";
+import React from 'react';
+import { RenderElementProps } from 'slate-react';
 
 /**
  * Props for the UnorderedListElement component.
  */
-interface ListItemElementProps extends RenderElementProps { }
+type ListItemElementProps = RenderElementProps;
 
 /**
  * A Custom element for Slate for rendering a list item in an unordered or ordered list.
@@ -13,7 +13,5 @@ interface ListItemElementProps extends RenderElementProps { }
  * @constructor
  */
 export const ListItemElement = (props: ListItemElementProps) => {
-    return (
-        <li {...props.attributes}>{props.children}</li>
-    )
-}
+    return <li {...props.attributes}>{props.children}</li>;
+};

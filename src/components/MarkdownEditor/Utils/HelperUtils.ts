@@ -1,8 +1,8 @@
-import {CustomElementName} from "../Types/CustomElement";
-import {Editor, Element} from "slate";
-import {CustomEditor} from "../Types/CustomEditor";
-import {SlateUtils} from "./SlateUtils";
-import {KeyboardEvent} from 'react';
+import { CustomElementName } from '../Types/CustomElement';
+import { Editor, Element } from 'slate';
+import { CustomEditor } from '../Types/CustomEditor';
+import { SlateUtils } from './SlateUtils';
+import { KeyboardEvent } from 'react';
 
 /**
  * Can be used by helpers to check whether the element of the specified elementType is
@@ -13,11 +13,11 @@ import {KeyboardEvent} from 'react';
  */
 const defaultIsActive = (editor: CustomEditor, elementType: CustomElementName): boolean => {
     const [match] = Editor.nodes(editor, {
-        match: n => (n as Element).type === elementType,
-    })
+        match: (n) => (n as Element).type === elementType
+    });
 
     return !!match;
-}
+};
 
 /**
  * Can be used by helpers to toggle the element at the editors current cursor between the
@@ -30,11 +30,11 @@ const defaultToggle = (editor: CustomEditor, elementType: CustomElementName): vo
     const isActive = defaultIsActive(editor, elementType);
 
     if (isActive) {
-        SlateUtils.changeCurrentNodeType(editor, 'paragraph')
+        SlateUtils.changeCurrentNodeType(editor, 'paragraph');
     } else {
         SlateUtils.changeCurrentNodeType(editor, elementType);
     }
-}
+};
 
 /**
  * Can be used by helpers to toggle the element at the editors current cursor between the
@@ -57,7 +57,7 @@ const toggleAtRoot = (editor: CustomEditor, elementType: CustomElementName): voi
 
     // Active should be only in root, hence we can deactivate it by setting only to paragraph
     SlateUtils.changeCurrentNodeType(editor, 'paragraph');
-}
+};
 
 /**
  * Can be used by helpers to toggle the element at the editors current cursor between the
@@ -69,10 +69,10 @@ const toggleAtRoot = (editor: CustomEditor, elementType: CustomElementName): voi
  */
 const toggleWithListAllowed = (editor: CustomEditor, elementType: CustomElementName) => {
     const isActive = defaultIsActive(editor, elementType);
-    const isInList = SlateUtils.isChildOf(editor, 'list-item')
+    const isInList = SlateUtils.isChildOf(editor, 'list-item');
 
     if (isActive && isInList) {
-        return SlateUtils.unwrapLeaf(editor)
+        return SlateUtils.unwrapLeaf(editor);
     } else if (isActive && !isInList) {
         return SlateUtils.changeCurrentNodeType(editor, 'paragraph');
     }
@@ -82,7 +82,7 @@ const toggleWithListAllowed = (editor: CustomEditor, elementType: CustomElementN
     if (!isInList) return;
 
     SlateUtils.wrapNode(editor, 'list-item');
-}
+};
 
 /**
  * Can be used by helpers in onEnter callbacks to create a newline in the current block if the
@@ -94,13 +94,13 @@ const toggleWithListAllowed = (editor: CustomEditor, elementType: CustomElementN
  */
 const onEnterWithShiftLinebreak = (editor: CustomEditor, event: KeyboardEvent) => {
     if (event.shiftKey) {
-        SlateUtils.createNewline(editor)
+        SlateUtils.createNewline(editor);
     } else {
-        SlateUtils.createRootParagraph(editor)
+        SlateUtils.createRootParagraph(editor);
     }
 
     event.preventDefault();
-}
+};
 
 /**
  * Can be used by helpers in onEnter callbacks for elements that are allowed to be in lists.
@@ -112,7 +112,7 @@ const onEnterWithShiftLinebreak = (editor: CustomEditor, event: KeyboardEvent) =
  * @param event
  */
 const onEnterWithListAndNewlineAllowed = (editor: CustomEditor, event: KeyboardEvent) => {
-    const isInList = SlateUtils.isChildOf(editor, 'list-item')
+    const isInList = SlateUtils.isChildOf(editor, 'list-item');
 
     // If the item is not in a list, do the default behavior
     // If shiftKey is pressed we just want to have a newline, that is also handled in the default function
@@ -130,7 +130,7 @@ const onEnterWithListAndNewlineAllowed = (editor: CustomEditor, event: KeyboardE
     }
 
     onEnterWithShiftLinebreak(editor, event);
-}
+};
 
 export const HelperUtils = {
     defaultIsActive: defaultIsActive,
@@ -139,4 +139,4 @@ export const HelperUtils = {
     toggleWithListAllowed: toggleWithListAllowed,
     onEnterWithShiftLinebreak: onEnterWithShiftLinebreak,
     onEnterWithListAndNewlineAllowed: onEnterWithListAndNewlineAllowed
-}
+};

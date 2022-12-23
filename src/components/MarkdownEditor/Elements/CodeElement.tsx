@@ -1,10 +1,10 @@
-import React from 'react'
-import {RenderElementProps} from "slate-react";
+import React from 'react';
+import { RenderElementProps } from 'slate-react';
 
 /**
  * Props for the CodeElement component.
  */
-interface CodeElementProps extends RenderElementProps { }
+type CodeElementProps = RenderElementProps;
 
 /**
  * A Custom element for Slate for rendering a code block.
@@ -15,7 +15,7 @@ interface CodeElementProps extends RenderElementProps { }
 export const CodeElement = (props: CodeElementProps) => {
     return (
         <pre {...props.attributes}>
-          <code>{props.children}</code>
+            <code>{props.children}</code>
         </pre>
-    )
-}
+    );
+};

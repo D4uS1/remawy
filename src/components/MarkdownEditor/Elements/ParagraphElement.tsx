@@ -1,10 +1,10 @@
-import React from 'react'
-import {RenderElementProps} from "slate-react";
+import React from 'react';
+import { RenderElementProps } from 'slate-react';
 
 /**
  * Props for the ParagraphElement component.
  */
-interface ParagraphElementProps extends RenderElementProps { }
+type ParagraphElementProps = RenderElementProps;
 
 /**
  * A Custom element for Slate for rendering a paragraph element.
@@ -13,7 +13,5 @@ interface ParagraphElementProps extends RenderElementProps { }
  * @constructor
  */
 export const ParagraphElement = (props: ParagraphElementProps) => {
-    return (
-        <p {...props.attributes}>{props.children}</p>
-    )
-}
+    return <p {...props.attributes}>{props.children}</p>;
+};

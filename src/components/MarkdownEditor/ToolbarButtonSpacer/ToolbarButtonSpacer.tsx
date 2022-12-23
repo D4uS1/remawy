@@ -11,5 +11,5 @@ export const ToolbarButtonSpacer = () => {
         <div className={styles.container}>
             <div className={styles.spacer}></div>
         </div>
-    )
-}
+    );
+};

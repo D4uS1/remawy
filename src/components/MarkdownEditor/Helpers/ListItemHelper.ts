@@ -1,9 +1,8 @@
-import {CustomHelper, CustomHelperToggleFunc, ToggleOptions} from "../Types/CustomHelper";
-import {CustomEditor} from "../Types/CustomEditor";
-import {Editor, Element, Transforms} from "slate";
-import {SlateUtils} from "../Utils/SlateUtils";
-import {KeyboardEvent} from 'react';
-import {HelperUtils} from "../Utils/HelperUtils";
+import { CustomHelper, CustomHelperToggleFunc, ToggleOptions } from '../Types/CustomHelper';
+import { CustomEditor } from '../Types/CustomEditor';
+import { SlateUtils } from '../Utils/SlateUtils';
+import { KeyboardEvent } from 'react';
+import { HelperUtils } from '../Utils/HelperUtils';
 
 /**
  * Returns whether the ListItemElement is currently active in the specified editor.
@@ -12,7 +11,7 @@ import {HelperUtils} from "../Utils/HelperUtils";
  */
 const active = (editor: CustomEditor): boolean => {
     return HelperUtils.defaultIsActive(editor, 'list-item');
-}
+};
 
 /**
  * Deactivates the list item at the cursor position of the editor, by setting it to paragraph
@@ -24,11 +23,11 @@ const deactivateListItem = (editor: CustomEditor) => {
     // Remove lists and indented lists until we are in the "root"
     do {
         SlateUtils.unwrapNode(editor);
-    } while (['ordered-list', 'unordered-list'].includes(SlateUtils.parentElementType(editor) || ''))
+    } while (['ordered-list', 'unordered-list'].includes(SlateUtils.parentElementType(editor) || ''));
 
     // Change the list-item element to paragraph
-    SlateUtils.changeCurrentNodeType(editor, 'paragraph')
-}
+    SlateUtils.changeCurrentNodeType(editor, 'paragraph');
+};
 
 /**
  * Toggles the rendering of the ListItemElement in the specified editor.
@@ -38,10 +37,11 @@ const deactivateListItem = (editor: CustomEditor) => {
  * @param list
  * @param options
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const toggleInList = (editor: CustomEditor, list: 'ordered-list' | 'unordered-list', options?: ToggleOptions) => {
     // currently we are in a list item, hence we need to deactivate it.
     if (active(editor)) {
-       return deactivateListItem(editor);
+        return deactivateListItem(editor);
     }
 
     if (!SlateUtils.isChildOf(editor, list)) {
@@ -49,7 +49,7 @@ const toggleInList = (editor: CustomEditor, list: 'ordered-list' | 'unordered-li
     }
 
     SlateUtils.changeCurrentNodeType(editor, 'list-item');
-}
+};
 
 /**
  * Toggles the rendering of the ListItemElement in the specified editor.
@@ -60,7 +60,7 @@ const toggleInList = (editor: CustomEditor, list: 'ordered-list' | 'unordered-li
  */
 const toggleOrderedListItem = (editor: CustomEditor, options?: ToggleOptions) => {
     toggleInList(editor, 'ordered-list', options);
-}
+};
 
 /**
  * Toggles the rendering of the ListItemElement in the specified editor.
@@ -71,7 +71,7 @@ const toggleOrderedListItem = (editor: CustomEditor, options?: ToggleOptions) =>
  */
 const toggleUnorderedListItem = (editor: CustomEditor, options?: ToggleOptions) => {
     toggleInList(editor, 'unordered-list', options);
-}
+};
 
 /**
  * Toggles the rendering of the ListItemElement in the specified editor.
@@ -83,11 +83,11 @@ const toggle = (editor: CustomEditor, options?: ToggleOptions) => {
     // if the list-item is not yet in a list, find the correct list to render (ordered or unordered) and
     // create a list wrapper around the item.
     if (options?.actor === 'shortcut' && options?.actorShortcut === '*') {
-        toggleUnorderedListItem(editor, options)
+        toggleUnorderedListItem(editor, options);
     } else if (options?.actor === 'shortcut' && /^\d+\.$/.test(options?.actorShortcut || '')) {
-        toggleOrderedListItem(editor, options)
+        toggleOrderedListItem(editor, options);
     }
-}
+};
 
 /**
  * Called if the user presses tab in a list-item element.
@@ -97,7 +97,6 @@ const toggle = (editor: CustomEditor, options?: ToggleOptions) => {
  * @param event
  */
 const onTab = (editor: CustomEditor, event: KeyboardEvent) => {
-
     // if shift is pressed, the list current list should be unintended
     if (event.shiftKey) {
         SlateUtils.unwrapNode(editor);
@@ -110,11 +109,13 @@ const onTab = (editor: CustomEditor, event: KeyboardEvent) => {
             SlateUtils.changeCurrentNodeType(editor, 'paragraph');
         }
 
-    // if shift is not pressed, the list should be intended
+        // if shift is not pressed, the list should be intended
     } else {
         const parentElement = SlateUtils.parentElement(editor);
         const currentElement = SlateUtils.currentElement(editor);
-        if (!currentElement || !parentElement ) { return; }
+        if (!currentElement || !parentElement) {
+            return;
+        }
 
         if (parentElement.type === 'ordered-list') {
             SlateUtils.wrapNode(editor, 'ordered-list');
@@ -125,7 +126,7 @@ const onTab = (editor: CustomEditor, event: KeyboardEvent) => {
 
     // prevent default tab handler from being processed
     event.preventDefault();
-}
+};
 
 /**
  * Overwrites the default behavior if the user presses enter in a list item.
@@ -140,17 +141,19 @@ const onTab = (editor: CustomEditor, event: KeyboardEvent) => {
 const onEnter = (editor: CustomEditor, event: KeyboardEvent) => {
     // only remove list item it enter was pressed twice
     const textSinceBlockStart = SlateUtils.textSinceBlockStart(editor);
-    if (textSinceBlockStart !== '') { return; }
+    if (textSinceBlockStart !== '') {
+        return;
+    }
 
-    deactivateListItem(editor)
+    deactivateListItem(editor);
 
     // Prevent default slate action
     event.preventDefault();
-}
+};
 
 export const ListItemHelper: CustomHelper & {
-    toggleOrderedListItem: CustomHelperToggleFunc,
-    toggleUnorderedListItem: CustomHelperToggleFunc
+    toggleOrderedListItem: CustomHelperToggleFunc;
+    toggleUnorderedListItem: CustomHelperToggleFunc;
 } = {
     active: active,
     toggle: toggle,
@@ -158,4 +161,4 @@ export const ListItemHelper: CustomHelper & {
     toggleUnorderedListItem: toggleUnorderedListItem,
     onTab: onTab,
     onEnter: onEnter
-}
+};

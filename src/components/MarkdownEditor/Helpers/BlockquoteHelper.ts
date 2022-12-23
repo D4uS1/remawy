@@ -1,8 +1,7 @@
-import {CustomHelper} from "../Types/CustomHelper";
-import {CustomEditor} from "../Types/CustomEditor";
-import {Editor, Element, Transforms} from "slate";
-import {HelperUtils} from "../Utils/HelperUtils";
-import {KeyboardEvent} from "react";
+import { CustomHelper } from '../Types/CustomHelper';
+import { CustomEditor } from '../Types/CustomEditor';
+import { HelperUtils } from '../Utils/HelperUtils';
+import { KeyboardEvent } from 'react';
 
 /**
  * Returns whether the BlockQuoteElement is currently active in the specified editor.
@@ -11,7 +10,7 @@ import {KeyboardEvent} from "react";
  */
 const active = (editor: CustomEditor): boolean => {
     return HelperUtils.defaultIsActive(editor, 'blockquote');
-}
+};
 
 /**
  * Toggles the rendering of the BlockQuoteElement in the specified editor.
@@ -20,7 +19,7 @@ const active = (editor: CustomEditor): boolean => {
  */
 const toggle = (editor: CustomEditor) => {
     HelperUtils.toggleWithListAllowed(editor, 'blockquote');
-}
+};
 
 /**
  * Overwrites the behavior of the editor on pressing enter in a blockuote element.
@@ -31,11 +30,11 @@ const toggle = (editor: CustomEditor) => {
  * @param event
  */
 const onEnter = (editor: CustomEditor, event: KeyboardEvent) => {
-    HelperUtils.onEnterWithListAndNewlineAllowed(editor, event)
-}
+    HelperUtils.onEnterWithListAndNewlineAllowed(editor, event);
+};
 
 export const BlockquoteHelper: CustomHelper = {
     active: active,
     toggle: toggle,
     onEnter: onEnter
-}
+};

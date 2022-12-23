@@ -1,7 +1,7 @@
-import React, {useMemo, MouseEvent} from 'react';
-import styles from './ToolbarButton.module.css'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faBold, faItalic, faListOl, faList, faQuoteLeft, faCode} from '@fortawesome/free-solid-svg-icons'
+import React, { useMemo, MouseEvent } from 'react';
+import styles from './ToolbarButton.module.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBold, faItalic, faListOl, faList, faQuoteLeft, faCode } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * Props for the ToolbarButton component.
@@ -32,12 +32,29 @@ interface ToolbarButtonProps {
 export const ToolbarButton = (props: ToolbarButtonProps) => {
     const icon = useMemo(() => {
         switch (props.icon) {
-            case 'bold': { return <FontAwesomeIcon icon={faBold} /> }
-            case 'italic': { return <FontAwesomeIcon icon={faItalic} /> }
-            case 'ordered-list': { return <FontAwesomeIcon icon={faListOl} /> }
-            case 'unordered-list': { return <FontAwesomeIcon icon={faList} /> }
-            case 'blockquote': { return <FontAwesomeIcon icon={faQuoteLeft} /> }
-            case 'code': { return <FontAwesomeIcon icon={faCode} /> }
+            case 'bold': {
+                return <FontAwesomeIcon icon={faBold} />;
+            }
+
+            case 'italic': {
+                return <FontAwesomeIcon icon={faItalic} />;
+            }
+
+            case 'ordered-list': {
+                return <FontAwesomeIcon icon={faListOl} />;
+            }
+
+            case 'unordered-list': {
+                return <FontAwesomeIcon icon={faList} />;
+            }
+
+            case 'blockquote': {
+                return <FontAwesomeIcon icon={faQuoteLeft} />;
+            }
+
+            case 'code': {
+                return <FontAwesomeIcon icon={faCode} />;
+            }
         }
     }, [props.icon]);
 
@@ -49,11 +66,15 @@ export const ToolbarButton = (props: ToolbarButtonProps) => {
      */
     const onMouseDown = (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
-    }
+    };
 
     return (
-        <button onMouseDown={onMouseDown} className={`${styles.button} ${props.className || ''} ${props.active ? 'active' : ''}`} onClick={props.onClick}>
-            { icon ? icon : props.text }
+        <button
+            onMouseDown={onMouseDown}
+            className={`${styles.button} ${props.className || ''} ${props.active ? 'active' : ''}`}
+            onClick={props.onClick}
+        >
+            {icon ? icon : props.text}
         </button>
-    )
-}
+    );
+};
