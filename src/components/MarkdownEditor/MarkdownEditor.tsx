@@ -3,7 +3,7 @@ import { createEditor, Descendant } from 'slate';
 import { Slate, Editable, withReact, RenderElementProps } from 'slate-react';
 import { CodeElement } from './Elements/CodeElement';
 import { ParagraphElement } from './Elements/ParagraphElement';
-import { CustomElement, CustomElementName } from './Types/CustomElement';
+import { CustomElement, CustomElementType } from './Types/CustomElement';
 import { CustomText } from './Types/CustomText';
 import { CustomEditor } from './Types/CustomEditor';
 import { BlockquoteElement } from './Elements/BlockquoteElement';
@@ -72,7 +72,7 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
      * Returns the name of the custom element behind a markdown shortcut.
      * If no shortcut can be found, null will be returned.
      */
-    const typeByShortcut = useCallback((shortcut: string): CustomElementName | null => {
+    const typeByShortcut = useCallback((shortcut: string): CustomElementType | null => {
         switch (shortcut) {
             case '#': {
                 return 'heading-1';

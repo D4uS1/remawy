@@ -1,6 +1,6 @@
 import { CustomEditor } from '../Types/CustomEditor';
 import { Editor, Node, Point, Transforms, Element, Text } from 'slate';
-import { CustomElement, CustomElementName } from '../Types/CustomElement';
+import { CustomElement, CustomElementType } from '../Types/CustomElement';
 import { CustomText } from '../Types/CustomText';
 
 /**
@@ -10,7 +10,7 @@ import { CustomText } from '../Types/CustomText';
  * @param editor
  * @param elementType
  */
-const changeCurrentNodeType = (editor: CustomEditor, elementType: CustomElementName) => {
+const changeCurrentNodeType = (editor: CustomEditor, elementType: CustomElementType) => {
     // set the type to paragraph
     Transforms.setNodes(editor, { type: elementType }, { match: (n) => Editor.isBlock(editor, n) });
 };
@@ -31,7 +31,7 @@ const createNewNodeOfCurrentType = (editor: CustomEditor) => {
  * @param editor
  * @param elementType
  */
-const wrapNode = (editor: CustomEditor, elementType: CustomElementName) => {
+const wrapNode = (editor: CustomEditor, elementType: CustomElementType) => {
     Transforms.wrapNodes(editor, { type: elementType });
 };
 
@@ -312,21 +312,21 @@ const deleteAt = (editor: CustomEditor, start: Point, numChars: number) => {
 };
 
 /**
- * Checks whether the cursor is in a node being a child of a node having the specified type elementName.
+ * Checks whether the cursor is in a node being a child of a node having the specified type elementType.
  * This checks recursively in the tree, not only one parent.
  * This only works for cursors, not for text selections. If the user selected some text, false will always be returned.
  *
  * @param editor
- * @param elementName
+ * @param elementType
  */
-const isChildOf = (editor: CustomEditor, elementName: CustomElementName): boolean => {
+const isChildOf = (editor: CustomEditor, elementType: CustomElementType): boolean => {
     if (!isCursor(editor) || !editor.selection) {
         return false;
     }
 
     return (
         Editor.above(editor, {
-            match: (n) => (n as Element).type === elementName
+            match: (n) => (n as Element).type === elementType
         }) !== undefined
     );
 };
@@ -376,7 +376,7 @@ const currentElementPath = (editor: CustomEditor): number[] | null => {
  *
  * @param editor
  */
-const currentElementType = (editor: CustomEditor): CustomElementName | null => {
+const currentElementType = (editor: CustomEditor): CustomElementType | null => {
     if (!isCursor(editor) || !editor.selection) {
         return null;
     }
@@ -425,7 +425,7 @@ const parentElement = (editor: CustomEditor): CustomElement | null => {
  *
  * @param editor
  */
-const parentElementType = (editor: CustomEditor): CustomElementName | null => {
+const parentElementType = (editor: CustomEditor): CustomElementType | null => {
     if (!isCursor(editor)) {
         return null;
     }

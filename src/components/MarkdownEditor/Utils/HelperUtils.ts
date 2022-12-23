@@ -1,4 +1,4 @@
-import { CustomElementName } from '../Types/CustomElement';
+import { CustomElementType } from '../Types/CustomElement';
 import { Editor, Element } from 'slate';
 import { CustomEditor } from '../Types/CustomEditor';
 import { SlateUtils } from './SlateUtils';
@@ -11,7 +11,7 @@ import { KeyboardEvent } from 'react';
  * @param editor
  * @param elementType
  */
-const defaultIsActive = (editor: CustomEditor, elementType: CustomElementName): boolean => {
+const defaultIsActive = (editor: CustomEditor, elementType: CustomElementType): boolean => {
     const [match] = Editor.nodes(editor, {
         match: (n) => (n as Element).type === elementType
     });
@@ -26,7 +26,7 @@ const defaultIsActive = (editor: CustomEditor, elementType: CustomElementName): 
  * @param editor
  * @param elementType
  */
-const defaultToggle = (editor: CustomEditor, elementType: CustomElementName): void => {
+const defaultToggle = (editor: CustomEditor, elementType: CustomElementType): void => {
     const isActive = defaultIsActive(editor, elementType);
 
     if (isActive) {
@@ -45,7 +45,7 @@ const defaultToggle = (editor: CustomEditor, elementType: CustomElementName): vo
  * @param editor
  * @param elementType
  */
-const toggleAtRoot = (editor: CustomEditor, elementType: CustomElementName): void => {
+const toggleAtRoot = (editor: CustomEditor, elementType: CustomElementType): void => {
     const isActive = defaultIsActive(editor, elementType);
 
     // Not active, first get to root and then set element
@@ -67,7 +67,7 @@ const toggleAtRoot = (editor: CustomEditor, elementType: CustomElementName): voi
  * @param editor
  * @param elementType
  */
-const toggleWithListAllowed = (editor: CustomEditor, elementType: CustomElementName) => {
+const toggleWithListAllowed = (editor: CustomEditor, elementType: CustomElementType) => {
     const isActive = defaultIsActive(editor, elementType);
     const isInList = SlateUtils.isChildOf(editor, 'list-item');
 

@@ -1,4 +1,4 @@
-import { CustomElementName } from '../Types/CustomElement';
+import { CustomElementType } from '../Types/CustomElement';
 import { CustomHelper } from '../Types/CustomHelper';
 import { BlockquoteHelper } from './BlockquoteHelper';
 import { CodeHelper } from './CodeHelper';
@@ -16,7 +16,7 @@ import { UnorderedListHelper } from './UnorderedListHelper';
 /**
  * Holds a map from element name to Helper that can be used to render the element.
  */
-export const Helpers: Record<CustomElementName, CustomHelper> = {
+export const Helpers: Record<CustomElementType, CustomHelper> = {
     blockquote: BlockquoteHelper,
     code: CodeHelper,
     'heading-1': Heading1Helper,

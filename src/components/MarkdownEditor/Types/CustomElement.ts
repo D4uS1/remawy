@@ -3,7 +3,7 @@ import { CustomText } from './CustomText';
 /**
  * Describes the available definable elements in our editor.
  */
-export type CustomElementName =
+export type CustomElementType =
     | 'blockquote'
     | 'code'
     | 'heading-1'
@@ -20,4 +20,4 @@ export type CustomElementName =
 /**
  * Defines one definition of an element in our editor.
  */
-export type CustomElement = { type: CustomElementName; children?: CustomText[] };
+export type CustomElement = { type: CustomElementType; children?: CustomText[] };
