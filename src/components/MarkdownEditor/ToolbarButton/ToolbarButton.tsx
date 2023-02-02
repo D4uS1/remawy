@@ -1,7 +1,7 @@
 import React, { useMemo, MouseEvent } from 'react';
 import styles from './ToolbarButton.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBold, faItalic, faListOl, faList, faQuoteLeft, faCode } from '@fortawesome/free-solid-svg-icons';
+import { FaBold, FaItalic, FaListOl, FaList, FaQuoteLeft, FaCode } from 'react-icons/fa';
 
 /**
  * Props for the ToolbarButton component.
@@ -33,27 +33,27 @@ export const ToolbarButton = (props: ToolbarButtonProps) => {
     const icon = useMemo(() => {
         switch (props.icon) {
             case 'bold': {
-                return <FontAwesomeIcon icon={faBold} />;
+                return <FaBold />;
             }
 
             case 'italic': {
-                return <FontAwesomeIcon icon={faItalic} />;
+                return <FaItalic />;
             }
 
             case 'ordered-list': {
-                return <FontAwesomeIcon icon={faListOl} />;
+                return <FaListOl />;
             }
 
             case 'unordered-list': {
-                return <FontAwesomeIcon icon={faList} />;
+                return <FaList />;
             }
 
             case 'blockquote': {
-                return <FontAwesomeIcon icon={faQuoteLeft} />;
+                return <FaQuoteLeft />;
             }
 
             case 'code': {
-                return <FontAwesomeIcon icon={faCode} />;
+                return <FaCode />;
             }
         }
     }, [props.icon]);
