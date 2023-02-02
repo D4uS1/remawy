@@ -12,7 +12,7 @@ import { CustomText } from '../Types/CustomText';
  */
 const changeCurrentNodeType = (editor: CustomEditor, elementType: CustomElementType) => {
     // set the type to paragraph
-    Transforms.setNodes(editor, { type: elementType }, { match: (n) => Editor.isBlock(editor, n) });
+    Transforms.setNodes(editor, { type: elementType }, { match: (n) => Editor.isBlock(editor, n as CustomElement) });
 };
 
 /**
@@ -88,7 +88,7 @@ const isSelection = (editor: CustomEditor): boolean => {
 const currentBlockStart = (editor: CustomEditor): Point => {
     // Get the nearest block from the selection
     const block = Editor.above(editor, {
-        match: (n) => Editor.isBlock(editor, n)
+        match: (n) => Editor.isBlock(editor, n as CustomElement)
     });
 
     // The path to the block is located in the second item of the result
@@ -106,7 +106,7 @@ const currentBlockStart = (editor: CustomEditor): Point => {
 const currentBlockEnd = (editor: CustomEditor): Point => {
     // Get the nearest block from the selection
     const block = Editor.above(editor, {
-        match: (n) => Editor.isBlock(editor, n)
+        match: (n) => Editor.isBlock(editor, n as CustomElement)
     });
 
     // The path to the block is located in the second item of the result
@@ -343,7 +343,7 @@ const currentElement = (editor: CustomEditor): CustomElement | null => {
         return null;
     }
 
-    const nodeEntry = Editor.above(editor, { match: (n) => Editor.isBlock(editor, n) });
+    const nodeEntry = Editor.above(editor, { match: (n) => Editor.isBlock(editor, n as CustomElement) });
     if (!nodeEntry) {
         return null;
     }
