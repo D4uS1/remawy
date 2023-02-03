@@ -47,7 +47,6 @@ const defaultToggle = (editor: CustomEditor, elementType: CustomElementType): vo
  */
 const toggleAtRoot = (editor: CustomEditor, elementType: CustomElementType): void => {
     const isActive = defaultIsActive(editor, elementType);
-
     // Not active, first get to root and then set element
     if (!isActive) {
         SlateUtils.liftToRoot(editor);

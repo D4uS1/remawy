@@ -1,6 +1,5 @@
 import React, { useMemo, MouseEvent } from 'react';
 import styles from './ToolbarButton.module.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FaBold, FaItalic, FaListOl, FaList, FaQuoteLeft, FaCode } from 'react-icons/fa';
 
 /**

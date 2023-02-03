@@ -3,7 +3,7 @@
 
 .container {
     display: flex;
-    lex-direction: column;
+    flex-direction: column;
     justify-content: stretch;
     align-items: flex-start;
     background-color: remawy-toolbar-background-color;
