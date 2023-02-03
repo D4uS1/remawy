@@ -10,7 +10,6 @@
   "types": "dist/types/index.d.ts",
   "scripts": {
     "build-types": "tsc",
-    "watch": "npm-watch",
     "lint": "eslint \"*/**/*.{js,ts,tsx}\" --fix"
   },
   "repository": {
@@ -33,7 +32,6 @@
     "eslint-plugin-prefer-arrow": "^1.2.3",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
-    "npm-watch": "^0.11.0",
     "prettier": "^2.8.3",
     "slate": "^0.90.0",
     "slate-react": "^0.90.0",
@@ -44,14 +42,6 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.7.1"
-  },
-  "watch": {
-    "build": {
-      "patterns": [
-        "src"
-      ],
-      "extensions": "js,jsx,ts,tsx,css"
-    }
   },
   "engines": {
     "node": ">=18 <19"
