@@ -11,8 +11,7 @@ import { CustomText } from '../Types/CustomText';
  * @param elementType
  */
 const changeCurrentNodeType = (editor: CustomEditor, elementType: CustomElementType) => {
-    // set the type to paragraph
-    Transforms.setNodes(editor, { type: elementType }, { match: (n) => Editor.isBlock(editor, n as CustomElement) });
+    Transforms.setNodes(editor, { type: elementType });
 };
 
 /**

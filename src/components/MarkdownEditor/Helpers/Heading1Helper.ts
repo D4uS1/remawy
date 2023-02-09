@@ -19,6 +19,7 @@ const active = (editor: CustomEditor): boolean => {
  * @param editor
  */
 const toggle = (editor: CustomEditor) => {
+    console.log("Toggle heading-1");
     HelperUtils.toggleAtRoot(editor, 'heading-1');
 };
 

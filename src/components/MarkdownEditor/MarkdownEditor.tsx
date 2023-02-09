@@ -125,15 +125,14 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
      * Defines all custom renderers for elements, based on its element type given by the props.
      */
     const renderElement = useCallback((props: RenderElementProps) => {
-        console.log("Komme in die render shitte rein", props)
-        console.log("type", props.element.type);
+        console.log("RenderElement: ", props.element.type);
+
         switch (props.element.type) {
             case 'blockquote':
                 return <BlockquoteElement {...props} />;
             case 'code':
                 return <CodeElement {...props} />;
             case 'heading-1':
-                console.log("Komme in die render heading rein")
                 return <Heading1Element {...props} />;
             case 'heading-2':
                 return <Heading2Element {...props} />;
@@ -152,7 +151,6 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
             case 'unordered-list':
                 return <UnorderedListElement {...props} />;
             default:
-                console.log("Komme in die render default rein")
                 return <ParagraphElement {...props} />;
         }
     }, []);
