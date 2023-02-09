@@ -23,6 +23,8 @@
   },
   "homepage": "https://github.com/D4uS1/ReMaWy#readme",
   "devDependencies": {
+    "@rails/activestorage": "^7.0.4-2",
+    "@types/rails__activestorage": "^7.0.1",
     "@types/react": "^18.0.27",
     "@typescript-eslint/eslint-plugin": "^5.50.0",
     "esbuild": "0.17.5",
@@ -32,12 +34,13 @@
     "eslint-plugin-prefer-arrow": "^1.2.3",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
+    "ez-on-rails-react": "git+https://github.com/D4uS1/ez-on-rails-react#v0.8.0",
     "prettier": "^2.8.3",
-    "slate": "^0.90.0",
-    "tslib": "^2.5.0",
-    "typescript": "^4.9.5",
     "react-icons": "^4.7.1",
-    "slate-react": "^0.90.0"
+    "slate": "^0.90.0",
+    "slate-react": "^0.90.0",
+    "tslib": "^2.5.0",
+    "typescript": "^4.9.5"
   },
   "peerDependencies": {
     "react": "^18.2.0",
