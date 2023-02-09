@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import styles from './Toolbar.module.css';
 import { ToolbarButton } from '../ToolbarButton/ToolbarButton';
 import { UnorderedListHelper } from '../Helpers/UnorderedListHelper';
@@ -26,6 +26,10 @@ interface ToolbarProps {
 
     // Optional class name that is passed to the buttons
     buttonClassName?: string;
+
+
+    // Called if the user clicks the button to upload a file. If the callback is not passed, the button will not be shown,
+    onClickButtonUpload?: () => void;
 }
 
 /**
@@ -181,6 +185,21 @@ export const Toolbar = (props: ToolbarProps) => {
                     active={activeStatus['code']}
                     className={props.buttonClassName}
                 />
+
+                {/* upload */}
+                {props.onClickButtonUpload && (
+                        <Fragment>
+                            <ToolbarButtonSpacer />
+
+                            <ToolbarButton
+                                icon={'upload'}
+                                onClick={props.onClickButtonUpload}
+                                active={false}
+                                className={props.buttonClassName}
+                            />
+                        </Fragment>
+                )}
+
             </div>
         </div>
     );

@@ -22,6 +22,8 @@ import { CustomLeafHelper } from './Helpers/CustomLeafHelper';
 import { Toolbar } from './Toolbar/Toolbar';
 import { Helpers } from './Helpers/Helpers';
 import styles from './MarkdownEditor.module.css';
+import {UploadModal} from "./UploadModal";
+import {AbstractUploader, UploaderFinishCallback} from "./Upload/Uploader/AbstractUploader";
 
 /**
  * Extend the CustomTypes in the slate module to tell slate what custom elements we have.
@@ -55,6 +57,25 @@ export interface MarkdownEditorProps {
 
     // Optional css class name that is passed to the editor container
     editorClassName?: string;
+
+    // If given, file uploads are enabled
+    uploadInfo?: {
+        // Uploader that is used for uploading files, see AbstractUploader to build your own uploader
+        uploader: AbstractUploader;
+
+        // If given, the selected file types will be validated before upload. Can be a comma seperated string of
+        // valid mime types, including *, eg. "image/*, application/csv"
+        acceptedFileTypes?: string;
+
+        // If given, this message will be shown if the user wants to upload a file with an invalid file type
+        invalidFileTypeMessage?: string;
+
+        // If given, the selected file sizes (in bytes) will be validated before upload
+        maxFileSize?: number;
+
+        // If given, this message will be shown if the user wants to upload a file that is too large
+        maxFileSizeMessage?: string;
+    }
 }
 
 /**
@@ -67,6 +88,7 @@ export interface MarkdownEditorProps {
  */
 export const MarkdownEditor = (props: MarkdownEditorProps) => {
     const [editor] = useState(() => withReact(createEditor()));
+    const [showUploadModal, setShowUploadModal] = useState<boolean>(false);
 
     /**
      * Returns the name of the custom element behind a markdown shortcut.
@@ -267,6 +289,31 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
         }
     };
 
+    /**
+     * Called if the user clicks the button to upload a file.
+     * Opens the dialog to upload the file.
+     */
+    const onClickUpload = () => {
+        setShowUploadModal(true);
+    }
+
+    /**
+     * Called if some file upload was finished.
+     * Creates an image or link tag, depending on the uploaded file type.
+     * The originalFile is the file the user selected to upload.
+     *
+     * @param fileUrl
+     * @param originalFile
+     * @param metaData
+     */
+    const onUploadFinished: UploaderFinishCallback = (fileUrl: string, originalFile: File, metaData: Record<string, string>) => {
+        if (originalFile.type.includes('image')) {
+
+        } else {
+
+        }
+    }
+
     return (
         <Slate
             editor={editor}
@@ -279,15 +326,21 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
             onChange={onSlateChange}
         >
             <div className={`${styles.container} ${props.className || ''}`}>
-                <Toolbar className={props.toolbarClassName} buttonClassName={props.toolbarButtonClassName} />
+                <Toolbar className={props.toolbarClassName}
+                         buttonClassName={props.toolbarButtonClassName}
+                         onClickButtonUpload={props.uploadInfo ? onClickUpload : undefined} />
 
                 <Editable
                     className={props.editorClassName}
                     renderElement={renderElement}
                     renderLeaf={renderLeaf}
-                    onKeyDown={onKeyDown}
-                />
+                    onKeyDown={onKeyDown} />
             </div>
+
+            { props.uploadInfo && showUploadModal && (
+                <UploadModal onUploadFinish={onUploadFinished}
+                             {...props.uploadInfo} />
+            )}
         </Slate>
     );
 };

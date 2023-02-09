@@ -68,7 +68,7 @@ export class EzOnRailsUploader extends AbstractUploader {
                     fileName: blob.filename
                 }
 
-                this.onFinish(url, metadata);
+                this.onFinish(url, file, metadata);
             }
         });
 
