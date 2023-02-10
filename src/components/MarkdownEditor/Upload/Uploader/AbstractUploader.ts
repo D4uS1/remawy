@@ -32,7 +32,6 @@ export abstract class AbstractUploader {
      */
     public abstract startUpload(file: File): Promise<void>;
 
-
     /**
      * Should be called oj upload progress.
      * The progress is expected to be a number between 0 and 1, indicating the percentage
@@ -123,5 +122,4 @@ export abstract class AbstractUploader {
     public setOnErrorViewCallback(callback: UploaderErrorCallback) {
         this.onErrorViewCallback = callback;
     }
-
 }

@@ -22,8 +22,8 @@ import { CustomLeafHelper } from './Helpers/CustomLeafHelper';
 import { Toolbar } from './Toolbar/Toolbar';
 import { Helpers } from './Helpers/Helpers';
 import styles from './MarkdownEditor.module.css';
-import {UploadModal} from "./UploadModal";
-import {AbstractUploader, UploaderFinishCallback} from "./Upload/Uploader/AbstractUploader";
+import { UploadModal } from './UploadModal';
+import { AbstractUploader, UploaderFinishCallback } from './Upload/Uploader/AbstractUploader';
 
 /**
  * Extend the CustomTypes in the slate module to tell slate what custom elements we have.
@@ -75,7 +75,7 @@ export interface MarkdownEditorProps {
 
         // If given, this message will be shown if the user wants to upload a file that is too large
         maxFileSizeMessage?: string;
-    }
+    };
 }
 
 /**
@@ -147,8 +147,6 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
      * Defines all custom renderers for elements, based on its element type given by the props.
      */
     const renderElement = useCallback((props: RenderElementProps) => {
-        console.log("RenderElement: ", props.element.type);
-
         switch (props.element.type) {
             case 'blockquote':
                 return <BlockquoteElement {...props} />;
@@ -295,7 +293,15 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
      */
     const onClickUpload = () => {
         setShowUploadModal(true);
-    }
+    };
+
+    /**
+     * Called if the upload modal should be closed.
+     * Closes the upload modal.
+     */
+    const onCloseUploadModal = () => {
+        setShowUploadModal(false);
+    };
 
     /**
      * Called if some file upload was finished.
@@ -306,13 +312,21 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
      * @param originalFile
      * @param metaData
      */
-    const onUploadFinished: UploaderFinishCallback = (fileUrl: string, originalFile: File, metaData: Record<string, string>) => {
+    const onUploadFinished: UploaderFinishCallback = (
+        fileUrl: string,
+        originalFile: File,
+        metaData: Record<string, string>
+    ) => {
         if (originalFile.type.includes('image')) {
-
+            SlateUtils.createNewNode(editor, 'image', { src: fileUrl, metaData: metaData });
         } else {
-
+            SlateUtils.createNewNode(editor, 'hyperlink', {
+                href: fileUrl,
+                metaData: metaData,
+                text: originalFile.name
+            });
         }
-    }
+    };
 
     return (
         <Slate
@@ -326,20 +340,22 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
             onChange={onSlateChange}
         >
             <div className={`${styles.container} ${props.className || ''}`}>
-                <Toolbar className={props.toolbarClassName}
-                         buttonClassName={props.toolbarButtonClassName}
-                         onClickButtonUpload={props.uploadInfo ? onClickUpload : undefined} />
+                <Toolbar
+                    className={props.toolbarClassName}
+                    buttonClassName={props.toolbarButtonClassName}
+                    onClickButtonUpload={props.uploadInfo ? onClickUpload : undefined}
+                />
 
                 <Editable
                     className={props.editorClassName}
                     renderElement={renderElement}
                     renderLeaf={renderLeaf}
-                    onKeyDown={onKeyDown} />
+                    onKeyDown={onKeyDown}
+                />
             </div>
 
-            { props.uploadInfo && showUploadModal && (
-                <UploadModal onUploadFinish={onUploadFinished}
-                             {...props.uploadInfo} />
+            {props.uploadInfo && showUploadModal && (
+                <UploadModal onUploadFinish={onUploadFinished} onClose={onCloseUploadModal} {...props.uploadInfo} />
             )}
         </Slate>
     );

@@ -1,11 +1,11 @@
-import React, {ChangeEvent, useEffect, useState} from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import {
     AbstractUploader,
     UploaderErrorCallback,
     UploaderFinishCallback,
     UploaderProgressCallback
-} from "./Upload/Uploader/AbstractUploader";
-import styles from './UploadModal.module.css'
+} from './Upload/Uploader/AbstractUploader';
+import styles from './UploadModal.module.css';
 
 /**
  * Props for the UploadModal component.
@@ -31,6 +31,9 @@ interface UploadModalProps {
 
     // If given, this message will be shown if the user wants to upload a file that is too large
     maxFileSizeMessage?: string;
+
+    // Called if the modal should be closed
+    onClose: () => void;
 }
 
 /**
@@ -41,7 +44,7 @@ interface UploadModalProps {
  */
 export const UploadModal = (props: UploadModalProps) => {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
-    const [uploadProgress, setUploadProgress] = useState<number | null>(null)
+    const [uploadProgress, setUploadProgress] = useState<number | null>(null);
 
     /**
      * Called if the current upload failes.
@@ -51,7 +54,7 @@ export const UploadModal = (props: UploadModalProps) => {
      */
     const onUploadError: UploaderErrorCallback = (error: Error) => {
         setErrorMessage(error.message);
-    }
+    };
 
     /**
      * Called on progress for the current upload.
@@ -61,7 +64,7 @@ export const UploadModal = (props: UploadModalProps) => {
      */
     const onUploadProgress: UploaderProgressCallback = (progress: number) => {
         setUploadProgress(progress);
-    }
+    };
 
     /**
      * Called if the uploader in the props changes.
@@ -71,7 +74,7 @@ export const UploadModal = (props: UploadModalProps) => {
         props.uploader.setOnProgressViewCallback(onUploadProgress);
         props.uploader.setOnErrorViewCallback(onUploadError);
         props.uploader.setOnFinishViewCallback(props.onUploadFinish);
-    }, [props.uploader])
+    }, [props.uploader]);
 
     /**
      * Called if the user selected some file.
@@ -95,7 +98,7 @@ export const UploadModal = (props: UploadModalProps) => {
         if (props.acceptedFileTypes) {
             for (const file of selectedFiles) {
                 if (!fileTypeMatches(file.type, props.acceptedFileTypes)) {
-                    return setErrorMessage(props.invalidFileTypeMessage || 'Invalid file type.')
+                    return setErrorMessage(props.invalidFileTypeMessage || 'Invalid file type.');
                 }
             }
         }
@@ -111,30 +114,26 @@ export const UploadModal = (props: UploadModalProps) => {
 
         // Start uploading each file and add it to the current files
         setUploadProgress(0);
+
         for (const selectedFile of selectedFiles) {
             props.uploader.startUpload(selectedFile).then();
         }
-    }
+    };
+
     return (
         <div className={styles.container}>
             <div className={styles.innerContainer}>
-                <input type="file" onChange={onFileSelect}/>
+                <button onClick={props.onClose}>X</button>
 
-                {
-                    errorMessage && (
-                        <span>{ errorMessage }</span>
-                    )
-                }
+                <input type="file" onChange={onFileSelect} />
 
-                {
-                    uploadProgress !== null && (
-                        <progress max={100.0} value={uploadProgress * 100} />
-                    )
-                }
+                {errorMessage && <span>{errorMessage}</span>}
+
+                {uploadProgress !== null && <progress max={100.0} value={uploadProgress * 100} />}
             </div>
         </div>
-    )
-}
+    );
+};
 
 /**
  * Returns whether the specified fileType matches any of the specified expected file types.
@@ -146,7 +145,7 @@ export const UploadModal = (props: UploadModalProps) => {
  */
 const fileTypeMatches = (fileType: string, expectedFileTypes: string): boolean => {
     // remove all whitespaces
-    expectedFileTypes = expectedFileTypes.replace(/\s/g, "");
+    expectedFileTypes = expectedFileTypes.replace(/\s/g, '');
 
     // convert to array
     const expectedFileTypesArray = expectedFileTypes.split(',');
@@ -159,5 +158,5 @@ const fileTypeMatches = (fileType: string, expectedFileTypes: string): boolean =
         } else {
             return expectedFileType === fileType;
         }
-    })
-}
+    });
+};

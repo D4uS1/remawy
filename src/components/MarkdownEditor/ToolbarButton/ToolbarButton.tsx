@@ -56,7 +56,7 @@ export const ToolbarButton = (props: ToolbarButtonProps) => {
             }
 
             case 'upload': {
-                return <FaUpload />
+                return <FaUpload />;
             }
         }
     }, [props.icon]);

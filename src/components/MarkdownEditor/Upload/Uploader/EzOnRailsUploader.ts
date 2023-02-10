@@ -1,8 +1,8 @@
-import {AbstractUploader} from "./AbstractUploader";
-import {EzOnRailsAuthInfo, RailsFileBlob} from "ez-on-rails-react";
+import { AbstractUploader } from './AbstractUploader';
+import { EzOnRailsAuthInfo } from 'ez-on-rails-react';
 import * as ActiveStorage from '@rails/activestorage';
-import {Blob as ActiveStorageBlob} from '@rails/activestorage'
-import {EzOnRailsHttpClient} from "ez-on-rails-react/dist/types/http/client/EzOnRailsHttpClient";
+import { Blob as ActiveStorageBlob } from '@rails/activestorage';
+import { EzOnRailsHttpClient } from 'ez-on-rails-react/dist/types/http/client/EzOnRailsHttpClient';
 
 /**
  * Uploader to upload images or other assets to an ez-on-rails backend.
@@ -24,14 +24,13 @@ export class EzOnRailsUploader extends AbstractUploader {
         super();
 
         if (!baseUrl.endsWith('/')) {
-            baseUrl = `${baseUrl}/`
+            baseUrl = `${baseUrl}/`;
         }
 
         this.baseUrl = baseUrl;
         this.authInfo = authInfo;
         this.apiVersion = apiVersion;
     }
-
 
     /**
      * Starts to upload the specified file to the backend.
@@ -60,13 +59,13 @@ export class EzOnRailsUploader extends AbstractUploader {
 
         upload.create((error: Error, blob: ActiveStorageBlob) => {
             if (error) {
-                this.onError(error)
+                this.onError(error);
             } else {
                 const url = `${this.baseUrl}rails/active_storage/blobs/${blob.signed_id}/${blob.filename}`;
                 const metadata = {
                     signedId: blob.signed_id,
                     fileName: blob.filename
-                }
+                };
 
                 this.onFinish(url, file, metadata);
             }
@@ -84,6 +83,4 @@ export class EzOnRailsUploader extends AbstractUploader {
     onDirectUploadProgress(event: ProgressEvent<XMLHttpRequestEventTarget>) {
         this.onProgress(event.loaded / event.total);
     }
-
-
 }

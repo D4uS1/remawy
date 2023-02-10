@@ -25,6 +25,19 @@ const createNewNodeOfCurrentType = (editor: CustomEditor) => {
 };
 
 /**
+ * Creates a new node having the specified type at the current cursors position.
+ * The props are passed to the node. This can eg. be the src attribute for the image, or the href attribute
+ * for the hyperlink.
+ *
+ * @param editor
+ * @param type
+ * @param props
+ */
+const createNewNode = (editor: CustomEditor, type: CustomElementType, props?: Record<string, unknown>) => {
+    Transforms.insertNodes(editor, [{ type: type, ...props }]);
+};
+
+/**
  * Wraps the node of the current editors position in a new node of the specified elementType.
  *
  * @param editor
@@ -600,6 +613,7 @@ const setLeafFormat = (
 
 export const SlateUtils = {
     changeCurrentNodeType: changeCurrentNodeType,
+    createNewNode: createNewNode,
     createNewNodeOfCurrentType: createNewNodeOfCurrentType,
     wrapNode: wrapNode,
     unwrapNode: unwrapNode,

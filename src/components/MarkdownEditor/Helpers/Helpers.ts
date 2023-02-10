@@ -12,6 +12,8 @@ import { ListItemHelper } from './ListItemHelper';
 import { OrderedListHelper } from './OrderedListHelper';
 import { ParagraphHelper } from './ParagraphHelper';
 import { UnorderedListHelper } from './UnorderedListHelper';
+import { HyperLinkHelper } from './HyperLinkHelper';
+import { ImageHelper } from './ImageHelper';
 
 /**
  * Holds a map from element name to Helper that can be used to render the element.
@@ -25,6 +27,8 @@ export const Helpers: Record<CustomElementType, CustomHelper> = {
     'heading-4': Heading4Helper,
     'heading-5': Heading5Helper,
     'heading-6': Heading6Helper,
+    hyperlink: HyperLinkHelper,
+    image: ImageHelper,
     'list-item': ListItemHelper,
     'ordered-list': OrderedListHelper,
     paragraph: ParagraphHelper,
