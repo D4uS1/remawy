@@ -34,7 +34,6 @@
     "eslint-plugin-prefer-arrow": "^1.2.3",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
-    "ez-on-rails-react": "git+https://github.com/D4uS1/ez-on-rails-react#v0.8.0",
     "prettier": "^2.8.3",
     "react-icons": "^4.7.1",
     "slate": "^0.90.0",

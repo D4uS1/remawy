@@ -1,4 +1,5 @@
 # React Markdown Wysiwyg Editor (ReMaWy)
+This project is currently work in progress. Please do not use it.
 
 ## Using the test-app while development
 Dont forget zu execute 

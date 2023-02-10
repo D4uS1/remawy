@@ -2,6 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {EzOnRails} from "ez-on-rails-react";
+
+EzOnRails.config.init({ apiVersion: '1.0', baseUrl: 'http://localhost:3000'})
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

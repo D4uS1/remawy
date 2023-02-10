@@ -8,7 +8,8 @@
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
     "typescript": "^4.9.5",
-    "web-vitals": "^3.1.1"
+    "web-vitals": "^3.1.1",
+    "ez-on-rails-react": "git+https://github.com/D4uS1/ez-on-rails-react#v0.8.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
