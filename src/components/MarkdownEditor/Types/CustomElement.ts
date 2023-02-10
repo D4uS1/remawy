@@ -22,4 +22,16 @@ export type CustomElementType =
 /**
  * Defines one definition of an element in our editor.
  */
-export type CustomElement = { type: CustomElementType; children?: CustomText[] };
+export type CustomElement = {
+    type: CustomElementType;
+    children?: CustomText[];
+
+    // used by image
+    src?: string;
+
+    // used by hyperlink
+    href?: string;
+
+    // used by image and hyperlink
+    metaData?: Record<string, string>;
+};

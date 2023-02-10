@@ -20,7 +20,7 @@ function App() {
     const uploader = useMemo(() => {
         if (!authInfo) return undefined;
 
-        new EzOnRails.integrations.remawy.uploader('http://localhost:3000', authInfo, '1.0')
+        return new EzOnRails.integrations.remawy.uploader('http://localhost:3000', authInfo, '1.0')
     }, [authInfo])
 
     return (

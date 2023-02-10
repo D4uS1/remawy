@@ -34,7 +34,8 @@ const createNewNodeOfCurrentType = (editor: CustomEditor) => {
  * @param props
  */
 const createNewNode = (editor: CustomEditor, type: CustomElementType, props?: Record<string, unknown>) => {
-    Transforms.insertNodes(editor, [{ type: type, ...props }]);
+    console.log('creating new node with props', props);
+    Transforms.insertNodes(editor, { type: type, children: [{ text: '' }], ...props }, { voids: true });
 };
 
 /**

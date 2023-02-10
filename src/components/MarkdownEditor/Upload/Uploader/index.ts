@@ -1,1 +1,1 @@
-export { AbstractUploader } from './AbstractUploader'
+export { AbstractUploader } from './AbstractUploader';

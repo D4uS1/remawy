@@ -4,7 +4,9 @@
  *
  * @param data
  */
-const toDataAttributes = (data: Record<string, string>): Record<string, string> => {
+const toDataAttributes = (data: Record<string, string> | undefined): Record<string, string> => {
+    if (!data) return {};
+
     const res: Record<string, string> = {};
 
     Object.keys(data).map((key) => {

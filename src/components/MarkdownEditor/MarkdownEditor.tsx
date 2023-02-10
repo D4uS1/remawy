@@ -24,6 +24,8 @@ import { Helpers } from './Helpers/Helpers';
 import styles from './MarkdownEditor.module.css';
 import { UploadModal } from './UploadModal';
 import { AbstractUploader, UploaderFinishCallback } from './Upload/Uploader/AbstractUploader';
+import { ImageElement } from './Elements/ImageElement';
+import { HyperLinkElement } from './Elements/HyperLinkElement';
 
 /**
  * Extend the CustomTypes in the slate module to tell slate what custom elements we have.
@@ -164,6 +166,10 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
                 return <Heading5Element {...props} />;
             case 'heading-6':
                 return <Heading6Element {...props} />;
+            case 'image':
+                return <ImageElement {...props} />;
+            case 'hyperlink':
+                return <HyperLinkElement {...props} />;
             case 'list-item':
                 return <ListItemElement {...props} />;
             case 'ordered-list':
