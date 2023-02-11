@@ -6,8 +6,8 @@ export type UploaderProgressCallback = (progress: number) => void;
 
 /**
  * Type for a callback indicating some finished upload.
- * The url is the url to the file. The metaData is appended to the dom, hence this info can be
- * extracted later to do some operations on the file, like its deletion.
+ * The url is the url to the file. The metaData holds information that can be useful for further operations
+ * on the asset, like its deletion. It will be hold in the node props and will be used on serialization and deserialization.
  */
 export type UploaderFinishCallback = (url: string, originalFile: File, metaData: Record<string, string>) => void;
 
@@ -50,7 +50,9 @@ export abstract class AbstractUploader {
      * Should be called if the upload was finished.
      * The url must be the url to the uploaded file.
      * The originalFile is the file the user selected to upload.
-     * The provided metadata are appended to the dom element of the image / link.
+     * The provided metadata are information about the file that are needed to do further
+     * operations on it, like its deletion. This information is kept in the node settings
+     * and will be serialized and deserialized.
      *
      * @param url
      * @param originalFile
