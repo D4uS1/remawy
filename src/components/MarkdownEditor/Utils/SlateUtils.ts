@@ -26,16 +26,42 @@ const createNewNodeOfCurrentType = (editor: CustomEditor) => {
 
 /**
  * Creates a new node having the specified type at the current cursors position.
+ *
+ * The options hold the following values:
+ * The node automaticly gets a children having the specified childText. If this is not set, an empty string will be used.
+ * Note that this is necessary for slate because if the node does not have any leaf as children, any selection on
+ * the node will fail.
  * The props are passed to the node. This can eg. be the src attribute for the image, or the href attribute
  * for the hyperlink.
+ * If voids is set to true, not slate renders its children, but the element does. This is useful for nodes
+ * having no children, like images.
+ * If createFollowingParagraph is set to true, a paragraph after the inserted node will be created. This makes the cursor of the editor
+ * to move not into the created node, but to the paragraph after the created node. Note that the paragraph is not a voide node,
+ * even if you defined it for the inserted one.
  *
  * @param editor
  * @param type
- * @param props
+ * @param options
  */
-const createNewNode = (editor: CustomEditor, type: CustomElementType, props?: Record<string, unknown>) => {
-    console.log('creating new node with props', props);
-    Transforms.insertNodes(editor, { type: type, children: [{ text: '' }], ...props }, { voids: true });
+const createNewNode = (
+    editor: CustomEditor,
+    type: CustomElementType,
+    options: {
+        childText?: string;
+        props?: Record<string, unknown>;
+        voids?: boolean;
+        createFollowingParagraph?: boolean;
+    } = {}
+) => {
+    Transforms.insertNodes(
+        editor,
+        { type: type, children: [{ text: options.childText || '' }], ...options.props },
+        { voids: options.voids }
+    );
+
+    if (options.createFollowingParagraph) {
+        Transforms.insertNodes(editor, { type: 'paragraph', children: [{ text: '' }] });
+    }
 };
 
 /**

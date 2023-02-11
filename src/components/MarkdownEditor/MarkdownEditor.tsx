@@ -1,6 +1,6 @@
-import React, {useCallback, useState, KeyboardEvent, useEffect, useRef} from 'react';
-import {createEditor, Descendant, Editor, Transforms} from 'slate';
-import {Slate, Editable, withReact, RenderElementProps, ReactEditor} from 'slate-react';
+import React, { useCallback, useState, KeyboardEvent } from 'react';
+import { createEditor, Descendant } from 'slate';
+import { Slate, Editable, withReact, RenderElementProps, ReactEditor } from 'slate-react';
 import { CodeElement } from './Elements/CodeElement';
 import { ParagraphElement } from './Elements/ParagraphElement';
 import { CustomElement, CustomElementType } from './Types/CustomElement';
@@ -26,7 +26,6 @@ import { UploadModal } from './UploadModal';
 import { AbstractUploader, UploaderFinishCallback } from './Upload/Uploader/AbstractUploader';
 import { ImageElement } from './Elements/ImageElement';
 import { HyperLinkElement } from './Elements/HyperLinkElement';
-import {Selection} from "slate/dist/interfaces/editor";
 
 /**
  * Extend the CustomTypes in the slate module to tell slate what custom elements we have.
@@ -309,7 +308,7 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
     const onCloseUploadModal = () => {
         setShowUploadModal(false);
 
-        ReactEditor.focus(editor)
+        ReactEditor.focus(editor);
     };
 
     /**
@@ -327,12 +326,19 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
         metaData: Record<string, string>
     ) => {
         if (originalFile.type.includes('image')) {
-            SlateUtils.createNewNode(editor, 'image', { src: fileUrl, metaData: metaData });
+            SlateUtils.createNewNode(editor, 'image', {
+                props: { src: fileUrl, metaData: metaData },
+                voids: true,
+                createFollowingParagraph: true
+            });
         } else {
             SlateUtils.createNewNode(editor, 'hyperlink', {
-                href: fileUrl,
-                metaData: metaData,
-                text: originalFile.name
+                childText: originalFile.name,
+                props: {
+                    href: fileUrl,
+                    metaData: metaData
+                },
+                createFollowingParagraph: true
             });
         }
     };
