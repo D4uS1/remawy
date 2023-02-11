@@ -1,6 +1,6 @@
-import React, { useCallback, useState, KeyboardEvent } from 'react';
-import { createEditor, Descendant } from 'slate';
-import { Slate, Editable, withReact, RenderElementProps } from 'slate-react';
+import React, {useCallback, useState, KeyboardEvent, useEffect, useRef} from 'react';
+import {createEditor, Descendant, Editor, Transforms} from 'slate';
+import {Slate, Editable, withReact, RenderElementProps, ReactEditor} from 'slate-react';
 import { CodeElement } from './Elements/CodeElement';
 import { ParagraphElement } from './Elements/ParagraphElement';
 import { CustomElement, CustomElementType } from './Types/CustomElement';
@@ -26,6 +26,7 @@ import { UploadModal } from './UploadModal';
 import { AbstractUploader, UploaderFinishCallback } from './Upload/Uploader/AbstractUploader';
 import { ImageElement } from './Elements/ImageElement';
 import { HyperLinkElement } from './Elements/HyperLinkElement';
+import {Selection} from "slate/dist/interfaces/editor";
 
 /**
  * Extend the CustomTypes in the slate module to tell slate what custom elements we have.
@@ -303,10 +304,12 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
 
     /**
      * Called if the upload modal should be closed.
-     * Closes the upload modal.
+     * Closes the upload modal and sets the focus to the editor again.
      */
     const onCloseUploadModal = () => {
         setShowUploadModal(false);
+
+        ReactEditor.focus(editor)
     };
 
     /**
