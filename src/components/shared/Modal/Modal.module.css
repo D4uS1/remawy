@@ -1,3 +1,6 @@
+@value colors: "../styles/colors.module.css";
+@value border-color, overlay-background-color, modal-background-color from colors;
+
 .container {
     position: absolute;
     display: flex;
@@ -8,12 +11,12 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(100, 100, 100, 0.5);
+    background-color: overlay-background-color;
 }
 
 .innerContainer {
     position: relative;
-    background-color: white;
+    background-color: modal-background-color;
     border-radius: 0.5rem;
     font-size: large;
 }
@@ -23,7 +26,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #dddddd;
+    border-bottom: 1px solid border-color;
 }
 
 .header {
@@ -53,5 +56,5 @@
 }
 
 .closeButton:hover {
-    background-color: #eeeeee
+    background-color: border-color
 }

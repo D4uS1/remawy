@@ -1,0 +1,6 @@
+@value border-color: grey;
+@value toolbar-background-color: #eeeeee;
+@value toolbar-background-active-color: #dddddd;
+
+@value overlay-background-color: rgba(100, 100, 100, 0.5);
+@value modal-background-color: white;

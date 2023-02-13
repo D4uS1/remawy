@@ -1,13 +1,13 @@
-@value colors: "../../../colors.module.css";
-@value remawy-border-color, remawy-toolbar-background-color from colors;
+@value colors: "../../shared/styles/colors.module.css";
+@value border-color, toolbar-background-color from colors;
 
 .container {
     display: flex;
     flex-direction: column;
     justify-content: stretch;
     align-items: flex-start;
-    background-color: remawy-toolbar-background-color;
-    border-bottom: remawy-border-color 1px solid;
+    background-color: toolbar-background-color;
+    border-bottom: border-color 1px solid;
 }
 
 .innerContainer {

@@ -1,5 +1,5 @@
-@value colors: "../../../colors.module.css";
-@value remawy-toolbar-background-active-color from colors;
+@value colors: "../../shared/styles/colors.module.css";
+@value toolbar-background-active-color from colors;
 
 .button {
     flex: 1;
@@ -9,5 +9,5 @@
 }
 
 .button:global(.active),.button:active,.button:hover {
-    background-color: remawy-toolbar-background-active-color;
+    background-color: toolbar-background-active-color;
 }
