@@ -1,0 +1,57 @@
+.container {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(100, 100, 100, 0.5);
+}
+
+.innerContainer {
+    position: relative;
+    background-color: white;
+    border-radius: 0.5rem;
+    font-size: large;
+}
+
+.headerContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #dddddd;
+}
+
+.header {
+    padding: 0.5rem 1rem;
+    font-size: x-large;
+}
+
+.bodyContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 1rem;
+    gap: 2rem;
+}
+
+.closeButton {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 0.5rem;
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.closeButton:hover {
+    background-color: #eeeeee
+}
