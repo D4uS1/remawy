@@ -77,6 +77,21 @@ export interface MarkdownEditorProps {
 
         // If given, this message will be shown if the user wants to upload a file that is too large
         maxFileSizeMessage?: string;
+
+        // Optional title shown in the upload modal header
+        modalHeaderTitle?: string;
+
+        // Optional css class that is passed to the modal outer container (the absolute container)
+        modalContainerClassName?: string;
+
+        // Optional css class that is passed to the modal inner container, holding the upload form (the relative container)
+        modalInnerContainerClassName?: string;
+
+        // Optional css class that is passed to the modal header holding the close button
+        modalHeaderContainerClassName?: string;
+
+        // Optional css class name that is passed to the modal body holding the form
+        modalBodyContainerClassName?: string;
     };
 }
 
@@ -341,6 +356,8 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
                 createFollowingParagraph: true
             });
         }
+
+        onCloseUploadModal();
     };
 
     return (

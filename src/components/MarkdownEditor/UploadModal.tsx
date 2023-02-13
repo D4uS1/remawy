@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, {ChangeEvent, useEffect, useRef, useState} from 'react';
 import {
     AbstractUploader,
     UploaderErrorCallback,
@@ -6,6 +6,8 @@ import {
     UploaderProgressCallback
 } from './Upload/Uploader/AbstractUploader';
 import styles from './UploadModal.module.css';
+import { IoCloseOutline } from 'react-icons/io5';
+import {useOnClickOutside} from "usehooks-ts";
 
 /**
  * Props for the UploadModal component.
@@ -34,6 +36,21 @@ interface UploadModalProps {
 
     // Called if the modal should be closed
     onClose: () => void;
+
+    // Optional css class that is passed to the modals outer container (the absolute container)
+    modalContainerClassName?: string;
+
+    // Optional css class that is passed to the modals inner container (the relative container)
+    modalInnerContainerClassName?: string;
+
+    // Optional css class that is passed to the header holding the close button
+    modalHeaderContainerClassName?: string;
+
+    // Optional css class that is passed to the body holding the upload form
+    modalBodyContainerClassName?: string;
+
+    // Optional title of the upload modal that is shown to the user
+    modalHeaderTitle?: string;
 }
 
 /**
@@ -45,6 +62,10 @@ interface UploadModalProps {
 export const UploadModal = (props: UploadModalProps) => {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [uploadProgress, setUploadProgress] = useState<number | null>(null);
+    const clickOutsideRef = useRef<HTMLDivElement>(null)
+
+    // Clicking outside the modal should close the modal
+    useOnClickOutside(clickOutsideRef, props.onClose)
 
     /**
      * Called if the current upload failes.
@@ -67,13 +88,25 @@ export const UploadModal = (props: UploadModalProps) => {
     };
 
     /**
+     * Called if the upload was finished.
+     * Calls the onFinish callback given by the props.
+     *
+     * @param url
+     * @param originalFile
+     * @param metaData
+     */
+    const onUploadFinish: UploaderFinishCallback = (url: string, originalFile: File, metaData: Record<string, string>) => {
+        props.onUploadFinish(url, originalFile, metaData);
+    }
+
+    /**
      * Called if the uploader in the props changes.
      * Sets the view callbacks in the uploader to be able to track upload process, upload finish and upload errors.
      */
     useEffect(() => {
         props.uploader.setOnProgressViewCallback(onUploadProgress);
         props.uploader.setOnErrorViewCallback(onUploadError);
-        props.uploader.setOnFinishViewCallback(props.onUploadFinish);
+        props.uploader.setOnFinishViewCallback(onUploadFinish);
     }, [props.uploader]);
 
     /**
@@ -121,15 +154,23 @@ export const UploadModal = (props: UploadModalProps) => {
     };
 
     return (
-        <div className={styles.container}>
-            <div className={styles.innerContainer}>
-                <button onClick={props.onClose}>X</button>
+        <div className={`${styles.container} ${props.modalContainerClassName || ''}`}>
+            <div className={`${styles.innerContainer} ${props.modalInnerContainerClassName || ''}`} ref={clickOutsideRef}>
+                <div className={`${styles.headerContainer} ${props.modalHeaderContainerClassName || ''}`}>
+                    <span className={styles.header}>{ props.modalHeaderTitle || 'Upload file' }</span>
+                    <button className={styles.closeButton} onClick={props.onClose}><IoCloseOutline size='1.5rem' /></button>
+                </div>
+                <div className={`${styles.bodyContainer} ${props.modalBodyContainerClassName || ''}`}>
+                    <input className={styles.fileInput} type="file" onChange={onFileSelect} disabled={uploadProgress !== null}/>
 
-                <input type="file" onChange={onFileSelect} />
+                    {errorMessage && (
+                        <span className={styles.errorMessage}>{errorMessage}</span>
+                    )}
 
-                {errorMessage && <span>{errorMessage}</span>}
-
-                {uploadProgress !== null && <progress max={100.0} value={uploadProgress * 100} />}
+                    {uploadProgress !== null && (
+                        <progress className={styles.progressBar} max={100.0} value={uploadProgress * 100} />
+                    )}
+                </div>
             </div>
         </div>
     );
