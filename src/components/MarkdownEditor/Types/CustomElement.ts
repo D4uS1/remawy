@@ -1,4 +1,5 @@
 import { CustomText } from './CustomText';
+import {Descendant} from "slate";
 
 /**
  * Describes the available definable elements in our editor.
@@ -24,7 +25,7 @@ export type CustomElementType =
  */
 export type CustomElement = {
     type: CustomElementType;
-    children?: CustomText[];
+    children?: Descendant[];
 
     // used by image
     src?: string;

@@ -2,5 +2,12 @@
 @value toolbar-background-color: #eeeeee;
 @value toolbar-background-active-color: #dddddd;
 
+@value font-color-primary: black;
+@value font-color-secondary: gray;
+@value button-color-primary: darkblue;
+@value button-text-color-primary: darkgray;
+@value button-color-secondary: grey;
+@value button-text-color-secondary: black;
+
 @value overlay-background-color: rgba(100, 100, 100, 0.5);
 @value modal-background-color: white;

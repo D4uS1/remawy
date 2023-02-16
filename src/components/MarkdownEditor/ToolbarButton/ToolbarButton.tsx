@@ -1,13 +1,13 @@
 import React, { useMemo, MouseEvent } from 'react';
 import styles from './ToolbarButton.module.css';
-import { FaBold, FaItalic, FaListOl, FaList, FaQuoteLeft, FaCode, FaUpload } from 'react-icons/fa';
+import { FaBold, FaItalic, FaListOl, FaList, FaQuoteLeft, FaCode, FaUpload, FaLink } from 'react-icons/fa';
 
 /**
  * Props for the ToolbarButton component.
  */
 interface ToolbarButtonProps {
     // If given, the font-awesome icon will be shown
-    icon?: 'bold' | 'blockquote' | 'code' | 'italic' | 'ordered-list' | 'unordered-list' | 'upload';
+    icon?: 'bold' | 'blockquote' | 'code' | 'italic' | 'ordered-list' | 'unordered-list' | 'upload' | 'hyperlink';
 
     // If no icon is given, the text will be shown
     text?: string;
@@ -57,6 +57,10 @@ export const ToolbarButton = (props: ToolbarButtonProps) => {
 
             case 'upload': {
                 return <FaUpload />;
+            }
+
+            case 'hyperlink': {
+                return <FaLink />
             }
         }
     }, [props.icon]);

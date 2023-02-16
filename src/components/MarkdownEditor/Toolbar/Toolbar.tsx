@@ -16,6 +16,8 @@ import { Heading4Helper } from '../Helpers/Heading4Helper';
 import { Heading5Helper } from '../Helpers/Heading5Helper';
 import { Heading6Helper } from '../Helpers/Heading6Helper';
 import { useSlate } from 'slate-react';
+import {HyperlinkToolbarButton} from "../HyperlinkToolbarButton/HyperlinkToolbarButton";
+import {HyperLinkHelper} from "../Helpers/HyperLinkHelper";
 
 /**
  * Props for the ToolBar component.
@@ -123,7 +125,8 @@ export const Toolbar = (props: ToolbarProps) => {
         'unordered-list': UnorderedListHelper.active(editor),
         'ordered-list': OrderedListHelper.active(editor),
         blockquote: BlockquoteHelper.active(editor),
-        code: CodeHelper.active(editor)
+        code: CodeHelper.active(editor),
+        'hyperlink': HyperLinkHelper.active(editor)
     };
 
     return (
@@ -184,19 +187,17 @@ export const Toolbar = (props: ToolbarProps) => {
                     active={activeStatus['code']}
                     className={props.buttonClassName}
                 />
+                <ToolbarButtonSpacer />
 
-                {/* upload */}
+                {/* uploads or links */}
+                <HyperlinkToolbarButton />
                 {props.onClickButtonUpload && (
-                    <Fragment>
-                        <ToolbarButtonSpacer />
-
                         <ToolbarButton
                             icon={'upload'}
                             onClick={props.onClickButtonUpload}
                             active={false}
                             className={props.buttonClassName}
                         />
-                    </Fragment>
                 )}
             </div>
         </div>

@@ -6,7 +6,7 @@ import {
     UploaderProgressCallback
 } from './Upload/Uploader/AbstractUploader';
 import styles from './UploadModal.module.css';
-import { Modal } from '../shared/Modal/Modal';
+import { Modal } from '../shared/components/Modal/Modal';
 
 /**
  * Props for the UploadModal component.

@@ -1,4 +1,4 @@
-@value colors: "../styles/colors.module.css";
+@value colors: "../../styles/colors.module.css";
 @value border-color, overlay-background-color, modal-background-color from colors;
 
 .container {

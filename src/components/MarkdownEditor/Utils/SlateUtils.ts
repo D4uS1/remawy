@@ -1,5 +1,5 @@
 import { CustomEditor } from '../Types/CustomEditor';
-import { Editor, Node, Point, Transforms, Element, Text } from 'slate';
+import {Editor, Node, Point, Transforms, Element, Text, Descendant} from 'slate';
 import { CustomElement, CustomElementType } from '../Types/CustomElement';
 import { CustomText } from '../Types/CustomText';
 
@@ -28,7 +28,7 @@ const createNewNodeOfCurrentType = (editor: CustomEditor) => {
  * Creates a new node having the specified type at the current cursors position.
  *
  * The options hold the following values:
- * The node automaticly gets a children having the specified childText. If this is not set, an empty string will be used.
+ * The node children will be assigned, if given. If this is not set, a leaf with empty text will be created as children.
  * Note that this is necessary for slate because if the node does not have any leaf as children, any selection on
  * the node will fail.
  * The props are passed to the node. This can eg. be the src attribute for the image, or the href attribute
@@ -47,15 +47,20 @@ const createNewNode = (
     editor: CustomEditor,
     type: CustomElementType,
     options: {
-        childText?: string;
-        props?: Record<string, unknown>;
+        children?: Descendant[];
+        props?: Partial<CustomElement>;
         voids?: boolean;
         createFollowingParagraph?: boolean;
+        createFollowingLeaf?: boolean;
     } = {}
 ) => {
     Transforms.insertNodes(
         editor,
-        { type: type, children: [{ text: options.childText || '' }], ...options.props },
+        {
+            ...options.props,
+            type: type,
+            children: options.children || [{ text: '' }]
+        },
         { voids: options.voids }
     );
 

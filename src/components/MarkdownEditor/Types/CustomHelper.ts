@@ -1,5 +1,6 @@
 import { CustomEditor } from './CustomEditor';
 import { KeyboardEvent } from 'react';
+import {CustomElement} from "./CustomElement";
 
 /**
  * Defines the toggle options that can be passed to the toggle function.
@@ -41,4 +42,10 @@ export interface CustomHelper {
     // different than the default behavior, that is just adding a new paragraph.
     // Note that the onTab method has to decide whether the preventDefault metho of the evet should be called.
     onEnter?: (editor: CustomEditor, event: KeyboardEvent) => void;
+
+    // Called if the element should be inserted to the current cursors position, or
+    // should be updated at the current cursors position.
+    // This is a special case for elements that have additional properties like hyperlinks.
+    // This properties can be configured in some form and after submit, they must be upserted, but not toggled.
+    onUpsert?: (editor: CustomEditor, props: Partial<CustomElement>) => void;
 }

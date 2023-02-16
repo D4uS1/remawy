@@ -1,0 +1,16 @@
+@value colors: "../../styles/colors.module.css";
+@value button-color-primary, button-text-color-primary, button-color-secondary, button-text-color-secondary from colors;
+
+.button {
+    border-radius: 0.1rem;
+}
+
+.button:global(.primary) {
+    background-color: button-color-primary;
+    color: button-text-color-primary;
+}
+
+.button:global(.secondary) {
+    background-color: button-color-secondary;
+    color: button-text-color-secondary;
+}
