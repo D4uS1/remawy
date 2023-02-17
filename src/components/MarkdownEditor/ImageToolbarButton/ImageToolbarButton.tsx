@@ -9,11 +9,20 @@ import { Button } from '../../shared/components/Button/Button';
 import { ImageHelper } from '../Helpers/ImageHelper';
 
 /**
+ * Props for the ImageToolbarButton component.
+ */
+interface ImageToolbarButtonProps {
+    // Called if the user wants to upload some file, should open the upload modal. The accept parameter are
+    // comma separated mime types. If not given, everything will be accepted.
+    onUploadRequest?: (accept?: string) => void;
+}
+
+/**
  * Shows a toolbar button for creating or editing an image.
  *
  * @constructor
  */
-export const ImageToolbarButton = () => {
+export const ImageToolbarButton = (props: ImageToolbarButtonProps) => {
     const editor = useSlate();
     const [showPopover, setShowPopover] = useState<boolean>(false);
     const [src, setSrc] = useState<string>('');
@@ -82,6 +91,17 @@ export const ImageToolbarButton = () => {
         onClickSubmit();
     };
 
+    /**
+     * Called if the user clicks the upload button.
+     * Closes the popup and opens the upload modal.
+     */
+    const onClickUpload = () => {
+        if (!props.onUploadRequest) return;
+
+        onClosePopover();
+        props.onUploadRequest('image/*');
+    }
+
     return (
         <div className={styles.container}>
             <ToolbarButton onClick={onClickToolbarButton} icon="image" />
@@ -94,6 +114,12 @@ export const ImageToolbarButton = () => {
                         </div>
 
                         <div className={formStyles.buttonsContainer}>
+                            { props.onUploadRequest && (
+                                <Button type={'secondary'} onClick={onClickUpload}>
+                                    Upload
+                                </Button>
+                            )}
+
                             <Button type="primary" onClick={onClickSubmit}>
                                 Insert
                             </Button>

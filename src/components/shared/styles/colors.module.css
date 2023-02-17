@@ -6,7 +6,7 @@
 @value font-color-secondary: gray;
 @value button-color-primary: darkblue;
 @value button-text-color-primary: lightgray;
-@value button-color-secondary: grey;
+@value button-color-secondary: lightgray;
 @value button-text-color-secondary: black;
 
 @value overlay-background-color: rgba(100, 100, 100, 0.5);

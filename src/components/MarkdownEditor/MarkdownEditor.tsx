@@ -27,6 +27,7 @@ import { AbstractUploader, UploaderFinishCallback } from './Upload/Uploader/Abst
 import { ImageElement } from './Elements/ImageElement';
 import { HyperlinkElement } from './Elements/HyperlinkElement';
 import { HyperlinkHelper } from './Helpers/HyperlinkHelper';
+import {ImageHelper} from "./Helpers/ImageHelper";
 
 /**
  * Extend the CustomTypes in the slate module to tell slate what custom elements we have.
@@ -105,8 +106,8 @@ export interface MarkdownEditorProps {
  * @constructor
  */
 export const MarkdownEditor = (props: MarkdownEditorProps) => {
-    const [editor] = useState(() => withInlines(withReact(createEditor())));
-    const [showUploadModal, setShowUploadModal] = useState<boolean>(false);
+    const [editor] = useState(() => withVoids(withInlines(withReact(createEditor()))));
+    const [uploadModalData, setUploadModalData] = useState<{ show: boolean, accept?: string }>({ show: false });
 
     /**
      * Returns the name of the custom element behind a markdown shortcut.
@@ -310,11 +311,15 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
     };
 
     /**
-     * Called if the user clicks the button to upload a file.
+     * Called if the user requests some file upload.
      * Opens the dialog to upload the file.
+     * The accept parameter is a comma separated string of accepted mime types.
+     * If not given, everything will be accepted.
+     *
+     * @param accept
      */
-    const onClickUpload = () => {
-        setShowUploadModal(true);
+    const onUploadRequest = (accept?: string) => {
+        setUploadModalData({ show: true, accept: accept });
     };
 
     /**
@@ -322,7 +327,7 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
      * Closes the upload modal and sets the focus to the editor again.
      */
     const onCloseUploadModal = () => {
-        setShowUploadModal(false);
+        setUploadModalData({ show: false });
 
         ReactEditor.focus(editor);
     };
@@ -342,11 +347,9 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
         metaData: Record<string, string>
     ) => {
         if (originalFile.type.includes('image')) {
-            SlateUtils.createNewNode(editor, 'image', {
-                props: { src: fileUrl, metaData: metaData },
-                voids: true,
-                createFollowingParagraph: true
-            });
+            if (!ImageHelper.onUpsert) return;
+
+            ImageHelper.onUpsert(editor, { src: fileUrl, metaData: metaData })
         } else {
             if (!HyperlinkHelper.onUpsert) return;
 
@@ -375,7 +378,7 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
                 <Toolbar
                     className={props.toolbarClassName}
                     buttonClassName={props.toolbarButtonClassName}
-                    onClickButtonUpload={props.uploadInfo ? onClickUpload : undefined}
+                    onUploadRequest={props.uploadInfo ? onUploadRequest : undefined}
                 />
 
                 <Editable
@@ -386,8 +389,11 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
                 />
             </div>
 
-            {props.uploadInfo && showUploadModal && (
-                <UploadModal onUploadFinish={onUploadFinished} onClose={onCloseUploadModal} {...props.uploadInfo} />
+            {props.uploadInfo && uploadModalData.show && (
+                <UploadModal onUploadFinish={onUploadFinished}
+                             onClose={onCloseUploadModal}
+                             {...props.uploadInfo}
+                             acceptedFileTypes={uploadModalData.accept || props.uploadInfo.acceptedFileTypes} />
             )}
         </Slate>
     );
@@ -407,3 +413,18 @@ const withInlines = (editor: CustomEditor): CustomEditor => {
 
     return editor;
 };
+
+/**
+ * Overwrites the isVoid method of the slate editor to specify the elemnts that should not render its children by slate.
+ *
+ * @param editor
+ */
+const withVoids = (editor: CustomEditor): CustomEditor => {
+    const { isVoid } = editor;
+
+    editor.isVoid = (element) => {
+        return ['image'].includes(element.type) || isVoid(element);
+    };
+
+    return editor;
+}

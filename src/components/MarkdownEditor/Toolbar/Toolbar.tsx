@@ -30,8 +30,9 @@ interface ToolbarProps {
     // Optional class name that is passed to the buttons
     buttonClassName?: string;
 
-    // Called if the user clicks the button to upload a file. If the callback is not passed, the button will not be shown,
-    onClickButtonUpload?: () => void;
+    // Called if the user wants to upload some file, should open the upload modal. The accept parameter are
+    // comma separated mime types. If not given, everything will be accepted.
+    onUploadRequest?: (accept?: string) => void;
 }
 
 /**
@@ -192,11 +193,11 @@ export const Toolbar = (props: ToolbarProps) => {
 
                 {/* uploads or links */}
                 <HyperlinkToolbarButton />
-                <ImageToolbarButton />
-                {props.onClickButtonUpload && (
+                <ImageToolbarButton onUploadRequest={props.onUploadRequest} />
+                {props.onUploadRequest && (
                     <ToolbarButton
                         icon={'upload'}
-                        onClick={props.onClickButtonUpload}
+                        onClick={props.onUploadRequest}
                         active={false}
                         className={props.buttonClassName}
                     />
