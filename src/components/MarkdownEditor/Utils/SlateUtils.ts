@@ -2,6 +2,7 @@ import { CustomEditor } from '../Types/CustomEditor';
 import {Editor, Node, Point, Transforms, Element, Text, Descendant} from 'slate';
 import { CustomElement, CustomElementType } from '../Types/CustomElement';
 import { CustomText } from '../Types/CustomText';
+import {CustomLeaf, CustomLeafProps} from "../Leafs/CustomLeaf";
 
 /**
  * Changes the type of the current node to the specified elementType.
@@ -38,6 +39,29 @@ const currentElementPath = (editor: CustomEditor): number[] | null => {
     // This is based on the assumption that the users cursor is always in some leaf node
     return editor.selection.anchor.path.slice(0, -1);
 };
+
+/**
+ * Returns the nearest element having the specified type in the parents and the node itself at the current users selection.
+ * If no element was found, null will be returned.
+ *
+ * @param editor
+ * @param elementType
+ */
+const nearestElementOfType = (editor: CustomEditor, elementType: CustomElementType): CustomElement | null => {
+    let currentPath = editor.selection?.anchor.path;
+    if (!currentPath) return null;
+
+    do {
+        let currentElement = Node.get(editor, currentPath) as CustomElement;
+        if (!currentElement) return null;
+
+        if (currentElement.type === elementType) return currentElement;
+
+        currentPath = currentPath?.slice(0, -1)
+    } while(currentPath.length > 0)
+
+    return null;
+}
 
 /**
  * Creates a new node of the same type at the current cursors position.
@@ -687,6 +711,7 @@ export const SlateUtils = {
     deleteFromRight: deleteFromRight,
     deleteAt: deleteAt,
     isChildOf: isChildOf,
+    nearestElementOfType: nearestElementOfType,
     currentBlock: currentBlock,
     currentBlockType: currentBlockType,
     currentElementPath: currentElementPath,
