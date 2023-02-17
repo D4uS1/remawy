@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useMemo, useState } from 'react';
+import React, { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { ToolbarButton } from '../ToolbarButton/ToolbarButton';
 import { Popover } from '../../shared/components/Popover/Popover';
 import styles from './HyperlinkToolbarButton.module.css';
@@ -17,13 +17,19 @@ export const HyperlinkToolbarButton = () => {
     const editor = useSlate();
     const [showPopover, setShowPopover] = useState<boolean>(false);
     const [href, setHref] = useState<string>('');
+    const hrefInputRef = useRef<HTMLInputElement>(null);
 
     /**
      * Called if the popover is shown to determine the current href value in the selection, if exists.
+     * Also focuses the text field to be able to type without clicking in it.
      */
     useEffect(() => {
         if (!showPopover) return;
 
+        // focus the textfield
+        hrefInputRef.current?.focus();
+
+        // find initial value for href
         const nearestHyperlink = SlateUtils.nearestElementOfType(editor, 'hyperlink');
         if (!nearestHyperlink || !nearestHyperlink.href) return setHref('https://niiice.io');
 
@@ -64,6 +70,7 @@ export const HyperlinkToolbarButton = () => {
         if (!HyperLinkHelper.onUpsert) return;
 
         HyperLinkHelper.onUpsert(editor, { href: href });
+        onClosePopover();
     };
 
     /**
@@ -79,17 +86,31 @@ export const HyperlinkToolbarButton = () => {
      */
     const onClickRemove = () => {
         HyperLinkHelper.toggle(editor);
+        onClosePopover();
+    };
+
+    /**
+     * Called if the user presses the enter button in the popover form.
+     * Submits the form.
+     */
+    const onPressEnter = () => {
+        onClickSubmit();
     };
 
     return (
         <div className={styles.container}>
             <ToolbarButton onClick={onClickToolbarButton} icon="hyperlink" />
             {showPopover && (
-                <Popover onClose={onClosePopover} align="top-right">
+                <Popover onClose={onClosePopover} onPressEnter={onPressEnter} align="top-right">
                     <div className={formStyles.container}>
                         <div className={formStyles.group}>
                             <label>Url</label>
-                            <input value={href} onChange={onChangeHref} className={styles.hrefInput} />
+                            <input
+                                ref={hrefInputRef}
+                                value={href}
+                                onChange={onChangeHref}
+                                className={styles.hrefInput}
+                            />
                         </div>
 
                         <div className={formStyles.buttonsContainer}>

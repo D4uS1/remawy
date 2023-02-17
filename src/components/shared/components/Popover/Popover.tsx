@@ -1,4 +1,4 @@
-import React, { ReactNode, useRef } from 'react';
+import React, { ReactNode, useRef, KeyboardEvent } from 'react';
 import styles from './Popover.module.css';
 import { useOnClickOutside } from 'usehooks-ts';
 
@@ -13,6 +13,9 @@ interface PopoverProps {
 
     // Called if the user clicks outside the popover. Should close the popover.
     onClose: (e: MouseEvent) => void;
+
+    // Called if the user presses the enter button inside the popup
+    onPressEnter?: () => void;
 }
 
 /**
@@ -28,9 +31,24 @@ export const Popover = (props: PopoverProps) => {
     // Clicking outside the modal should close the modal
     useOnClickOutside(clickOutsideRef, props.onClose);
 
+    /**
+     * Called if the user presses some key in the popup.
+     * If the callback for pressing enter is given by the props and the pressed button was the enter button,
+     * the callback will be called.
+     *
+     * @param e
+     */
+    const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+        if (!props.onPressEnter) return;
+
+        if (e.key === 'Enter') {
+            props.onPressEnter();
+        }
+    };
+
     return (
         <div className={styles.container}>
-            <div className={`${styles.innerContainer} ${props.align}`} ref={clickOutsideRef}>
+            <div className={`${styles.innerContainer} ${props.align}`} ref={clickOutsideRef} onKeyDown={onKeyDown}>
                 {props.children}
             </div>
         </div>
