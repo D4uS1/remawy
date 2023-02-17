@@ -5,7 +5,7 @@ import styles from './HyperlinkToolbarButton.module.css';
 import formStyles from '../../shared/styles/forms.module.css';
 import { Button } from '../../shared/components/Button/Button';
 import { useSlate } from 'slate-react';
-import { HyperLinkHelper } from '../Helpers/HyperLinkHelper';
+import { HyperlinkHelper } from '../Helpers/HyperlinkHelper';
 import { SlateUtils } from '../Utils/SlateUtils';
 
 /**
@@ -67,9 +67,9 @@ export const HyperlinkToolbarButton = () => {
      * Inserts the link having the specified title and href.
      */
     const onClickSubmit = () => {
-        if (!HyperLinkHelper.onUpsert) return;
+        if (!HyperlinkHelper.onUpsert) return;
 
-        HyperLinkHelper.onUpsert(editor, { href: href });
+        HyperlinkHelper.onUpsert(editor, { href: href });
         onClosePopover();
     };
 
@@ -85,7 +85,7 @@ export const HyperlinkToolbarButton = () => {
      * Removes the hyperlink if the current selection is a hyperlink.
      */
     const onClickRemove = () => {
-        HyperLinkHelper.toggle(editor);
+        HyperlinkHelper.toggle(editor);
         onClosePopover();
     };
 

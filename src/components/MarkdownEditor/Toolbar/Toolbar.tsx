@@ -17,7 +17,7 @@ import { Heading5Helper } from '../Helpers/Heading5Helper';
 import { Heading6Helper } from '../Helpers/Heading6Helper';
 import { useSlate } from 'slate-react';
 import { HyperlinkToolbarButton } from '../HyperlinkToolbarButton/HyperlinkToolbarButton';
-import { HyperLinkHelper } from '../Helpers/HyperLinkHelper';
+import { HyperlinkHelper } from '../Helpers/HyperlinkHelper';
 
 /**
  * Props for the ToolBar component.
@@ -126,7 +126,7 @@ export const Toolbar = (props: ToolbarProps) => {
         'ordered-list': OrderedListHelper.active(editor),
         blockquote: BlockquoteHelper.active(editor),
         code: CodeHelper.active(editor),
-        hyperlink: HyperLinkHelper.active(editor)
+        hyperlink: HyperlinkHelper.active(editor)
     };
 
     return (

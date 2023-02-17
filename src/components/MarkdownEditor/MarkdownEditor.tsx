@@ -25,8 +25,8 @@ import styles from './MarkdownEditor.module.css';
 import { UploadModal } from './UploadModal';
 import { AbstractUploader, UploaderFinishCallback } from './Upload/Uploader/AbstractUploader';
 import { ImageElement } from './Elements/ImageElement';
-import { HyperLinkElement } from './Elements/HyperLinkElement';
-import { HyperLinkHelper } from './Helpers/HyperLinkHelper';
+import { HyperlinkElement } from './Elements/HyperlinkElement';
+import { HyperlinkHelper } from './Helpers/HyperlinkHelper';
 
 /**
  * Extend the CustomTypes in the slate module to tell slate what custom elements we have.
@@ -185,7 +185,7 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
             case 'image':
                 return <ImageElement {...props} />;
             case 'hyperlink':
-                return <HyperLinkElement {...props} />;
+                return <HyperlinkElement {...props} />;
             case 'list-item':
                 return <ListItemElement {...props} />;
             case 'ordered-list':
@@ -348,9 +348,9 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
                 createFollowingParagraph: true
             });
         } else {
-            if (!HyperLinkHelper.onUpsert) return;
+            if (!HyperlinkHelper.onUpsert) return;
 
-            HyperLinkHelper.onUpsert(editor, {
+            HyperlinkHelper.onUpsert(editor, {
                 children: [{ text: originalFile.name }],
                 href: fileUrl,
                 metaData: metaData

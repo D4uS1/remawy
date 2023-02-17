@@ -5,7 +5,7 @@ import { CustomElement } from '../Types/CustomElement';
 import { SlateUtils } from '../Utils/SlateUtils';
 
 /**
- * Returns whether the HyperLink is currently active in the specified editor.
+ * Returns whether the Hyperlink is currently active in the specified editor.
  *
  * @param editor
  */
@@ -14,7 +14,7 @@ const active = (editor: CustomEditor): boolean => {
 };
 
 /**
- * Toggles the rendering of the HyperLink in the specified editor.
+ * Toggles the rendering of the Hyperlink in the specified editor.
  *
  * @param editor
  */
@@ -38,7 +38,7 @@ const onUpsert = (editor: CustomEditor, props: Partial<CustomElement>) => {
     SlateUtils.changeNearestNodeProps(editor, 'hyperlink', props);
 };
 
-export const HyperLinkHelper: CustomHelper = {
+export const HyperlinkHelper: CustomHelper = {
     active: active,
     toggle: toggle,
     onUpsert: onUpsert

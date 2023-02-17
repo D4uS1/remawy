@@ -4,7 +4,7 @@ import { RenderElementProps } from 'slate-react';
 /**
  * Props for the Heading1Element component.
  */
-type HyperLinkElementProps = RenderElementProps;
+type HyperlinkElementProps = RenderElementProps;
 
 /**
  * A Custom element for Slate for rendering a heading of size 1.
@@ -12,7 +12,7 @@ type HyperLinkElementProps = RenderElementProps;
  * @param props
  * @constructor
  */
-export const HyperLinkElement = (props: HyperLinkElementProps) => {
+export const HyperlinkElement = (props: HyperlinkElementProps) => {
     return (
         <a href={props.element.href} {...props.attributes}>
             {props.children}
