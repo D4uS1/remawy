@@ -1,6 +1,6 @@
 import { CustomEditor } from './CustomEditor';
 import { KeyboardEvent } from 'react';
-import {CustomElement} from "./CustomElement";
+import { CustomElement } from './CustomElement';
 
 /**
  * Defines the toggle options that can be passed to the toggle function.

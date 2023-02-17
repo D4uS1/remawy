@@ -1,4 +1,4 @@
-import React, {useCallback, useState, KeyboardEvent, useEffect} from 'react';
+import React, { useCallback, useState, KeyboardEvent } from 'react';
 import { createEditor, Descendant } from 'slate';
 import { Slate, Editable, withReact, RenderElementProps, ReactEditor } from 'slate-react';
 import { CodeElement } from './Elements/CodeElement';
@@ -26,7 +26,7 @@ import { UploadModal } from './UploadModal';
 import { AbstractUploader, UploaderFinishCallback } from './Upload/Uploader/AbstractUploader';
 import { ImageElement } from './Elements/ImageElement';
 import { HyperLinkElement } from './Elements/HyperLinkElement';
-import {HyperLinkHelper} from "./Helpers/HyperLinkHelper";
+import { HyperLinkHelper } from './Helpers/HyperLinkHelper';
 
 /**
  * Extend the CustomTypes in the slate module to tell slate what custom elements we have.
@@ -354,7 +354,7 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
                 children: [{ text: originalFile.name }],
                 href: fileUrl,
                 metaData: metaData
-            })
+            });
         }
 
         onCloseUploadModal();
@@ -399,11 +399,11 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
  * @param editor
  */
 const withInlines = (editor: CustomEditor): CustomEditor => {
-    const {isInline} = editor
+    const { isInline } = editor;
 
     editor.isInline = (element) => {
-        return  ['hyperlink', 'image'].includes(element.type) || isInline(element)
-    }
+        return ['hyperlink', 'image'].includes(element.type) || isInline(element);
+    };
 
     return editor;
-}
+};

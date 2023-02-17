@@ -75,7 +75,7 @@ const toggleInlineNode = (editor: CustomEditor, elementType: CustomElementType):
     } else {
         SlateUtils.changeCurrentNodeType(editor, elementType);
     }
-}
+};
 
 /**
  * Can be used by helpers to toggle the element at the editors current cursor between the

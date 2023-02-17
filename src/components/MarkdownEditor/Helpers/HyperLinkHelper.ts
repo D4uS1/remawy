@@ -1,8 +1,8 @@
 import { CustomHelper } from '../Types/CustomHelper';
 import { CustomEditor } from '../Types/CustomEditor';
 import { HelperUtils } from '../Utils/HelperUtils';
-import {CustomElement} from "../Types/CustomElement";
-import {SlateUtils} from "../Utils/SlateUtils";
+import { CustomElement } from '../Types/CustomElement';
+import { SlateUtils } from '../Utils/SlateUtils';
 
 /**
  * Returns whether the HyperLink is currently active in the specified editor.
@@ -30,14 +30,13 @@ const toggle = (editor: CustomEditor) => {
  * @param props
  */
 const onUpsert = (editor: CustomEditor, props: Partial<CustomElement>) => {
-    SlateUtils.createNewNode(editor, 'hyperlink', {
-        children: props.children || [{ text: 'Link' }],
-        props: {
-            href: props.href
-        },
-        createFollowingLeaf: true
-    });
-}
+    if (!SlateUtils.isChildOf(editor, 'hyperlink')) {
+        return SlateUtils.wrapNode(editor, 'hyperlink', props);
+    }
+
+    // update the href at the nearest hyperlink, if the current cursor is already in some link
+    SlateUtils.changeNearestNodeProps(editor, 'hyperlink', props);
+};
 
 export const HyperLinkHelper: CustomHelper = {
     active: active,

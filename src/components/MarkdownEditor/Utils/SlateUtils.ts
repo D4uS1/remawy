@@ -1,8 +1,7 @@
 import { CustomEditor } from '../Types/CustomEditor';
-import {Editor, Node, Point, Transforms, Element, Text, Descendant} from 'slate';
+import { Editor, Node, Point, Transforms, Element, Text, Descendant } from 'slate';
 import { CustomElement, CustomElementType } from '../Types/CustomElement';
 import { CustomText } from '../Types/CustomText';
-import {CustomLeaf, CustomLeafProps} from "../Leafs/CustomLeaf";
 
 /**
  * Changes the type of the current node to the specified elementType.
@@ -25,7 +24,7 @@ const removeInlineNode = (editor: CustomEditor) => {
     if (!path) return;
 
     Transforms.unwrapNodes(editor, { at: path });
-}
+};
 
 /**
  * Returns the path to the nearest non leaf element, meaning the next element not being a leaf.
@@ -52,16 +51,16 @@ const nearestElementOfType = (editor: CustomEditor, elementType: CustomElementTy
     if (!currentPath) return null;
 
     do {
-        let currentElement = Node.get(editor, currentPath) as CustomElement;
+        const currentElement = Node.get(editor, currentPath) as CustomElement;
         if (!currentElement) return null;
 
         if (currentElement.type === elementType) return currentElement;
 
-        currentPath = currentPath?.slice(0, -1)
-    } while(currentPath.length > 0)
+        currentPath = currentPath?.slice(0, -1);
+    } while (currentPath.length > 0);
 
     return null;
-}
+};
 
 /**
  * Creates a new node of the same type at the current cursors position.
@@ -120,12 +119,14 @@ const createNewNode = (
 
 /**
  * Wraps the node of the current editors position in a new node of the specified elementType.
+ * The optional props are added to the wrapping node.
  *
  * @param editor
  * @param elementType
+ * @param props
  */
-const wrapNode = (editor: CustomEditor, elementType: CustomElementType) => {
-    Transforms.wrapNodes(editor, { type: elementType });
+const wrapNode = (editor: CustomEditor, elementType: CustomElementType, props: Partial<CustomElement> = {}) => {
+    Transforms.wrapNodes(editor, { type: elementType, ...props }, { split: true });
 };
 
 /**
@@ -445,10 +446,10 @@ const currentBlock = (editor: CustomEditor): CustomElement | null => {
 const currentBlockPath = (editor: CustomEditor): number[] | null => {
     if (!editor.selection) return null;
 
-    let currentPath = currentElementPath(editor);
+    const currentPath = currentElementPath(editor);
     if (!currentPath) return null;
 
-    return nearestBlockPath(editor, currentPath)
+    return nearestBlockPath(editor, currentPath);
 };
 
 /**
@@ -458,12 +459,12 @@ const currentBlockPath = (editor: CustomEditor): number[] | null => {
  * @param editor
  * @param path
  */
-const nearestBlockPath = (editor: CustomEditor, path: number[]): number[] |null => {
+const nearestBlockPath = (editor: CustomEditor, path: number[]): number[] | null => {
     let currentPath = path;
     if (currentPath.length === 0) return null;
 
     do {
-        let currentElement = Node.get(editor, currentPath)
+        const currentElement = Node.get(editor, currentPath);
         if (!currentElement) return null;
 
         if (Editor.isBlock(editor, currentElement as CustomElement)) {
@@ -471,10 +472,10 @@ const nearestBlockPath = (editor: CustomEditor, path: number[]): number[] |null 
         }
 
         currentPath = currentPath.slice(0, -1);
-    } while(currentPath.length > 0)
+    } while (currentPath.length > 0);
 
     return null;
-}
+};
 
 /**
  * Returns the type name of the block node the user is currently located in.
@@ -536,7 +537,7 @@ const parentBlockType = (editor: CustomEditor): CustomElementType | null => {
  * @param editor
  */
 const currentLeaf = (editor: CustomEditor): CustomText | null => {
-    if (!editor.selection)  return null;
+    if (!editor.selection) return null;
 
     const nodeEntry = Editor.node(editor, editor.selection.anchor);
     if (!nodeEntry || !isLeaf(nodeEntry[0])) {
@@ -688,6 +689,21 @@ const setLeafFormat = (
     });
 };
 
+/**
+ * Changes the props of the nearest node from the current selection having the specified elementType to the specified props.
+ *
+ * @param editor
+ * @param elementType
+ * @param props
+ */
+const changeNearestNodeProps = (
+    editor: CustomEditor,
+    elementType: CustomElementType,
+    props: Partial<CustomElement>
+) => {
+    Transforms.setNodes(editor, props, { match: (n) => (n as CustomElement).type === elementType });
+};
+
 export const SlateUtils = {
     removeInlineNode: removeInlineNode,
     changeCurrentNodeType: changeCurrentNodeType,
@@ -726,5 +742,6 @@ export const SlateUtils = {
     createRootParagraph: createRootParagraph,
     createNewline: createNewline,
     liftToRoot: liftToRoot,
-    setLeafFormat: setLeafFormat
+    setLeafFormat: setLeafFormat,
+    changeNearestNodeProps: changeNearestNodeProps
 };

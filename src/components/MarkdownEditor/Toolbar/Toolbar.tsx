@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import styles from './Toolbar.module.css';
 import { ToolbarButton } from '../ToolbarButton/ToolbarButton';
 import { UnorderedListHelper } from '../Helpers/UnorderedListHelper';
@@ -16,8 +16,8 @@ import { Heading4Helper } from '../Helpers/Heading4Helper';
 import { Heading5Helper } from '../Helpers/Heading5Helper';
 import { Heading6Helper } from '../Helpers/Heading6Helper';
 import { useSlate } from 'slate-react';
-import {HyperlinkToolbarButton} from "../HyperlinkToolbarButton/HyperlinkToolbarButton";
-import {HyperLinkHelper} from "../Helpers/HyperLinkHelper";
+import { HyperlinkToolbarButton } from '../HyperlinkToolbarButton/HyperlinkToolbarButton';
+import { HyperLinkHelper } from '../Helpers/HyperLinkHelper';
 
 /**
  * Props for the ToolBar component.
@@ -126,7 +126,7 @@ export const Toolbar = (props: ToolbarProps) => {
         'ordered-list': OrderedListHelper.active(editor),
         blockquote: BlockquoteHelper.active(editor),
         code: CodeHelper.active(editor),
-        'hyperlink': HyperLinkHelper.active(editor)
+        hyperlink: HyperLinkHelper.active(editor)
     };
 
     return (
@@ -192,12 +192,12 @@ export const Toolbar = (props: ToolbarProps) => {
                 {/* uploads or links */}
                 <HyperlinkToolbarButton />
                 {props.onClickButtonUpload && (
-                        <ToolbarButton
-                            icon={'upload'}
-                            onClick={props.onClickButtonUpload}
-                            active={false}
-                            className={props.buttonClassName}
-                        />
+                    <ToolbarButton
+                        icon={'upload'}
+                        onClick={props.onClickButtonUpload}
+                        active={false}
+                        className={props.buttonClassName}
+                    />
                 )}
             </div>
         </div>

@@ -1,4 +1,4 @@
-import React, {ReactNode} from "react";
+import React, { ReactNode } from 'react';
 import styles from './Button.module.css';
 
 /**
@@ -18,7 +18,7 @@ interface ButtonProps {
 export const Button = (props: ButtonProps) => {
     return (
         <button className={`${styles.button} ${props.type}`} onClick={props.onClick}>
-            { props.children }
+            {props.children}
         </button>
-    )
-}
+    );
+};

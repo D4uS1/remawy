@@ -60,7 +60,7 @@ export const ToolbarButton = (props: ToolbarButtonProps) => {
             }
 
             case 'hyperlink': {
-                return <FaLink />
+                return <FaLink />;
             }
         }
     }, [props.icon]);

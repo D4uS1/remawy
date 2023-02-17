@@ -1,5 +1,4 @@
-import { CustomText } from './CustomText';
-import {Descendant} from "slate";
+import { Descendant } from 'slate';
 
 /**
  * Describes the available definable elements in our editor.
