@@ -23,7 +23,7 @@ const deactivateListItem = (editor: CustomEditor) => {
     // Remove lists and indented lists until we are in the "root"
     do {
         SlateUtils.unwrapNode(editor);
-    } while (['ordered-list', 'unordered-list'].includes(SlateUtils.parentElementType(editor) || ''));
+    } while (['ordered-list', 'unordered-list'].includes(SlateUtils.parentBlockType(editor) || ''));
 
     // Change the list-item element to paragraph
     SlateUtils.changeCurrentNodeType(editor, 'paragraph');
@@ -104,22 +104,22 @@ const onTab = (editor: CustomEditor, event: KeyboardEvent) => {
         // If the parent is no list (after lifting), convert it to paragraph
         // If the parentElement is null, it is assumed that the parent element is the root node, hence
         // we want to convert it back here, too
-        const parentElement = SlateUtils.parentElement(editor);
-        if (!parentElement || !['ordered-list', 'unordered-list'].includes(parentElement.type)) {
+        const parentBlock = SlateUtils.parentBlock(editor);
+        if (!parentBlock || !['ordered-list', 'unordered-list'].includes(parentBlock.type)) {
             SlateUtils.changeCurrentNodeType(editor, 'paragraph');
         }
 
         // if shift is not pressed, the list should be intended
     } else {
-        const parentElement = SlateUtils.parentElement(editor);
-        const currentElement = SlateUtils.currentElement(editor);
-        if (!currentElement || !parentElement) {
+        const parentBlock = SlateUtils.parentBlock(editor);
+        const currentBlock = SlateUtils.currentBlock(editor);
+        if (!currentBlock || !parentBlock) {
             return;
         }
 
-        if (parentElement.type === 'ordered-list') {
+        if (parentBlock.type === 'ordered-list') {
             SlateUtils.wrapNode(editor, 'ordered-list');
-        } else if (parentElement.type === 'unordered-list') {
+        } else if (parentBlock.type === 'unordered-list') {
             SlateUtils.wrapNode(editor, 'unordered-list');
         }
     }

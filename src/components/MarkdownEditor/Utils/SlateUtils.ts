@@ -15,6 +15,31 @@ const changeCurrentNodeType = (editor: CustomEditor, elementType: CustomElementT
 };
 
 /**
+ * Removes the inline node on the current cursor location, by lifting up its children.
+ *
+ * @param editor
+ */
+const removeInlineNode = (editor: CustomEditor) => {
+    const path = currentElementPath(editor);
+    if (!path) return;
+
+    Transforms.unwrapNodes(editor, { at: path });
+}
+
+/**
+ * Returns the path to the nearest non leaf element, meaning the next element not being a leaf.
+ * If the path could not be found, null will be returned.
+ *
+ * @param editor
+ */
+const currentElementPath = (editor: CustomEditor): number[] | null => {
+    if (!editor.selection) return null;
+
+    // This is based on the assumption that the users cursor is always in some leaf node
+    return editor.selection.anchor.path.slice(0, -1);
+};
+
+/**
  * Creates a new node of the same type at the current cursors position.
  *
  * @param editor
@@ -167,9 +192,7 @@ const currentBlockEnd = (editor: CustomEditor): Point => {
  * @param editor
  */
 const textSinceBlockStart = (editor: CustomEditor): string | null => {
-    if (!editor.selection || !isCursor(editor)) {
-        return null;
-    }
+    if (!editor.selection) return null;
 
     // Find the start point of the block
     const start = currentBlockStart(editor);
@@ -188,9 +211,7 @@ const textSinceBlockStart = (editor: CustomEditor): string | null => {
  * @param editor
  */
 const textToBlockEnd = (editor: CustomEditor): string | null => {
-    if (!editor.selection || !isCursor(editor)) {
-        return null;
-    }
+    if (!editor.selection) return null;
 
     // Find the end point of the block
     const end = currentBlockEnd(editor);
@@ -217,9 +238,7 @@ const textToBlockEnd = (editor: CustomEditor): string | null => {
  * @param searchText
  */
 const lastPosOf = (editor: CustomEditor, searchText: string, options?: { isolated?: true }): Point | null => {
-    if (!editor.selection || !isCursor(editor)) {
-        return null;
-    }
+    if (!editor.selection) return null;
 
     // Select the text between start of the block and the current cursor position
     const blockText = currentBlockText(editor);
@@ -260,9 +279,7 @@ const lastPosOf = (editor: CustomEditor, searchText: string, options?: { isolate
  * @param searchText
  */
 const cursorIsBehind = (editor: CustomEditor, searchText: string): boolean => {
-    if (!editor.selection || !isCursor(editor)) {
-        return false;
-    }
+    if (!editor.selection || !isCursor(editor)) return false;
 
     return !!textSinceBlockStart(editor)?.endsWith(searchText);
 };
@@ -358,15 +375,12 @@ const deleteAt = (editor: CustomEditor, start: Point, numChars: number) => {
 /**
  * Checks whether the cursor is in a node being a child of a node having the specified type elementType.
  * This checks recursively in the tree, not only one parent.
- * This only works for cursors, not for text selections. If the user selected some text, false will always be returned.
  *
  * @param editor
  * @param elementType
  */
 const isChildOf = (editor: CustomEditor, elementType: CustomElementType): boolean => {
-    if (!isCursor(editor) || !editor.selection) {
-        return false;
-    }
+    if (!editor.selection) return false;
 
     return (
         Editor.above(editor, {
@@ -376,16 +390,15 @@ const isChildOf = (editor: CustomEditor, elementType: CustomElementType): boolea
 };
 
 /**
- * Returns the current element of the cursor the user is currently located.
- * If the user selected some text or the element could not be found, null will be returned.
- * Note that this method does not return leafes. It only returns the nearest element the user is located in.
+ * Returns the current block element of the cursor the user is currently located.
+ * If the element could not be found, null will be returned.
+ * Note that this method does not return leafs or inline elements.
+ * It only returns the nearest block element the user is located in.
  *
  * @param editor
  */
-const currentElement = (editor: CustomEditor): CustomElement | null => {
-    if (!isCursor(editor) || !editor.selection) {
-        return null;
-    }
+const currentBlock = (editor: CustomEditor): CustomElement | null => {
+    if (!editor.selection) return null;
 
     const nodeEntry = Editor.above(editor, { match: (n) => Editor.isBlock(editor, n as CustomElement) });
     if (!nodeEntry) {
@@ -400,32 +413,56 @@ const currentElement = (editor: CustomEditor): CustomElement | null => {
 };
 
 /**
- * Returns the path to the current element, meaning the next element not being a leaf.
- * If the user selected some text of the path could not be found, null will be returned.
+ * Returns the path to the nearest block element.
+ * If the path could not be found, null will be returned.
  *
  * @param editor
  */
-const currentElementPath = (editor: CustomEditor): number[] | null => {
-    if (!isCursor(editor) || !editor.selection) {
-        return null;
-    }
+const currentBlockPath = (editor: CustomEditor): number[] | null => {
+    if (!editor.selection) return null;
 
-    // This is based on the assumption that the users cursor is always in some leaf node
-    return editor.selection.anchor.path.slice(0, -1);
+    let currentPath = currentElementPath(editor);
+    if (!currentPath) return null;
+
+    return nearestBlockPath(editor, currentPath)
 };
 
 /**
- * Returns the type name of the node the user is currently located in.
- * If the user selected some text or the type could not be found, null will be returned.
+ * Returns the nearest path above the specified path that contains a block.
+ * If the path could not be found, null will be returned.
+ *
+ * @param editor
+ * @param path
+ */
+const nearestBlockPath = (editor: CustomEditor, path: number[]): number[] |null => {
+    let currentPath = path;
+    if (currentPath.length === 0) return null;
+
+    do {
+        let currentElement = Node.get(editor, currentPath)
+        if (!currentElement) return null;
+
+        if (Editor.isBlock(editor, currentElement as CustomElement)) {
+            return currentPath;
+        }
+
+        currentPath = currentPath.slice(0, -1);
+    } while(currentPath.length > 0)
+
+    return null;
+}
+
+/**
+ * Returns the type name of the block node the user is currently located in.
+ * If the type could not be found, null will be returned.
+ * Note that this returns the type of the block, not of inline elements.
  *
  * @param editor
  */
-const currentElementType = (editor: CustomEditor): CustomElementType | null => {
-    if (!isCursor(editor) || !editor.selection) {
-        return null;
-    }
+const currentBlockType = (editor: CustomEditor): CustomElementType | null => {
+    if (!editor.selection) return null;
 
-    const element = currentElement(editor);
+    const element = currentBlock(editor);
     if (!element) {
         return null;
     }
@@ -434,64 +471,48 @@ const currentElementType = (editor: CustomEditor): CustomElementType | null => {
 };
 
 /**
- * Returns the parent element of the current cursors position in the editor.
- * If the user selected some text or the parent could not be specified, null will be returned.
- * Note that this method does not return leafes. It only returns the nearest parent of
+ * Returns the parent block element of the current cursors position in the editor.
+ * If the parent could not be specified, null will be returned.
+ * Note that this method does not return leaves. It only returns the nearest parent of
  * the element the user is located in.
  *
  * @param editor
  */
-const parentElement = (editor: CustomEditor): CustomElement | null => {
-    if (!isCursor(editor) || !editor.selection) {
-        return null;
-    }
+const parentBlock = (editor: CustomEditor): CustomElement | null => {
+    if (!editor.selection) return null;
 
-    const currentPath = currentElementPath(editor);
-    if (!currentPath) {
-        return null;
-    }
+    let currentPath = currentBlockPath(editor);
+    if (!currentPath) return null;
 
-    const parentEntry = Editor.parent(editor, currentPath);
-    if (!parentEntry) {
-        return null;
-    }
+    currentPath = currentPath.slice(0, -1);
+    currentPath = nearestBlockPath(editor, currentPath);
 
-    if (!isElement(parentEntry[0])) {
-        return null;
-    }
+    if (!currentPath) return null;
 
-    return parentEntry[0] as CustomElement;
+    return Node.get(editor, currentPath) as CustomElement;
 };
 
 /**
  * Returns the type of the parent of the current cursors position in the editor.
- * If the user selected some text or the parent could not be specified, null will be returned.
+ * If the parent could not be specified, null will be returned.
  *
  * @param editor
  */
-const parentElementType = (editor: CustomEditor): CustomElementType | null => {
-    if (!isCursor(editor)) {
-        return null;
-    }
-
-    const element = parentElement(editor);
-    if (!element) {
-        return null;
-    }
+const parentBlockType = (editor: CustomEditor): CustomElementType | null => {
+    const element = parentBlock(editor);
+    if (!element) return null;
 
     return element.type;
 };
 
 /**
  * Returns the leaf at the current editors cursor.
- * If the user selected some text or the leaf could not be found, null will be returned.
+ * If the leaf could not be found, null will be returned.
  *
  * @param editor
  */
 const currentLeaf = (editor: CustomEditor): CustomText | null => {
-    if (!isCursor(editor) || !editor.selection) {
-        return null;
-    }
+    if (!editor.selection)  return null;
 
     const nodeEntry = Editor.node(editor, editor.selection.anchor);
     if (!nodeEntry || !isLeaf(nodeEntry[0])) {
@@ -644,6 +665,7 @@ const setLeafFormat = (
 };
 
 export const SlateUtils = {
+    removeInlineNode: removeInlineNode,
     changeCurrentNodeType: changeCurrentNodeType,
     createNewNode: createNewNode,
     createNewNodeOfCurrentType: createNewNodeOfCurrentType,
@@ -652,6 +674,7 @@ export const SlateUtils = {
     unwrapLeaf: unwrapLeaf,
     isCursor: isCursor,
     isSelection: isSelection,
+    nearestBlockPath: nearestBlockPath,
     currentBlockStart: currentBlockStart,
     currentBlockEnd: currentBlockEnd,
     textSinceBlockStart: textSinceBlockStart,
@@ -664,11 +687,11 @@ export const SlateUtils = {
     deleteFromRight: deleteFromRight,
     deleteAt: deleteAt,
     isChildOf: isChildOf,
-    currentElement: currentElement,
-    currentElementType: currentElementType,
+    currentBlock: currentBlock,
+    currentBlockType: currentBlockType,
     currentElementPath: currentElementPath,
-    parentElement: parentElement,
-    parentElementType: parentElementType,
+    parentBlock: parentBlock,
+    parentBlockType: parentBlockType,
     currentLeaf: currentLeaf,
     isElement: isElement,
     isLeaf: isLeaf,

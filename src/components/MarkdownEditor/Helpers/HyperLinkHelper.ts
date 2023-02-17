@@ -19,7 +19,7 @@ const active = (editor: CustomEditor): boolean => {
  * @param editor
  */
 const toggle = (editor: CustomEditor) => {
-    HelperUtils.toggleAtRoot(editor, 'hyperlink');
+    HelperUtils.toggleInlineNode(editor, 'hyperlink');
 };
 
 /**

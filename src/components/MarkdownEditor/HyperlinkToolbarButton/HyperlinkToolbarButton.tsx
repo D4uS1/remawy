@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, useMemo, useState} from 'react';
 import {ToolbarButton} from "../ToolbarButton/ToolbarButton";
 import {Popover} from "../../shared/components/Popover/Popover";
 import styles from './HyperlinkToolbarButton.module.css';
@@ -7,6 +7,7 @@ import {Button} from "../../shared/components/Button/Button";
 import {CustomEditor} from "../Types/CustomEditor";
 import {useSlate} from "slate-react";
 import {HyperLinkHelper} from "../Helpers/HyperLinkHelper";
+import {SlateUtils} from "../Utils/SlateUtils";
 
 /**
  * Props for the HyperlinkToolbarButton component.
@@ -72,6 +73,21 @@ export const HyperlinkToolbarButton = (props: HyperlinkToolbarButtonProps) => {
         HyperLinkHelper.onUpsert(editor, { href: href, children: [{ text: title }] })
     }
 
+    /**
+     * Returns whether the current selected element is a hyperlink.
+     */
+    const isHyperlink = useMemo(() => {
+        return SlateUtils.isChildOf(editor, 'hyperlink');
+    }, [editor.selection]);
+
+    /**
+     * Called if the user clicks the remove button.
+     * Removes the hyperlink if the current selection is a hyperlink.
+     */
+    const onClickRemove = () => {
+        HyperLinkHelper.toggle(editor)
+    }
+
     return (
         <div className={styles.container}>
             <ToolbarButton onClick={onClickToolbarButton} icon='hyperlink' />
@@ -89,6 +105,7 @@ export const HyperlinkToolbarButton = (props: HyperlinkToolbarButtonProps) => {
                             </div>
 
                             <div className={formStyles.buttonsContainer}>
+                                { isHyperlink && <Button type='danger' onClick={onClickRemove}>Remove</Button> }
                                 <Button type='primary' onClick={onClickSubmit}>Insert</Button>
                             </div>
                         </div>

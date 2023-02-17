@@ -1,8 +1,10 @@
 @value colors: "../../styles/colors.module.css";
-@value button-color-primary, button-text-color-primary, button-color-secondary, button-text-color-secondary from colors;
+@value button-color-primary, button-text-color-primary, button-color-secondary, button-text-color-secondary, button-color-danger, button-text-color-danger from colors;
 
 .button {
-    border-radius: 0.1rem;
+    border-radius: 0.2rem;
+    border: none;
+    padding: 0.2rem;
 }
 
 .button:global(.primary) {
@@ -13,4 +15,9 @@
 .button:global(.secondary) {
     background-color: button-color-secondary;
     color: button-text-color-secondary;
+}
+
+.button:global(.danger) {
+    background-color: button-color-danger;
+    color: button-text-color-danger;
 }

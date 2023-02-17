@@ -6,7 +6,7 @@ import styles from './Button.module.css';
  */
 interface ButtonProps {
     // The type of the button, defining its design
-    type: 'primary' | 'secondary';
+    type: 'primary' | 'secondary' | 'danger';
 
     // Called if the user clicks the button
     onClick: () => void;

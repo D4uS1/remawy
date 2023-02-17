@@ -60,6 +60,24 @@ const toggleAtRoot = (editor: CustomEditor, elementType: CustomElementType): voi
 };
 
 /**
+ * Can be used by helpers to toggle nodes of elementType inline.
+ * The node is converted to a leaf if it is currently active, if possible.
+ * Otherwise the current node tyoe is set to elementType.
+ *
+ * @param editor
+ * @param elementType
+ */
+const toggleInlineNode = (editor: CustomEditor, elementType: CustomElementType): void => {
+    const isActive = defaultIsActive(editor, elementType);
+
+    if (isActive) {
+        SlateUtils.removeInlineNode(editor);
+    } else {
+        SlateUtils.changeCurrentNodeType(editor, elementType);
+    }
+}
+
+/**
  * Can be used by helpers to toggle the element at the editors current cursor between the
  * specified elementType and default paragraph.
  * The element is expected to be allowed in list items, meaning that lists can be used to eg. indent the element.
@@ -135,6 +153,7 @@ const onEnterWithListAndNewlineAllowed = (editor: CustomEditor, event: KeyboardE
 export const HelperUtils = {
     defaultIsActive: defaultIsActive,
     defaultToggle: defaultToggle,
+    toggleInlineNode: toggleInlineNode,
     toggleAtRoot: toggleAtRoot,
     toggleWithListAllowed: toggleWithListAllowed,
     onEnterWithShiftLinebreak: onEnterWithShiftLinebreak,
