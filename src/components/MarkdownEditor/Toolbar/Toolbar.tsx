@@ -18,6 +18,7 @@ import { Heading6Helper } from '../Helpers/Heading6Helper';
 import { useSlate } from 'slate-react';
 import { HyperlinkToolbarButton } from '../HyperlinkToolbarButton/HyperlinkToolbarButton';
 import { HyperlinkHelper } from '../Helpers/HyperlinkHelper';
+import { ImageToolbarButton } from '../ImageToolbarButton/ImageToolbarButton';
 
 /**
  * Props for the ToolBar component.
@@ -191,6 +192,7 @@ export const Toolbar = (props: ToolbarProps) => {
 
                 {/* uploads or links */}
                 <HyperlinkToolbarButton />
+                <ImageToolbarButton />
                 {props.onClickButtonUpload && (
                     <ToolbarButton
                         icon={'upload'}

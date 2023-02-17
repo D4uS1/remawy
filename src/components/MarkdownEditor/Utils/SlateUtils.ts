@@ -40,6 +40,23 @@ const currentElementPath = (editor: CustomEditor): number[] | null => {
 };
 
 /**
+ * Returns the element at the current cursors position.
+ * This is the first element not being a leaf. This also includes inline elements like images and hyperlinks.
+ *
+ * @param editor
+ */
+const currentElement = (editor: CustomEditor): CustomElement | null => {
+    let currentPath = editor.selection?.anchor.path;
+    if (!currentPath) return null;
+
+    // this is an assumption, because the selected node should be the leaf, hence we need the leafs parent
+    currentPath = currentPath.slice(0, -1);
+    const currentElement = Node.get(editor, currentPath) as CustomElement;
+
+    return currentElement;
+};
+
+/**
  * Returns the nearest element having the specified type in the parents and the node itself at the current users selection.
  * If no element was found, null will be returned.
  *
@@ -99,7 +116,6 @@ const createNewNode = (
         props?: Partial<CustomElement>;
         voids?: boolean;
         createFollowingParagraph?: boolean;
-        createFollowingLeaf?: boolean;
     } = {}
 ) => {
     Transforms.insertNodes(
@@ -730,6 +746,7 @@ export const SlateUtils = {
     nearestElementOfType: nearestElementOfType,
     currentBlock: currentBlock,
     currentBlockType: currentBlockType,
+    currentElement: currentElement,
     currentElementPath: currentElementPath,
     parentBlock: parentBlock,
     parentBlockType: parentBlockType,
