@@ -1,11 +1,11 @@
 import React, { ChangeEvent, Ref, useContext } from 'react';
-import styles from './Input.module.css';
+import styles from './FormInput.module.css';
 import { CustomStyle, CustomStyleContext } from '../../contexts/CustomStyle/Context';
 
 /**
  * Props for the Input component.
  */
-export interface InputProps {
+export interface FormInputProps {
     // The current input content
     value: string;
 
@@ -22,7 +22,7 @@ export interface InputProps {
  * @param props
  * @constructor
  */
-export const FormInput = (props: InputProps) => {
+export const FormInput = (props: FormInputProps) => {
     const customStyle = useContext<CustomStyle | undefined>(CustomStyleContext);
 
     /**

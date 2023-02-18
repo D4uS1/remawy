@@ -1,5 +1,5 @@
 import React, { ReactNode, useContext } from 'react';
-import styles from './Button.module.css';
+import styles from './FormButton.module.css';
 import { CustomStyle, CustomStyleContext } from '../../contexts/CustomStyle/Context';
 
 /**
