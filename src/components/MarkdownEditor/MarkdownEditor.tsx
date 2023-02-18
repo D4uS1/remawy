@@ -64,17 +64,8 @@ export interface MarkdownEditorProps {
         // valid mime types, including *, eg. "image/*, application/csv"
         acceptedFileTypes?: string;
 
-        // If given, this message will be shown if the user wants to upload a file with an invalid file type
-        invalidFileTypeMessage?: string;
-
         // If given, the selected file sizes (in bytes) will be validated before upload
         maxFileSize?: number;
-
-        // If given, this message will be shown if the user wants to upload a file that is too large
-        maxFileSizeMessage?: string;
-
-        // Optional title shown in the upload modal header
-        modalHeaderTitle?: string;
     };
 }
 

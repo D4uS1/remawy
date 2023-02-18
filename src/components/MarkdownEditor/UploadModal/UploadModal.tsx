@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
 import {
     AbstractUploader,
     UploaderErrorCallback,
@@ -9,6 +9,7 @@ import styles from './UploadModal.module.css';
 import { Modal } from '../../shared/components/Modal/Modal';
 import { Form } from '../../shared/components/Form/Form';
 import { FormGroup } from '../../shared/components/FormGroup/FormGroup';
+import { CustomStyle, CustomStyleContext } from '../../shared/contexts/CustomStyle/Context';
 
 /**
  * Props for the UploadModal component.
@@ -26,20 +27,11 @@ interface UploadModalProps {
     // valid mime types, including *, eg. "image/*, application/csv"
     acceptedFileTypes?: string;
 
-    // If given, this message will be shown if the user wants to upload a file with an invalid file type
-    invalidFileTypeMessage?: string;
-
     // If given, the selected file sizes (in bytes) will be validated before upload
     maxFileSize?: number;
 
-    // If given, this message will be shown if the user wants to upload a file that is too large
-    maxFileSizeMessage?: string;
-
     // Called if the modal should be closed
     onClose: () => void;
-
-    // Optional title of the upload modal that is shown to the user
-    modalHeaderTitle?: string;
 }
 
 /**
@@ -49,6 +41,7 @@ interface UploadModalProps {
  * @constructor
  */
 export const UploadModal = (props: UploadModalProps) => {
+    const customStyle = useContext<CustomStyle | undefined>(CustomStyleContext);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [uploadProgress, setUploadProgress] = useState<number | null>(null);
 
@@ -120,7 +113,7 @@ export const UploadModal = (props: UploadModalProps) => {
         if (props.acceptedFileTypes) {
             for (const file of selectedFiles) {
                 if (!fileTypeMatches(file.type, props.acceptedFileTypes)) {
-                    return setErrorMessage(props.invalidFileTypeMessage || 'Invalid file type.');
+                    return setErrorMessage(customStyle?.texts?.invalidFileTypeError || 'Invalid file type.');
                 }
             }
         }
@@ -129,7 +122,7 @@ export const UploadModal = (props: UploadModalProps) => {
         if (props.maxFileSize) {
             for (const file of selectedFiles) {
                 if (file.size > props.maxFileSize) {
-                    return setErrorMessage(props.maxFileSizeMessage || 'File too large.');
+                    return setErrorMessage(customStyle?.texts?.maxFileSizeError || 'File too large.');
                 }
             }
         }
@@ -143,7 +136,7 @@ export const UploadModal = (props: UploadModalProps) => {
     };
 
     return (
-        <Modal title={props.modalHeaderTitle || 'Upload file'} onClose={props.onClose}>
+        <Modal title={customStyle?.texts?.uploadModalHeaderTitle || 'Upload file'} onClose={props.onClose}>
             <Form>
                 <FormGroup>
                     <input

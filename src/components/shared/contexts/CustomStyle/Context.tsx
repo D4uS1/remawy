@@ -5,6 +5,30 @@ import { createContext } from 'react';
  * Holds all css classes and other attributes needed to customize the style of ReMaWy.
  */
 export interface CustomStyle {
+    // Holds several texts for buttons or other content
+    texts?: {
+        // Used by the label in the image and hyperlink forms
+        url?: string;
+
+        // Used by the submit buttons in the image and hyperlink forms
+        insert?: string;
+
+        // Used by the remove buttons in the image and hyperlink forms
+        remove?: string;
+
+        // Used by the upload button in the image form
+        upload?: string;
+
+        // The title shown in the header of the modal to upload a file
+        uploadModalHeaderTitle?: string;
+
+        // Used by the upload modal if someone tried to insert a not accepted file type
+        invalidFileTypeError?: string;
+
+        // Used by the upload modal if someone trief to upload a too large file
+        maxFileSizeError?: string;
+    };
+
     // Styles for the editor itself
     editor?: {
         // Optional class name that is passed to the outer container, holding the toolbar and the editor

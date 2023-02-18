@@ -1,11 +1,12 @@
 import { useSlate } from 'slate-react';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { SlateUtils } from '../Utils/SlateUtils';
 import styles from './ImageToolbarButton.module.css';
 import { ToolbarButton } from '../ToolbarButton/ToolbarButton';
 import { Popover } from '../../shared/components/Popover/Popover';
 import { ImageHelper } from '../Helpers/ImageHelper';
 import { Form } from '../../shared/components/Form/Form';
+import { CustomStyle, CustomStyleContext } from '../../shared/contexts/CustomStyle/Context';
 
 /**
  * Props for the ImageToolbarButton component.
@@ -22,6 +23,7 @@ interface ImageToolbarButtonProps {
  * @constructor
  */
 export const ImageToolbarButton = (props: ImageToolbarButtonProps) => {
+    const customStyle = useContext<CustomStyle | undefined>(CustomStyleContext);
     const editor = useSlate();
     const [showPopover, setShowPopover] = useState<boolean>(false);
     const [src, setSrc] = useState<string>('');
@@ -98,19 +100,19 @@ export const ImageToolbarButton = (props: ImageToolbarButtonProps) => {
                 <Popover onClose={onClosePopover} onPressEnter={onPressEnter} align="top-right">
                     <Form>
                         <Form.Group>
-                            <Form.Label text={'Url'} />
+                            <Form.Label text={customStyle?.texts?.url || 'Url'} />
                             <Form.Input ref={srcInputRef} value={src} onChange={setSrc} />
                         </Form.Group>
 
                         <Form.ButtonGroup>
                             {props.onUploadRequest && (
                                 <Form.Button type={'secondary'} onClick={onClickUpload}>
-                                    Upload
+                                    {customStyle?.texts?.upload || 'Upload'}
                                 </Form.Button>
                             )}
 
                             <Form.Button type="primary" onClick={onClickSubmit}>
-                                Insert
+                                {customStyle?.texts?.insert || 'Insert'}
                             </Form.Button>
                         </Form.ButtonGroup>
                     </Form>

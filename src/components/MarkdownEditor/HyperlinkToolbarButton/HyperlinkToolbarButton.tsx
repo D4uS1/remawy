@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { ToolbarButton } from '../ToolbarButton/ToolbarButton';
 import { Popover } from '../../shared/components/Popover/Popover';
 import styles from './HyperlinkToolbarButton.module.css';
@@ -6,6 +6,7 @@ import { useSlate } from 'slate-react';
 import { HyperlinkHelper } from '../Helpers/HyperlinkHelper';
 import { SlateUtils } from '../Utils/SlateUtils';
 import { Form } from '../../shared/components/Form/Form';
+import { CustomStyle, CustomStyleContext } from '../../shared/contexts/CustomStyle/Context';
 
 /**
  * Shows a toolbar button for creating or editing an hyperlink.
@@ -13,6 +14,7 @@ import { Form } from '../../shared/components/Form/Form';
  * @constructor
  */
 export const HyperlinkToolbarButton = () => {
+    const customStyle = useContext<CustomStyle | undefined>(CustomStyleContext);
     const editor = useSlate();
     const [showPopover, setShowPopover] = useState<boolean>(false);
     const [href, setHref] = useState<string>('');
@@ -93,18 +95,18 @@ export const HyperlinkToolbarButton = () => {
                 <Popover onClose={onClosePopover} onPressEnter={onPressEnter} align="top-right">
                     <Form>
                         <Form.Group>
-                            <Form.Label text={'Url'} />
+                            <Form.Label text={customStyle?.texts?.url || 'Url'} />
                             <Form.Input ref={hrefInputRef} value={href} onChange={setHref} />
                         </Form.Group>
 
                         <Form.ButtonGroup>
                             {isHyperlink && (
                                 <Form.Button type="danger" onClick={onClickRemove}>
-                                    Remove
+                                    {customStyle?.texts?.remove || 'Remove'}
                                 </Form.Button>
                             )}
                             <Form.Button type="primary" onClick={onClickSubmit}>
-                                Insert
+                                {customStyle?.texts?.insert || 'Insert'}
                             </Form.Button>
                         </Form.ButtonGroup>
                     </Form>
