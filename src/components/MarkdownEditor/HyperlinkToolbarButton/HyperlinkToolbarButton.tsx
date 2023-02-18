@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ToolbarButton } from '../ToolbarButton/ToolbarButton';
 import { Popover } from '../../shared/components/Popover/Popover';
 import styles from './HyperlinkToolbarButton.module.css';
@@ -7,6 +7,7 @@ import { Button } from '../../shared/components/Button/Button';
 import { useSlate } from 'slate-react';
 import { HyperlinkHelper } from '../Helpers/HyperlinkHelper';
 import { SlateUtils } from '../Utils/SlateUtils';
+import { Input } from '../../shared/components/Input/Input';
 
 /**
  * Shows a toolbar button for creating or editing an hyperlink.
@@ -53,16 +54,6 @@ export const HyperlinkToolbarButton = () => {
     };
 
     /**
-     * Called if the link was changed.
-     * Updates the value to the state.
-     *
-     * @param event
-     */
-    const onChangeHref = (event: ChangeEvent<HTMLInputElement>) => {
-        setHref(event.target.value);
-    };
-
-    /**
      * Called if the user submits the data.
      * Inserts the link having the specified title and href.
      */
@@ -105,12 +96,7 @@ export const HyperlinkToolbarButton = () => {
                     <div className={formStyles.container}>
                         <div className={formStyles.group}>
                             <label>Url</label>
-                            <input
-                                ref={hrefInputRef}
-                                value={href}
-                                onChange={onChangeHref}
-                                className={styles.hrefInput}
-                            />
+                            <Input ref={hrefInputRef} value={href} onChange={setHref} className={styles.hrefInput} />
                         </div>
 
                         <div className={formStyles.buttonsContainer}>

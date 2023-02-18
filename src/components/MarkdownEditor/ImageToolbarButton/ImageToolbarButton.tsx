@@ -1,5 +1,5 @@
 import { useSlate } from 'slate-react';
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { SlateUtils } from '../Utils/SlateUtils';
 import styles from './ImageToolbarButton.module.css';
 import { ToolbarButton } from '../ToolbarButton/ToolbarButton';
@@ -7,6 +7,7 @@ import { Popover } from '../../shared/components/Popover/Popover';
 import formStyles from '../../shared/styles/forms.module.css';
 import { Button } from '../../shared/components/Button/Button';
 import { ImageHelper } from '../Helpers/ImageHelper';
+import { Input } from '../../shared/components/Input/Input';
 
 /**
  * Props for the ImageToolbarButton component.
@@ -63,16 +64,6 @@ export const ImageToolbarButton = (props: ImageToolbarButtonProps) => {
     };
 
     /**
-     * Called if the src was changed.
-     * Updates the value to the state.
-     *
-     * @param event
-     */
-    const onChangeSrc = (event: ChangeEvent<HTMLInputElement>) => {
-        setSrc(event.target.value);
-    };
-
-    /**
      * Called if the user submits the data.
      * Inserts the link having the specified title and href.
      */
@@ -110,7 +101,7 @@ export const ImageToolbarButton = (props: ImageToolbarButtonProps) => {
                     <div className={formStyles.container}>
                         <div className={formStyles.group}>
                             <label>Url</label>
-                            <input ref={srcInputRef} value={src} onChange={onChangeSrc} className={styles.hrefInput} />
+                            <Input ref={srcInputRef} value={src} onChange={setSrc} className={styles.srcInput} />
                         </div>
 
                         <div className={formStyles.buttonsContainer}>
