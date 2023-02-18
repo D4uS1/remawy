@@ -1,18 +1,16 @@
-import React, { ChangeEvent, Ref } from 'react';
+import React, { ChangeEvent, Ref, useContext } from 'react';
 import styles from './Input.module.css';
+import { CustomStyle, CustomStyleContext } from '../../contexts/CustomStyle/Context';
 
 /**
  * Props for the Input component.
  */
-interface InputProps {
+export interface InputProps {
     // The current input content
     value: string;
 
     // Called if the content of the input changed
     onChange: (value: string) => void;
-
-    // Optional class name for the input field
-    className?: string;
 
     // Optional ref to the input
     ref?: Ref<HTMLInputElement>;
@@ -24,7 +22,9 @@ interface InputProps {
  * @param props
  * @constructor
  */
-export const Input = (props: InputProps) => {
+export const FormInput = (props: InputProps) => {
+    const customStyle = useContext<CustomStyle | undefined>(CustomStyleContext);
+
     /**
      * Called if the content of the input changed.
      * Calls the callback given by the props.
@@ -38,7 +38,7 @@ export const Input = (props: InputProps) => {
     return (
         <input
             ref={props.ref}
-            className={`${styles.input} ${props.className || ''}`}
+            className={`${styles.input} ${customStyle?.forms?.inputClassName || ''}`}
             value={props.value}
             onChange={onChange}
         />

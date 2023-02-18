@@ -1,0 +1,6 @@
+@value colors: "../../styles/colors.module.css";
+@value color-font-danger from colors;
+
+.error {
+    color: color-font-danger;
+}

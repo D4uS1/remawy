@@ -1,13 +1,14 @@
-import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import {
     AbstractUploader,
     UploaderErrorCallback,
     UploaderFinishCallback,
     UploaderProgressCallback
-} from './Upload/Uploader/AbstractUploader';
+} from '../Upload/Uploader/AbstractUploader';
 import styles from './UploadModal.module.css';
-import { Modal } from '../shared/components/Modal/Modal';
-import { CustomStyle, CustomStyleContext } from '../shared/contexts/CustomStyle/Context';
+import { Modal } from '../../shared/components/Modal/Modal';
+import { Form } from '../../shared/components/Form/Form';
+import { FormGroup } from '../../shared/components/FormGroup/FormGroup';
 
 /**
  * Props for the UploadModal component.
@@ -48,7 +49,6 @@ interface UploadModalProps {
  * @constructor
  */
 export const UploadModal = (props: UploadModalProps) => {
-    const customStyles = useContext<CustomStyle | undefined>(CustomStyleContext);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [uploadProgress, setUploadProgress] = useState<number | null>(null);
 
@@ -143,22 +143,19 @@ export const UploadModal = (props: UploadModalProps) => {
     };
 
     return (
-        <Modal
-            title={props.modalHeaderTitle || 'Upload file'}
-            onClose={props.onClose}
-            containerClassName={customStyles?.uploadModal?.containerClassName}
-            innerContainerClassName={customStyles?.uploadModal?.innerContainerClassName}
-            headerContainerClassName={customStyles?.uploadModal?.headerContainerClassName}
-            bodyContainerClassName={customStyles?.uploadModal?.bodyContainerClassName}
-        >
-            <input
-                className={styles.fileInput}
-                type="file"
-                onChange={onFileSelect}
-                disabled={uploadProgress !== null}
-            />
+        <Modal title={props.modalHeaderTitle || 'Upload file'} onClose={props.onClose}>
+            <Form>
+                <FormGroup>
+                    <input
+                        className={styles.fileInput}
+                        type="file"
+                        onChange={onFileSelect}
+                        disabled={uploadProgress !== null}
+                    />
 
-            {errorMessage && <span className={styles.errorMessage}>{errorMessage}</span>}
+                    {errorMessage && <Form.Error text={errorMessage} />}
+                </FormGroup>
+            </Form>
 
             {uploadProgress !== null && (
                 <progress className={styles.progressBar} max={100.0} value={uploadProgress * 100} />

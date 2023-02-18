@@ -1,6 +1,7 @@
-import React, { ReactNode, useRef, KeyboardEvent } from 'react';
+import React, { ReactNode, useRef, KeyboardEvent, useContext } from 'react';
 import styles from './Popover.module.css';
 import { useOnClickOutside } from 'usehooks-ts';
+import { CustomStyle, CustomStyleContext } from '../../contexts/CustomStyle/Context';
 
 /**
  * Props for the Popover component.
@@ -26,6 +27,7 @@ interface PopoverProps {
  * @constructor
  */
 export const Popover = (props: PopoverProps) => {
+    const customStyle = useContext<CustomStyle | undefined>(CustomStyleContext);
     const clickOutsideRef = useRef<HTMLDivElement>(null);
 
     // Clicking outside the modal should close the modal
@@ -47,8 +49,14 @@ export const Popover = (props: PopoverProps) => {
     };
 
     return (
-        <div className={styles.container}>
-            <div className={`${styles.innerContainer} ${props.align}`} ref={clickOutsideRef} onKeyDown={onKeyDown}>
+        <div className={`${styles.container} ${customStyle?.popover?.containerClassName || ''}`}>
+            <div
+                className={`${styles.innerContainer} ${props.align} ${
+                    customStyle?.popover?.innerContainerClassName || ''
+                }`}
+                ref={clickOutsideRef}
+                onKeyDown={onKeyDown}
+            >
                 {props.children}
             </div>
         </div>

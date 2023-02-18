@@ -2,12 +2,10 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ToolbarButton } from '../ToolbarButton/ToolbarButton';
 import { Popover } from '../../shared/components/Popover/Popover';
 import styles from './HyperlinkToolbarButton.module.css';
-import formStyles from '../../shared/styles/forms.module.css';
-import { Button } from '../../shared/components/Button/Button';
 import { useSlate } from 'slate-react';
 import { HyperlinkHelper } from '../Helpers/HyperlinkHelper';
 import { SlateUtils } from '../Utils/SlateUtils';
-import { Input } from '../../shared/components/Input/Input';
+import { Form } from '../../shared/components/Form/Form';
 
 /**
  * Shows a toolbar button for creating or editing an hyperlink.
@@ -93,23 +91,23 @@ export const HyperlinkToolbarButton = () => {
             <ToolbarButton onClick={onClickToolbarButton} icon="hyperlink" />
             {showPopover && (
                 <Popover onClose={onClosePopover} onPressEnter={onPressEnter} align="top-right">
-                    <div className={formStyles.container}>
-                        <div className={formStyles.group}>
-                            <label>Url</label>
-                            <Input ref={hrefInputRef} value={href} onChange={setHref} className={styles.hrefInput} />
-                        </div>
+                    <Form>
+                        <Form.Group>
+                            <Form.Label text={'Url'} />
+                            <Form.Input ref={hrefInputRef} value={href} onChange={setHref} />
+                        </Form.Group>
 
-                        <div className={formStyles.buttonsContainer}>
+                        <Form.ButtonGroup>
                             {isHyperlink && (
-                                <Button type="danger" onClick={onClickRemove}>
+                                <Form.Button type="danger" onClick={onClickRemove}>
                                     Remove
-                                </Button>
+                                </Form.Button>
                             )}
-                            <Button type="primary" onClick={onClickSubmit}>
+                            <Form.Button type="primary" onClick={onClickSubmit}>
                                 Insert
-                            </Button>
-                        </div>
-                    </div>
+                            </Form.Button>
+                        </Form.ButtonGroup>
+                    </Form>
                 </Popover>
             )}
         </div>

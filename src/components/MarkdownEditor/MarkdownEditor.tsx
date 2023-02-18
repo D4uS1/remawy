@@ -22,7 +22,7 @@ import { CustomLeafHelper } from './Helpers/CustomLeafHelper';
 import { Toolbar } from './Toolbar/Toolbar';
 import { Helpers } from './Helpers/Helpers';
 import styles from './MarkdownEditor.module.css';
-import { UploadModal } from './UploadModal';
+import { UploadModal } from './UploadModal/UploadModal';
 import { AbstractUploader, UploaderFinishCallback } from './Upload/Uploader/AbstractUploader';
 import { ImageElement } from './Elements/ImageElement';
 import { HyperlinkElement } from './Elements/HyperlinkElement';

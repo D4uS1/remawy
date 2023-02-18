@@ -1,0 +1,9 @@
+@value colors: "../../styles/colors.module.css";
+@value color-font-secondary from colors;
+@value distances: "../../styles/distances.module.css";
+@value size-font-small from distances;
+
+.label {
+    font-size: size-font-small;
+    color: color-font-secondary
+}

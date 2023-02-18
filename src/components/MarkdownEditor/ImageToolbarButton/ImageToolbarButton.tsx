@@ -4,10 +4,8 @@ import { SlateUtils } from '../Utils/SlateUtils';
 import styles from './ImageToolbarButton.module.css';
 import { ToolbarButton } from '../ToolbarButton/ToolbarButton';
 import { Popover } from '../../shared/components/Popover/Popover';
-import formStyles from '../../shared/styles/forms.module.css';
-import { Button } from '../../shared/components/Button/Button';
 import { ImageHelper } from '../Helpers/ImageHelper';
-import { Input } from '../../shared/components/Input/Input';
+import { Form } from '../../shared/components/Form/Form';
 
 /**
  * Props for the ImageToolbarButton component.
@@ -98,24 +96,24 @@ export const ImageToolbarButton = (props: ImageToolbarButtonProps) => {
             <ToolbarButton onClick={onClickToolbarButton} icon="image" />
             {showPopover && (
                 <Popover onClose={onClosePopover} onPressEnter={onPressEnter} align="top-right">
-                    <div className={formStyles.container}>
-                        <div className={formStyles.group}>
-                            <label>Url</label>
-                            <Input ref={srcInputRef} value={src} onChange={setSrc} className={styles.srcInput} />
-                        </div>
+                    <Form>
+                        <Form.Group>
+                            <Form.Label text={'Url'} />
+                            <Form.Input ref={srcInputRef} value={src} onChange={setSrc} />
+                        </Form.Group>
 
-                        <div className={formStyles.buttonsContainer}>
+                        <Form.ButtonGroup>
                             {props.onUploadRequest && (
-                                <Button type={'secondary'} onClick={onClickUpload}>
+                                <Form.Button type={'secondary'} onClick={onClickUpload}>
                                     Upload
-                                </Button>
+                                </Form.Button>
                             )}
 
-                            <Button type="primary" onClick={onClickSubmit}>
+                            <Form.Button type="primary" onClick={onClickSubmit}>
                                 Insert
-                            </Button>
-                        </div>
-                    </div>
+                            </Form.Button>
+                        </Form.ButtonGroup>
+                    </Form>
                 </Popover>
             )}
         </div>
