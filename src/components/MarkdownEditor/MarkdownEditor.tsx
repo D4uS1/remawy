@@ -28,6 +28,8 @@ import { ImageElement } from './Elements/ImageElement';
 import { HyperlinkElement } from './Elements/HyperlinkElement';
 import { HyperlinkHelper } from './Helpers/HyperlinkHelper';
 import { ImageHelper } from './Helpers/ImageHelper';
+import { CustomStyleContextProvider } from '../shared/contexts/CustomStyle/Provider';
+import { CustomStyle } from '../shared/contexts/CustomStyle/Context';
 
 /**
  * Extend the CustomTypes in the slate module to tell slate what custom elements we have.
@@ -50,17 +52,8 @@ export interface MarkdownEditorProps {
     // Called if the Markdown content was changed and submitted
     onSubmit: (markdown: string) => void;
 
-    // Optional class name that is passed to the container.
-    className?: string;
-
-    // Optional css class name that is passed to the toolbar container
-    toolbarClassName?: string;
-
-    // Optional css class name that is passed to the toolbar buttons
-    toolbarButtonClassName?: string;
-
-    // Optional css class name that is passed to the editor container
-    editorClassName?: string;
+    // Holds css classes and values to customize the style of the editor
+    customStyle?: CustomStyle;
 
     // If given, file uploads are enabled
     uploadInfo?: {
@@ -82,18 +75,6 @@ export interface MarkdownEditorProps {
 
         // Optional title shown in the upload modal header
         modalHeaderTitle?: string;
-
-        // Optional css class that is passed to the modal outer container (the absolute container)
-        modalContainerClassName?: string;
-
-        // Optional css class that is passed to the modal inner container, holding the upload form (the relative container)
-        modalInnerContainerClassName?: string;
-
-        // Optional css class that is passed to the modal header holding the close button
-        modalHeaderContainerClassName?: string;
-
-        // Optional css class name that is passed to the modal body holding the form
-        modalBodyContainerClassName?: string;
     };
 }
 
@@ -370,40 +351,38 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
     };
 
     return (
-        <Slate
-            editor={editor}
-            value={[
-                {
-                    type: 'paragraph',
-                    children: [{ text: 'A line of text in a paragraph.' }]
-                }
-            ]}
-            onChange={onSlateChange}
-        >
-            <div className={`${styles.container} ${props.className || ''}`}>
-                <Toolbar
-                    className={props.toolbarClassName}
-                    buttonClassName={props.toolbarButtonClassName}
-                    onUploadRequest={props.uploadInfo ? onUploadRequest : undefined}
-                />
+        <CustomStyleContextProvider value={props.customStyle}>
+            <Slate
+                editor={editor}
+                value={[
+                    {
+                        type: 'paragraph',
+                        children: [{ text: 'A line of text in a paragraph.' }]
+                    }
+                ]}
+                onChange={onSlateChange}
+            >
+                <div className={`${styles.container} ${props.customStyle?.editor?.containerClassName || ''}`}>
+                    <Toolbar onUploadRequest={props.uploadInfo ? onUploadRequest : undefined} />
 
-                <Editable
-                    className={props.editorClassName}
-                    renderElement={renderElement}
-                    renderLeaf={renderLeaf}
-                    onKeyDown={onKeyDown}
-                />
-            </div>
+                    <Editable
+                        className={props.customStyle?.editor?.editorContainerClassName}
+                        renderElement={renderElement}
+                        renderLeaf={renderLeaf}
+                        onKeyDown={onKeyDown}
+                    />
+                </div>
 
-            {props.uploadInfo && uploadModalData.show && (
-                <UploadModal
-                    onUploadFinish={onUploadFinished}
-                    onClose={onCloseUploadModal}
-                    {...props.uploadInfo}
-                    acceptedFileTypes={uploadModalData.accept || props.uploadInfo.acceptedFileTypes}
-                />
-            )}
-        </Slate>
+                {props.uploadInfo && uploadModalData.show && (
+                    <UploadModal
+                        onUploadFinish={onUploadFinished}
+                        onClose={onCloseUploadModal}
+                        {...props.uploadInfo}
+                        acceptedFileTypes={uploadModalData.accept || props.uploadInfo.acceptedFileTypes}
+                    />
+                )}
+            </Slate>
+        </CustomStyleContextProvider>
     );
 };
 

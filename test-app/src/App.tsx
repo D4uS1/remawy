@@ -29,7 +29,11 @@ function App() {
                 <span>Editor: </span>
                 <MarkdownEditor markdown={markdown}
                                 onSubmit={setMarkdown}
-                                className={styles.editorContainer}
+                                customStyle={{
+                                    editor: {
+                                        editorContainerClassName: styles.editorContainer
+                                    }
+                                }}
                                 uploadInfo={uploader ? {
                                     uploader: uploader
                                 } : undefined}/>

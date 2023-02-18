@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
 import {
     AbstractUploader,
     UploaderErrorCallback,
@@ -7,6 +7,7 @@ import {
 } from './Upload/Uploader/AbstractUploader';
 import styles from './UploadModal.module.css';
 import { Modal } from '../shared/components/Modal/Modal';
+import { CustomStyle, CustomStyleContext } from '../shared/contexts/CustomStyle/Context';
 
 /**
  * Props for the UploadModal component.
@@ -36,18 +37,6 @@ interface UploadModalProps {
     // Called if the modal should be closed
     onClose: () => void;
 
-    // Optional css class that is passed to the modals outer container (the absolute container)
-    modalContainerClassName?: string;
-
-    // Optional css class that is passed to the modals inner container (the relative container)
-    modalInnerContainerClassName?: string;
-
-    // Optional css class that is passed to the header holding the close button
-    modalHeaderContainerClassName?: string;
-
-    // Optional css class that is passed to the body holding the upload form
-    modalBodyContainerClassName?: string;
-
     // Optional title of the upload modal that is shown to the user
     modalHeaderTitle?: string;
 }
@@ -59,6 +48,7 @@ interface UploadModalProps {
  * @constructor
  */
 export const UploadModal = (props: UploadModalProps) => {
+    const customStyles = useContext<CustomStyle | undefined>(CustomStyleContext);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [uploadProgress, setUploadProgress] = useState<number | null>(null);
 
@@ -156,10 +146,10 @@ export const UploadModal = (props: UploadModalProps) => {
         <Modal
             title={props.modalHeaderTitle || 'Upload file'}
             onClose={props.onClose}
-            containerClassName={props.modalContainerClassName}
-            innerContainerClassName={props.modalInnerContainerClassName}
-            headerContainerClassName={props.modalHeaderContainerClassName}
-            bodyContainerClassName={props.modalBodyContainerClassName}
+            containerClassName={customStyles?.uploadModal?.containerClassName}
+            innerContainerClassName={customStyles?.uploadModal?.innerContainerClassName}
+            headerContainerClassName={customStyles?.uploadModal?.headerContainerClassName}
+            bodyContainerClassName={customStyles?.uploadModal?.bodyContainerClassName}
         >
             <input
                 className={styles.fileInput}

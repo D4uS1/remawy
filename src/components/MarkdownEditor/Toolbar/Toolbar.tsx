@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styles from './Toolbar.module.css';
 import { ToolbarButton } from '../ToolbarButton/ToolbarButton';
 import { UnorderedListHelper } from '../Helpers/UnorderedListHelper';
@@ -19,17 +19,12 @@ import { useSlate } from 'slate-react';
 import { HyperlinkToolbarButton } from '../HyperlinkToolbarButton/HyperlinkToolbarButton';
 import { HyperlinkHelper } from '../Helpers/HyperlinkHelper';
 import { ImageToolbarButton } from '../ImageToolbarButton/ImageToolbarButton';
+import { CustomStyle, CustomStyleContext } from '../../shared/contexts/CustomStyle/Context';
 
 /**
  * Props for the ToolBar component.
  */
 interface ToolbarProps {
-    // Optional class name that is passed to the container.
-    className?: string;
-
-    // Optional class name that is passed to the buttons
-    buttonClassName?: string;
-
     // Called if the user wants to upload some file, should open the upload modal. The accept parameter are
     // comma separated mime types. If not given, everything will be accepted.
     // If forceAttachment is set to true, the result should be an a href targeting
@@ -44,6 +39,7 @@ interface ToolbarProps {
  */
 export const Toolbar = (props: ToolbarProps) => {
     const editor = useSlate();
+    const customStyle = useContext<CustomStyle | undefined>(CustomStyleContext);
 
     /**
      * Called if the user clicks the button to write bold text.
@@ -145,21 +141,11 @@ export const Toolbar = (props: ToolbarProps) => {
     };
 
     return (
-        <div className={`${styles.container} ${props.className || ''}`}>
+        <div className={`${styles.container} ${customStyle?.toolbar?.containerClassName || ''}`}>
             <div className={styles.innerContainer}>
                 {/* format options */}
-                <ToolbarButton
-                    icon={'bold'}
-                    onClick={onClickBold}
-                    active={activeStatus['bold']}
-                    className={props.buttonClassName}
-                />
-                <ToolbarButton
-                    icon={'italic'}
-                    onClick={onClickItalic}
-                    active={activeStatus['italic']}
-                    className={props.buttonClassName}
-                />
+                <ToolbarButton icon={'bold'} onClick={onClickBold} active={activeStatus['bold']} />
+                <ToolbarButton icon={'italic'} onClick={onClickItalic} active={activeStatus['italic']} />
                 <ToolbarButtonSpacer />
 
                 {/* headings */}
@@ -169,7 +155,6 @@ export const Toolbar = (props: ToolbarProps) => {
                         onClick={() => onClickHeading(headingLevel)}
                         text={`H${headingLevel}`}
                         active={activeStatus[`heading-${headingLevel}`]}
-                        className={props.buttonClassName}
                     />
                 ))}
                 <ToolbarButtonSpacer />
@@ -179,42 +164,23 @@ export const Toolbar = (props: ToolbarProps) => {
                     icon={'unordered-list'}
                     onClick={onClickUnorderedList}
                     active={activeStatus['unordered-list']}
-                    className={props.buttonClassName}
                 />
                 <ToolbarButton
                     icon={'ordered-list'}
                     onClick={onClickOrderedList}
                     active={activeStatus['ordered-list']}
-                    className={props.buttonClassName}
                 />
                 <ToolbarButtonSpacer />
 
                 {/* blocks */}
-                <ToolbarButton
-                    icon={'blockquote'}
-                    onClick={onClickBlockquote}
-                    active={activeStatus['blockquote']}
-                    className={props.buttonClassName}
-                />
-                <ToolbarButton
-                    icon={'code'}
-                    onClick={onClickCode}
-                    active={activeStatus['code']}
-                    className={props.buttonClassName}
-                />
+                <ToolbarButton icon={'blockquote'} onClick={onClickBlockquote} active={activeStatus['blockquote']} />
+                <ToolbarButton icon={'code'} onClick={onClickCode} active={activeStatus['code']} />
                 <ToolbarButtonSpacer />
 
                 {/* uploads or links */}
                 <HyperlinkToolbarButton />
                 <ImageToolbarButton onUploadRequest={props.onUploadRequest} />
-                {props.onUploadRequest && (
-                    <ToolbarButton
-                        icon={'upload'}
-                        onClick={onClickUpload}
-                        active={false}
-                        className={props.buttonClassName}
-                    />
-                )}
+                {props.onUploadRequest && <ToolbarButton icon={'upload'} onClick={onClickUpload} active={false} />}
             </div>
         </div>
     );

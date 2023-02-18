@@ -1,6 +1,7 @@
-import React, { useMemo, MouseEvent } from 'react';
+import React, { useMemo, MouseEvent, useContext } from 'react';
 import styles from './ToolbarButton.module.css';
 import { FaBold, FaItalic, FaListOl, FaList, FaQuoteLeft, FaCode, FaUpload, FaLink, FaImage } from 'react-icons/fa';
+import { CustomStyle, CustomStyleContext } from '../../shared/contexts/CustomStyle/Context';
 
 /**
  * Props for the ToolbarButton component.
@@ -26,9 +27,6 @@ interface ToolbarButtonProps {
 
     // Called if the user clicks the button
     onClick: () => void;
-
-    // Optional class name that is passed to the button
-    className?: string;
 }
 
 /**
@@ -38,6 +36,8 @@ interface ToolbarButtonProps {
  * @constructor
  */
 export const ToolbarButton = (props: ToolbarButtonProps) => {
+    const customStyle = useContext<CustomStyle | undefined>(CustomStyleContext);
+
     const icon = useMemo(() => {
         switch (props.icon) {
             case 'bold': {
@@ -91,7 +91,9 @@ export const ToolbarButton = (props: ToolbarButtonProps) => {
     return (
         <button
             onMouseDown={onMouseDown}
-            className={`${styles.button} ${props.className || ''} ${props.active ? 'active' : ''}`}
+            className={`${styles.button} ${customStyle?.toolbar?.buttonClassName || ''} ${
+                props.active ? 'active' : ''
+            }`}
             onClick={props.onClick}
         >
             {icon ? icon : props.text}
