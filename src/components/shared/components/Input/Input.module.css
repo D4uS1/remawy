@@ -1,3 +1,11 @@
-.input {
+@value colors: "../../styles/colors.module.css";
+@value color-border from colors;
+@value distances: "../../styles/distances.module.css";
+@value padding-medium, radius-border-medium, size-font-medium, size-border-small from distances;
 
+.input {
+    padding: padding-medium;
+    font-size: size-font-medium;
+    border-radius: radius-border-medium;
+    border: size-border-small solid color-border;
 }
