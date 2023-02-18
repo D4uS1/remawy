@@ -123,7 +123,7 @@ export const Toolbar = (props: ToolbarProps) => {
         if (!props.onUploadRequest) return;
 
         props.onUploadRequest(undefined, true);
-    }
+    };
 
     /**
      * Holds for all buttons the status if it should be shown as active.

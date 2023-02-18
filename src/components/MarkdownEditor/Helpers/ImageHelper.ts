@@ -41,7 +41,7 @@ const onUpsert = (editor: CustomEditor, props: Partial<CustomElement>) => {
     if (currentElement.type === 'image') {
         SlateUtils.changeNearestNodeProps(editor, 'image', props);
 
-    // Create a new image at the current position
+        // Create a new image at the current position
     } else {
         SlateUtils.createNewNode(editor, 'image', {
             props: props,

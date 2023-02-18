@@ -27,7 +27,7 @@ import { AbstractUploader, UploaderFinishCallback } from './Upload/Uploader/Abst
 import { ImageElement } from './Elements/ImageElement';
 import { HyperlinkElement } from './Elements/HyperlinkElement';
 import { HyperlinkHelper } from './Helpers/HyperlinkHelper';
-import {ImageHelper} from "./Helpers/ImageHelper";
+import { ImageHelper } from './Helpers/ImageHelper';
 
 /**
  * Extend the CustomTypes in the slate module to tell slate what custom elements we have.
@@ -107,7 +107,11 @@ export interface MarkdownEditorProps {
  */
 export const MarkdownEditor = (props: MarkdownEditorProps) => {
     const [editor] = useState(() => withVoids(withInlines(withReact(createEditor()))));
-    const [uploadModalData, setUploadModalData] = useState<{ show: boolean, accept?: string, forceAttachment?: boolean }>({ show: false });
+    const [uploadModalData, setUploadModalData] = useState<{
+        show: boolean;
+        accept?: string;
+        forceAttachment?: boolean;
+    }>({ show: false });
 
     /**
      * Returns the name of the custom element behind a markdown shortcut.
@@ -351,7 +355,7 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
         if (originalFile.type.includes('image') && !uploadModalData.forceAttachment) {
             if (!ImageHelper.onUpsert) return;
 
-            ImageHelper.onUpsert(editor, { src: fileUrl, metaData: metaData })
+            ImageHelper.onUpsert(editor, { src: fileUrl, metaData: metaData });
         } else {
             if (!HyperlinkHelper.onUpsert) return;
 
@@ -392,10 +396,12 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
             </div>
 
             {props.uploadInfo && uploadModalData.show && (
-                <UploadModal onUploadFinish={onUploadFinished}
-                             onClose={onCloseUploadModal}
-                             {...props.uploadInfo}
-                             acceptedFileTypes={uploadModalData.accept || props.uploadInfo.acceptedFileTypes} />
+                <UploadModal
+                    onUploadFinish={onUploadFinished}
+                    onClose={onCloseUploadModal}
+                    {...props.uploadInfo}
+                    acceptedFileTypes={uploadModalData.accept || props.uploadInfo.acceptedFileTypes}
+                />
             )}
         </Slate>
     );
@@ -429,4 +435,4 @@ const withVoids = (editor: CustomEditor): CustomEditor => {
     };
 
     return editor;
-}
+};

@@ -100,7 +100,7 @@ export const ImageToolbarButton = (props: ImageToolbarButtonProps) => {
 
         onClosePopover();
         props.onUploadRequest('image/*');
-    }
+    };
 
     return (
         <div className={styles.container}>
@@ -114,7 +114,7 @@ export const ImageToolbarButton = (props: ImageToolbarButtonProps) => {
                         </div>
 
                         <div className={formStyles.buttonsContainer}>
-                            { props.onUploadRequest && (
+                            {props.onUploadRequest && (
                                 <Button type={'secondary'} onClick={onClickUpload}>
                                     Upload
                                 </Button>

@@ -51,9 +51,9 @@ const currentElement = (editor: CustomEditor): CustomElement | null => {
 
     // this is an assumption, because the selected node should be the leaf, hence we need the leafs parent
     currentPath = currentPath.slice(0, -1);
-    const currentElement = Node.get(editor, currentPath) as CustomElement;
+    const element = Node.get(editor, currentPath) as CustomElement;
 
-    return currentElement;
+    return element;
 };
 
 /**

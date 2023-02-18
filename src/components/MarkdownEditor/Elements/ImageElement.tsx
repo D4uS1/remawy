@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import { RenderElementProps } from 'slate-react';
 
 /**
@@ -15,8 +15,8 @@ type ImageElementProps = RenderElementProps;
 export const ImageElement = (props: ImageElementProps) => {
     return (
         <span contentEditable={false} {...props.attributes}>
-            <img src={props.element.src}  />
-            { props.children }
+            <img src={props.element.src} />
+            {props.children}
         </span>
     );
 };

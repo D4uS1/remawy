@@ -31,7 +31,18 @@ const toggle = (editor: CustomEditor) => {
  */
 const onUpsert = (editor: CustomEditor, props: Partial<CustomElement>) => {
     if (!SlateUtils.isChildOf(editor, 'hyperlink')) {
-        return SlateUtils.wrapNode(editor, 'hyperlink', props);
+        // If there is text selected, but no hyperlink, just "toggle" the hyperlink by wrapping the seletced content into it
+        if (SlateUtils.isSelection(editor)) {
+            return SlateUtils.wrapNode(editor, 'hyperlink', props);
+
+            // If there is no text selected, but no hyperlink, create a new one to prevent the whole block from being toggled
+        } else {
+            return SlateUtils.createNewNode(editor, 'hyperlink', {
+                children: props.children,
+                props: props,
+                voids: true
+            });
+        }
     }
 
     // update the href at the nearest hyperlink, if the current cursor is already in some link
