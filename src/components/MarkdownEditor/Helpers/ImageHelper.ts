@@ -15,13 +15,13 @@ const active = (editor: CustomEditor): boolean => {
 
 /**
  * Toggles the rendering of the Image in the specified editor.
- * This does normally not make sence because the image has no children.
- * This method is normally only used to remove an existing image at current cursors position.
+ * This is a no op, because the image has no children and needs only to be upserted because it needs additional props.
  *
  * @param editor
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const toggle = (editor: CustomEditor) => {
-    HelperUtils.toggleAtRoot(editor, 'image');
+    return;
 };
 
 /**
