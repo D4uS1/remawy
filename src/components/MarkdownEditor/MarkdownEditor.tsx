@@ -107,7 +107,7 @@ export interface MarkdownEditorProps {
  */
 export const MarkdownEditor = (props: MarkdownEditorProps) => {
     const [editor] = useState(() => withVoids(withInlines(withReact(createEditor()))));
-    const [uploadModalData, setUploadModalData] = useState<{ show: boolean, accept?: string }>({ show: false });
+    const [uploadModalData, setUploadModalData] = useState<{ show: boolean, accept?: string, forceAttachment?: boolean }>({ show: false });
 
     /**
      * Returns the name of the custom element behind a markdown shortcut.
@@ -315,11 +315,13 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
      * Opens the dialog to upload the file.
      * The accept parameter is a comma separated string of accepted mime types.
      * If not given, everything will be accepted.
+     * If forceAttachment is set to true, the uploaded file will be shown as link instead of rendered content.
      *
      * @param accept
+     * @param forceAttachment
      */
-    const onUploadRequest = (accept?: string) => {
-        setUploadModalData({ show: true, accept: accept });
+    const onUploadRequest = (accept?: string, forceAttachment?: boolean) => {
+        setUploadModalData({ show: true, accept: accept, forceAttachment: forceAttachment });
     };
 
     /**
@@ -346,7 +348,7 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
         originalFile: File,
         metaData: Record<string, string>
     ) => {
-        if (originalFile.type.includes('image')) {
+        if (originalFile.type.includes('image') && !uploadModalData.forceAttachment) {
             if (!ImageHelper.onUpsert) return;
 
             ImageHelper.onUpsert(editor, { src: fileUrl, metaData: metaData })

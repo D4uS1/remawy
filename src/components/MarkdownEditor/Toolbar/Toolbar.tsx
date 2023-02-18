@@ -32,7 +32,9 @@ interface ToolbarProps {
 
     // Called if the user wants to upload some file, should open the upload modal. The accept parameter are
     // comma separated mime types. If not given, everything will be accepted.
-    onUploadRequest?: (accept?: string) => void;
+    // If forceAttachment is set to true, the result should be an a href targeting
+    // the uploaded file instead of rendered content like images.
+    onUploadRequest?: (accept?: string, forceAttachment?: boolean) => void;
 }
 
 /**
@@ -111,6 +113,17 @@ export const Toolbar = (props: ToolbarProps) => {
     const onClickCode = () => {
         CodeHelper.toggle(editor, { actor: 'toolbar' });
     };
+
+    /**
+     * Called if the user clicks the button to upload a file.
+     * Calls the callback to open the upload dialog. The upload will be force to be shown
+     * as attachment instead of rendered content.
+     */
+    const onClickUpload = () => {
+        if (!props.onUploadRequest) return;
+
+        props.onUploadRequest(undefined, true);
+    }
 
     /**
      * Holds for all buttons the status if it should be shown as active.
@@ -197,7 +210,7 @@ export const Toolbar = (props: ToolbarProps) => {
                 {props.onUploadRequest && (
                     <ToolbarButton
                         icon={'upload'}
-                        onClick={props.onUploadRequest}
+                        onClick={onClickUpload}
                         active={false}
                         className={props.buttonClassName}
                     />
