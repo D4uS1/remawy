@@ -1,10 +1,12 @@
 @value colors: "../shared/styles/colors.module.css";
-@value border-color from colors;
+@value distances: "../shared/styles/distances.module.css";
+@value color-border from colors;
+@value size-border-large from distances;
 
 .container {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
-    border: border-color 1px solid;
+    border: color-border size-border-large solid;
 }

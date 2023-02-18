@@ -1,13 +1,15 @@
 @value colors: "../../shared/styles/colors.module.css";
-@value border-color, toolbar-background-color from colors;
+@value color-border, color-background-toolbar from colors;
+@value distances: "../../shared/styles/distances.module.css";
+@value size-border-medium from distances;
 
 .container {
     display: flex;
     flex-direction: column;
     justify-content: stretch;
     align-items: flex-start;
-    background-color: toolbar-background-color;
-    border-bottom: border-color 1px solid;
+    background-color: color-background-toolbar;
+    border-bottom: color-border size-border-medium solid;
 }
 
 .innerContainer {

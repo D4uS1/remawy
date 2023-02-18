@@ -1,13 +1,15 @@
 @value colors: "./colors.module.css";
-@value border-color, font-color-secondary from colors;
+@value distances: "./distances.module.css";
+@value color-border, color-font-secondary from colors;
+@value margin-small, margin-medium, padding-small, radius-border-small, size-border-small from distances;
 
 .container {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    gap: 1rem;
-    padding: 0.5rem;
+    gap: margin-medium;
+    padding: padding-small;
 }
 
 .group {
@@ -15,17 +17,17 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    gap: 0.2rem;
+    gap: margin-small;
 }
 
 .group label {
     font-size: small;
-    color: font-color-secondary
+    color: color-font-secondary
 }
 
 .group input {
-    border: 1px solid border-color;
-    border-radius: 0.1rem;
+    border: size-border-small solid color-border;
+    border-radius: radius-border-small;
 }
 
 .buttonsContainer {
@@ -33,5 +35,5 @@
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    gap: 0.2rem;
+    gap: margin-small;
 }

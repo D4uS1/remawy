@@ -1,0 +1,23 @@
+/* fonts */
+@value size-font-small: small;
+@value size-font-medium: default;
+@value size-font-large: large;
+
+/* paddings */
+@value padding-small: 0.2rem;
+@value padding-medium: 0.5rem;
+@value padding-large: 1rem;
+
+/* margins and gaps */
+@value margin-small: 0.2rem;
+@value margin-medium: 0.5rem;
+@value margin-large: 1rem;
+
+/* borders */
+@value radius-border-small: 0.1rem;
+@value radius-border-medium: 0.3rem;
+@value radius-border-large: 0.5rem;
+
+@value size-border-small: 1px;
+@value size-border-medium: 1px;
+@value size-border-large: 1px;

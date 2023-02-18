@@ -1,23 +1,25 @@
 @value colors: "../../styles/colors.module.css";
-@value button-color-primary, button-text-color-primary, button-color-secondary, button-text-color-secondary, button-color-danger, button-text-color-danger from colors;
+@value distances: "../../styles/distances.module.css";
+@value color-background-button-primary, color-font-button-primary, color-background-button-secondary, color-font-button-secondary, color-background-button-danger, color-font-button-danger from colors;
+@value padding-medium, radius-border-medium from distances;
 
 .button {
-    border-radius: 0.2rem;
+    border-radius: radius-border-medium;
     border: none;
-    padding: 0.2rem;
+    padding: padding-medium;
 }
 
 .button:global(.primary) {
-    background-color: button-color-primary;
-    color: button-text-color-primary;
+    background-color: color-background-button-primary;
+    color: color-font-button-primary;
 }
 
 .button:global(.secondary) {
-    background-color: button-color-secondary;
-    color: button-text-color-secondary;
+    background-color: color-background-button-secondary;
+    color: color-font-button-secondary;
 }
 
 .button:global(.danger) {
-    background-color: button-color-danger;
-    color: button-text-color-danger;
+    background-color: color-background-button-danger;
+    color: color-font-button-danger;
 }

@@ -1,5 +1,7 @@
 @value colors: "../../styles/colors.module.css";
-@value border-color, overlay-background-color, modal-background-color from colors;
+@value distances: "../../styles/distances.module.css";
+@value color-border, color-background-overlay, color-background-modal from colors;
+@value padding-small, padding-medium, margin-medium, size-border-small, radius-border-large from distances;
 
 .container {
     position: absolute;
@@ -11,13 +13,13 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: overlay-background-color;
+    background-color: color-background-overlay;
 }
 
 .innerContainer {
     position: relative;
-    background-color: modal-background-color;
-    border-radius: 0.5rem;
+    background-color: color-background-modal;
+    border-radius: radius-border-large;
     font-size: large;
 }
 
@@ -26,11 +28,11 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid border-color;
+    border-bottom: size-border-small solid color-border;
 }
 
 .header {
-    padding: 0.5rem 1rem;
+    padding: padding-small padding-medium;
     font-size: x-large;
 }
 
@@ -39,8 +41,8 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
-    padding: 1rem;
-    gap: 2rem;
+    padding: padding-medium;
+    gap: margin-medium;
 }
 
 .closeButton {
@@ -48,13 +50,12 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    border-radius: 0.5rem;
     border: none;
     background: none;
     cursor: pointer;
-    padding: 0.5rem;
+    padding: padding-small;
 }
 
 .closeButton:hover {
-    background-color: border-color
+    background-color: color-border
 }

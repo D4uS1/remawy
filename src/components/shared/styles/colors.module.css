@@ -1,13 +1,22 @@
-@value border-color: grey;
-@value toolbar-background-color: #eeeeee;
-@value toolbar-background-active-color: #dddddd;
+/* font */
+@value color-font-primary: black;
+@value color-font-secondary: gray;
+@value color-font-danger: darkred;
 
-@value font-color-primary: black;
-@value font-color-secondary: gray;
-@value button-color-primary: darkblue;
-@value button-text-color-primary: lightgray;
-@value button-color-secondary: lightgray;
-@value button-text-color-secondary: black;
+@value color-font-button-primary: lightgray;
+@value color-font-button-secondary: black;
+@value color-font-button-danger: white;
 
-@value overlay-background-color: rgba(100, 100, 100, 0.5);
-@value modal-background-color: white;
+/* background */
+@value color-background-toolbar: #eeeeee;
+@value color-background-toolbar-active: #dddddd;
+@value color-background-overlay: rgba(100, 100, 100, 0.5);
+@value color-background-modal: white;
+@value color-background-progress: darkblue;
+
+@value color-background-button-primary: darkblue;
+@value color-background-button-secondary: lightgray;
+@value color-background-button-danger: darkred;
+
+/* borders */
+@value color-border: grey;

@@ -1,13 +1,15 @@
 @value colors: "../../shared/styles/colors.module.css";
-@value toolbar-background-active-color from colors;
+@value color-background-toolbar-active from colors;
+@value distances: "../../shared/styles/distances.module.css";
+@value margin-small from distances;
 
 .button {
     flex: 1;
     background-color: transparent;
     border: none;
-    margin: 0.2em;
+    margin: margin-small;
 }
 
 .button:global(.active),.button:active,.button:hover {
-    background-color: toolbar-background-active-color;
+    background-color: color-background-toolbar-active;
 }

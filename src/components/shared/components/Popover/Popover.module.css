@@ -1,5 +1,7 @@
 @value colors: "../../styles/colors.module.css";
-@value border-color, modal-background-color from colors;
+@value distances: "../../styles/distances.module.css";
+@value color-border, color-background-modal from colors;
+@value size-border-medium, radius-border-medium from distances;
 
 .container {
     position: relative;
@@ -9,9 +11,9 @@
 
 .innerContainer {
     position: absolute;
-    background-color: modal-background-color;
-    border: 1px solid border-color;
-    border-radius: 1rem;
+    background-color: color-background-modal;
+    border: size-border-medium solid color-border;
+    border-radius: radius-border-medium;
     display: flex;
     flex-direction: column;
     z-index: 10;
