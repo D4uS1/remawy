@@ -96,7 +96,12 @@ export const HyperlinkToolbarButton = () => {
                     <Form>
                         <Form.Group>
                             <Form.Label text={customStyle?.texts?.url || 'Url'} />
-                            <Form.Input ref={hrefInputRef} value={href} onChange={setHref} className={styles.hrefInput} />
+                            <Form.Input
+                                ref={hrefInputRef}
+                                value={href}
+                                onChange={setHref}
+                                className={styles.hrefInput}
+                            />
                         </Form.Group>
 
                         <Form.ButtonGroup>

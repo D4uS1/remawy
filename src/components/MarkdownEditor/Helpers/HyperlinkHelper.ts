@@ -1,4 +1,4 @@
-import {CustomHelper, ToggleOptions} from '../Types/CustomHelper';
+import { CustomHelper, ToggleOptions } from '../Types/CustomHelper';
 import { CustomEditor } from '../Types/CustomEditor';
 import { HelperUtils } from '../Utils/HelperUtils';
 import { CustomElement } from '../Types/CustomElement';

@@ -12,7 +12,11 @@ import { CustomText } from '../Types/CustomText';
  * @param elementType
  * @param props
  */
-const changeCurrentNodeType = (editor: CustomEditor, elementType: CustomElementType, props?: Partial<CustomElement>) => {
+const changeCurrentNodeType = (
+    editor: CustomEditor,
+    elementType: CustomElementType,
+    props?: Partial<CustomElement>
+) => {
     Transforms.setNodes(editor, { ...props, type: elementType });
 };
 

@@ -1,7 +1,9 @@
 @value colors: "../../styles/colors.module.css";
 @value distances: "../../styles/distances.module.css";
-@value color-border-dark, color-background-overlay, color-background-modal from colors;
-@value padding-small, padding-medium, margin-medium, size-border-small, radius-border-large from distances;
+@value fonts: "../../styles/fonts.module.css";
+@value color-border-dark, color-background-toolbar-active, color-background-overlay, color-background-modal from colors;
+@value padding-small, padding-medium, padding-large, margin-large, size-border-small, radius-border-large, radius-border-small from distances;
+@value font-family-default from fonts;
 
 .container {
     position: absolute;
@@ -14,6 +16,7 @@
     width: 100vw;
     height: 100vh;
     background-color: color-background-overlay;
+    font-family: font-family-default;
 }
 
 .innerContainer {
@@ -29,6 +32,7 @@
     justify-content: space-between;
     align-items: center;
     border-bottom: size-border-small solid color-border-dark;
+    padding: padding-large;
 }
 
 .header {
@@ -41,8 +45,8 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
-    padding: padding-medium;
-    gap: margin-medium;
+    padding: padding-large;
+    gap: margin-large;
 }
 
 .closeButton {
@@ -54,8 +58,9 @@
     background: none;
     cursor: pointer;
     padding: padding-small;
+    border-radius: radius-border-small;
 }
 
 .closeButton:hover {
-    background-color: color-border-dark
+    background-color: color-background-toolbar-active;
 }

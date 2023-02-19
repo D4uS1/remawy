@@ -1,5 +1,5 @@
-import {CustomElement, CustomElementType} from '../Types/CustomElement';
-import {Descendant, Editor, Element} from 'slate';
+import { CustomElement, CustomElementType } from '../Types/CustomElement';
+import { Descendant, Editor, Element } from 'slate';
 import { CustomEditor } from '../Types/CustomEditor';
 import { SlateUtils } from './SlateUtils';
 import { KeyboardEvent } from 'react';
@@ -71,15 +71,19 @@ const toggleAtRoot = (editor: CustomEditor, elementType: CustomElementType): voi
  * @param props
  * @param defaultChildren
  */
-const toggleInlineNode = (editor: CustomEditor, elementType: CustomElementType, props?: Partial<CustomElement>, defaultChildren?: Descendant[] ): void => {
+const toggleInlineNode = (
+    editor: CustomEditor,
+    elementType: CustomElementType,
+    props?: Partial<CustomElement>,
+    defaultChildren?: Descendant[]
+): void => {
     const isActive = defaultIsActive(editor, elementType);
 
     if (isActive) {
         SlateUtils.removeInlineNode(editor);
     } else {
-        const defaultProps = defaultChildren && SlateUtils.isCursor(editor) ?
-            { ...props, children: defaultChildren } :
-            props;
+        const defaultProps =
+            defaultChildren && SlateUtils.isCursor(editor) ? { ...props, children: defaultChildren } : props;
 
         SlateUtils.changeCurrentNodeType(editor, elementType, defaultProps);
     }

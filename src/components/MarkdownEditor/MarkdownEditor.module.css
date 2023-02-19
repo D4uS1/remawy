@@ -1,7 +1,9 @@
 @value colors: "../shared/styles/colors.module.css";
 @value distances: "../shared/styles/distances.module.css";
+@value fonts: "../shared/styles/fonts.module.css";
 @value color-border-dark from colors;
 @value size-border-large, radius-border-medium, padding-medium from distances;
+@value font-family-default from fonts;
 
 .container {
     display: flex;
@@ -10,7 +12,7 @@
     align-items: stretch;
     border: color-border-dark size-border-large solid;
     border-radius: radius-border-medium;
-    font-family: Arial, serif;
+    font-family: font-family-default;
 }
 
 .editor {
