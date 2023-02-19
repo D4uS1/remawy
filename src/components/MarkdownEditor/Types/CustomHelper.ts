@@ -16,7 +16,7 @@ export interface ToggleOptions {
 /**
  * Type for one function to toggle the rendering of an element.
  */
-export type CustomHelperToggleFunc = (editor: CustomEditor, options?: ToggleOptions) => void;
+export type CustomHelperToggleFunc = (editor: CustomEditor, options?: ToggleOptions, props?: Partial<CustomElement>) => void;
 
 /**
  * Defines a helper that is used to provide functionality related to Elements.

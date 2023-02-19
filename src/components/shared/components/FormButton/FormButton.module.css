@@ -1,10 +1,10 @@
 @value colors: "../../styles/colors.module.css";
 @value distances: "../../styles/distances.module.css";
 @value color-background-button-primary, color-font-button-primary, color-background-button-secondary, color-font-button-secondary, color-background-button-danger, color-font-button-danger from colors;
-@value padding-medium, radius-border-medium from distances;
+@value padding-medium, radius-border-small from distances;
 
 .button {
-    border-radius: radius-border-medium;
+    border-radius: radius-border-small;
     border: none;
     padding: padding-medium;
 }

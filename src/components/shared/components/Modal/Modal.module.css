@@ -1,6 +1,6 @@
 @value colors: "../../styles/colors.module.css";
 @value distances: "../../styles/distances.module.css";
-@value color-border, color-background-overlay, color-background-modal from colors;
+@value color-border-dark, color-background-overlay, color-background-modal from colors;
 @value padding-small, padding-medium, margin-medium, size-border-small, radius-border-large from distances;
 
 .container {
@@ -28,7 +28,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    border-bottom: size-border-small solid color-border;
+    border-bottom: size-border-small solid color-border-dark;
 }
 
 .header {
@@ -57,5 +57,5 @@
 }
 
 .closeButton:hover {
-    background-color: color-border
+    background-color: color-border-dark
 }

@@ -60,7 +60,7 @@ export const HyperlinkToolbarButton = () => {
     const onClickSubmit = () => {
         if (!HyperlinkHelper.onUpsert) return;
 
-        HyperlinkHelper.onUpsert(editor, { href: href });
+        HyperlinkHelper.onUpsert(editor, { href: href, children: [{ text: href }] });
         onClosePopover();
     };
 
@@ -96,7 +96,7 @@ export const HyperlinkToolbarButton = () => {
                     <Form>
                         <Form.Group>
                             <Form.Label text={customStyle?.texts?.url || 'Url'} />
-                            <Form.Input ref={hrefInputRef} value={href} onChange={setHref} />
+                            <Form.Input ref={hrefInputRef} value={href} onChange={setHref} className={styles.hrefInput} />
                         </Form.Group>
 
                         <Form.ButtonGroup>

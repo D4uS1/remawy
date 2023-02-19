@@ -1,4 +1,4 @@
-import { CustomHelper } from '../Types/CustomHelper';
+import {CustomHelper, ToggleOptions} from '../Types/CustomHelper';
 import { CustomEditor } from '../Types/CustomEditor';
 import { HelperUtils } from '../Utils/HelperUtils';
 import { CustomElement } from '../Types/CustomElement';
@@ -17,9 +17,11 @@ const active = (editor: CustomEditor): boolean => {
  * Toggles the rendering of the Hyperlink in the specified editor.
  *
  * @param editor
+ * @param options
+ * @param props
  */
-const toggle = (editor: CustomEditor) => {
-    HelperUtils.toggleInlineNode(editor, 'hyperlink');
+const toggle = (editor: CustomEditor, options?: ToggleOptions, props?: Partial<CustomElement>) => {
+    HelperUtils.toggleInlineNode(editor, 'hyperlink', props, [{ text: 'Link' }]);
 };
 
 /**

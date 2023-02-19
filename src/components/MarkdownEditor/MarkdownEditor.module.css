@@ -1,12 +1,18 @@
 @value colors: "../shared/styles/colors.module.css";
 @value distances: "../shared/styles/distances.module.css";
-@value color-border from colors;
-@value size-border-large from distances;
+@value color-border-dark from colors;
+@value size-border-large, radius-border-medium, padding-medium from distances;
 
 .container {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
-    border: color-border size-border-large solid;
+    border: color-border-dark size-border-large solid;
+    border-radius: radius-border-medium;
+    font-family: Arial, serif;
+}
+
+.editor {
+    padding: padding-medium;
 }

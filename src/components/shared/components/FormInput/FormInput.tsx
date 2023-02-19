@@ -14,6 +14,9 @@ export interface FormInputProps {
 
     // Optional ref to the input
     ref?: Ref<HTMLInputElement>;
+
+    // Optional class name that is added to the input
+    className?: string;
 }
 
 /**
@@ -38,7 +41,7 @@ export const FormInput = (props: FormInputProps) => {
     return (
         <input
             ref={props.ref}
-            className={`${styles.input} ${customStyle?.forms?.inputClassName || ''}`}
+            className={`${styles.input} ${props.className || undefined} ${customStyle?.forms?.inputClassName || ''}`}
             value={props.value}
             onChange={onChange}
         />

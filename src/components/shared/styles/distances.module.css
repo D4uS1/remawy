@@ -14,9 +14,9 @@
 @value margin-large: 1rem;
 
 /* borders */
-@value radius-border-small: 0.1rem;
-@value radius-border-medium: 0.3rem;
-@value radius-border-large: 0.5rem;
+@value radius-border-small: 0.3rem;
+@value radius-border-medium: 0.6rem;
+@value radius-border-large: 1rem;
 
 @value size-border-small: 1px;
 @value size-border-medium: 1px;

@@ -1,5 +1,5 @@
-import { CustomElementType } from '../Types/CustomElement';
-import { Editor, Element } from 'slate';
+import {CustomElement, CustomElementType} from '../Types/CustomElement';
+import {Descendant, Editor, Element} from 'slate';
 import { CustomEditor } from '../Types/CustomEditor';
 import { SlateUtils } from './SlateUtils';
 import { KeyboardEvent } from 'react';
@@ -63,17 +63,25 @@ const toggleAtRoot = (editor: CustomEditor, elementType: CustomElementType): voi
  * Can be used by helpers to toggle nodes of elementType inline.
  * The node is converted to a leaf if it is currently active, if possible.
  * Otherwise the current node tyoe is set to elementType.
+ * The props are merged with the node types props if the node type is activated.
+ * If defaultChildren is given, the children will be passed if the user did not select some text.
  *
  * @param editor
  * @param elementType
+ * @param props
+ * @param defaultChildren
  */
-const toggleInlineNode = (editor: CustomEditor, elementType: CustomElementType): void => {
+const toggleInlineNode = (editor: CustomEditor, elementType: CustomElementType, props?: Partial<CustomElement>, defaultChildren?: Descendant[] ): void => {
     const isActive = defaultIsActive(editor, elementType);
 
     if (isActive) {
         SlateUtils.removeInlineNode(editor);
     } else {
-        SlateUtils.changeCurrentNodeType(editor, elementType);
+        const defaultProps = defaultChildren && SlateUtils.isCursor(editor) ?
+            { ...props, children: defaultChildren } :
+            props;
+
+        SlateUtils.changeCurrentNodeType(editor, elementType, defaultProps);
     }
 };
 

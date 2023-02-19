@@ -1,11 +1,10 @@
 @value distances: "../../styles/distances.module.css";
-@value margin-medium, padding-small from distances;
+@value margin-large from distances;
 
 .container {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    gap: margin-medium;
-    padding: padding-small;
+    gap: margin-large;
 }

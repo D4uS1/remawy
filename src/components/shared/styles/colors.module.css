@@ -1,14 +1,14 @@
 /* font */
 @value color-font-primary: black;
-@value color-font-secondary: gray;
+@value color-font-secondary: dimgray;
 @value color-font-danger: darkred;
 
-@value color-font-button-primary: lightgray;
+@value color-font-button-primary: white;
 @value color-font-button-secondary: black;
 @value color-font-button-danger: white;
 
 /* background */
-@value color-background-toolbar: #eeeeee;
+@value color-background-toolbar: #f7f7f7;
 @value color-background-toolbar-active: #dddddd;
 @value color-background-overlay: rgba(100, 100, 100, 0.5);
 @value color-background-modal: white;
@@ -19,4 +19,5 @@
 @value color-background-button-danger: darkred;
 
 /* borders */
-@value color-border: grey;
+@value color-border-dark: grey;
+@value color-border-light: lightgrey;

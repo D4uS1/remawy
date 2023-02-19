@@ -357,7 +357,7 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
                     <Toolbar onUploadRequest={props.uploadInfo ? onUploadRequest : undefined} />
 
                     <Editable
-                        className={props.customStyle?.editor?.editorContainerClassName}
+                        className={`${styles.editor} ${props.customStyle?.editor?.editorContainerClassName || ''}`}
                         renderElement={renderElement}
                         renderLeaf={renderLeaf}
                         onKeyDown={onKeyDown}

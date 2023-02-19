@@ -1,7 +1,7 @@
 @value colors: "../../shared/styles/colors.module.css";
-@value color-border, color-background-toolbar from colors;
+@value color-border-dark, color-background-toolbar from colors;
 @value distances: "../../shared/styles/distances.module.css";
-@value size-border-medium from distances;
+@value size-border-medium, radius-border-medium from distances;
 
 .container {
     display: flex;
@@ -9,7 +9,9 @@
     justify-content: stretch;
     align-items: flex-start;
     background-color: color-background-toolbar;
-    border-bottom: color-border size-border-medium solid;
+    border-bottom: color-border-dark size-border-medium solid;
+    border-top-left-radius: radius-border-medium;
+    border-top-right-radius: radius-border-medium;
 }
 
 .innerContainer {
@@ -17,4 +19,6 @@
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
+    border-top-left-radius: radius-border-medium;
+    border-top-right-radius: radius-border-medium;
 }

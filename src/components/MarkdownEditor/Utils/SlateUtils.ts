@@ -6,12 +6,14 @@ import { CustomText } from '../Types/CustomText';
 /**
  * Changes the type of the current node to the specified elementType.
  * The content will not be changed.
+ * If props are given, they are merged to the node props.
  *
  * @param editor
  * @param elementType
+ * @param props
  */
-const changeCurrentNodeType = (editor: CustomEditor, elementType: CustomElementType) => {
-    Transforms.setNodes(editor, { type: elementType });
+const changeCurrentNodeType = (editor: CustomEditor, elementType: CustomElementType, props?: Partial<CustomElement>) => {
+    Transforms.setNodes(editor, { ...props, type: elementType });
 };
 
 /**

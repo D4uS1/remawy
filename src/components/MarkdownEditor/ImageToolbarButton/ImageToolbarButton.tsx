@@ -101,7 +101,7 @@ export const ImageToolbarButton = (props: ImageToolbarButtonProps) => {
                     <Form>
                         <Form.Group>
                             <Form.Label text={customStyle?.texts?.url || 'Url'} />
-                            <Form.Input ref={srcInputRef} value={src} onChange={setSrc} />
+                            <Form.Input ref={srcInputRef} value={src} onChange={setSrc} className={styles.srcInput}/>
                         </Form.Group>
 
                         <Form.ButtonGroup>
