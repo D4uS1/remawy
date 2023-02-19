@@ -13,8 +13,10 @@
     border: color-border-dark size-border-large solid;
     border-radius: radius-border-medium;
     font-family: font-family-default;
+    max-width: 100%;
 }
 
 .editor {
     padding: padding-medium;
+    overflow: scroll;
 }
