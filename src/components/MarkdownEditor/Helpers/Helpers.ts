@@ -27,8 +27,11 @@ export const HelpersArray: CustomHelper[] = [
     Heading4Helper,
     Heading5Helper,
     Heading6Helper,
-    HyperlinkHelper,
+
+    // image helper needs to be before hyperlink helper, because the shortcut of hyperlink is a subset of the shortcut of image
     ImageHelper,
+    HyperlinkHelper,
+
     ListItemHelper,
     OrderedListHelper,
     ParagraphHelper,
