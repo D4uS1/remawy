@@ -16,21 +16,33 @@ import { HyperlinkHelper } from './HyperlinkHelper';
 import { ImageHelper } from './ImageHelper';
 
 /**
- * Holds a map from element name to Helper that can be used to render the element.
+ * Holds all available Helpers that can render an element.
  */
-export const Helpers: Record<CustomElementType, CustomHelper> = {
-    blockquote: BlockquoteHelper,
-    code: CodeHelper,
-    'heading-1': Heading1Helper,
-    'heading-2': Heading2Helper,
-    'heading-3': Heading3Helper,
-    'heading-4': Heading4Helper,
-    'heading-5': Heading5Helper,
-    'heading-6': Heading6Helper,
-    hyperlink: HyperlinkHelper,
-    image: ImageHelper,
-    'list-item': ListItemHelper,
-    'ordered-list': OrderedListHelper,
-    paragraph: ParagraphHelper,
-    'unordered-list': UnorderedListHelper
-};
+export const HelpersArray: CustomHelper[] = [
+    BlockquoteHelper,
+    CodeHelper,
+    Heading1Helper,
+    Heading2Helper,
+    Heading3Helper,
+    Heading4Helper,
+    Heading5Helper,
+    Heading6Helper,
+    HyperlinkHelper,
+    ImageHelper,
+    ListItemHelper,
+    OrderedListHelper,
+    ParagraphHelper,
+    UnorderedListHelper
+];
+
+/**
+ * Holds a map of { elementType: helper } to make all helpers accessible by its type more easily.
+ */
+// @ts-ignore all helpers are defined in the HelpersArray, hence we have all values available here
+const Helpers: Record<CustomElementType, CustomHelper> = {};
+
+HelpersArray.forEach((helper) => {
+    Helpers[helper.elementType] = helper;
+});
+
+export { Helpers };

@@ -35,6 +35,9 @@ const onEnter = (editor: CustomEditor, event: KeyboardEvent) => {
 };
 
 export const ParagraphHelper: CustomHelper = {
+    elementType: 'paragraph',
+    isVoid: false,
+    isInline: false,
     active: active,
     toggle: toggle,
     onEnter: onEnter

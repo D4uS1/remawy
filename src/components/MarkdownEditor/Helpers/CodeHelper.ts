@@ -34,6 +34,9 @@ const onEnter = (editor: CustomEditor, event: KeyboardEvent) => {
 };
 
 export const CodeHelper: CustomHelper = {
+    elementType: 'code',
+    isVoid: false,
+    isInline: false,
     active: active,
     toggle: toggle,
     onEnter: onEnter

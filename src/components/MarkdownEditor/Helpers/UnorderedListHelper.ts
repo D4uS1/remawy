@@ -21,6 +21,9 @@ const toggle = (editor: CustomEditor) => {
 };
 
 export const UnorderedListHelper: CustomHelper = {
+    elementType: 'unordered-list',
+    isVoid: false,
+    isInline: false,
     active: active,
     toggle: toggle
 };

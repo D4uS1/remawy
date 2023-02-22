@@ -20,7 +20,7 @@ import { SlateUtils } from './Utils/SlateUtils';
 import { CustomLeafProps, CustomLeaf } from './Leafs/CustomLeaf';
 import { CustomLeafHelper } from './Helpers/CustomLeafHelper';
 import { Toolbar } from './Toolbar/Toolbar';
-import { Helpers } from './Helpers/Helpers';
+import { Helpers, HelpersArray } from './Helpers/Helpers';
 import styles from './MarkdownEditor.module.css';
 import { UploadModal } from './UploadModal/UploadModal';
 import { AbstractUploader, UploaderFinishCallback } from './Upload/Uploader/AbstractUploader';
@@ -444,8 +444,10 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
 const withInlines = (editor: CustomEditor): CustomEditor => {
     const { isInline } = editor;
 
-    editor.isInline = (element) => {
-        return ['hyperlink', 'image'].includes(element.type) || isInline(element);
+    editor.isInline = (element: CustomElement): boolean => {
+        const inlineTypes = HelpersArray.filter((helper) => helper.isInline).map((helper) => helper.elementType);
+
+        return inlineTypes.includes(element.type) || isInline(element);
     };
 
     return editor;
@@ -459,8 +461,10 @@ const withInlines = (editor: CustomEditor): CustomEditor => {
 const withVoids = (editor: CustomEditor): CustomEditor => {
     const { isVoid } = editor;
 
-    editor.isVoid = (element) => {
-        return ['image'].includes(element.type) || isVoid(element);
+    editor.isVoid = (element: CustomElement): boolean => {
+        const inlineTypes = HelpersArray.filter((helper) => helper.isVoid).map((helper) => helper.elementType);
+
+        return inlineTypes.includes(element.type) || isVoid(element);
     };
 
     return editor;

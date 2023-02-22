@@ -37,6 +37,9 @@ const onEnter = (editor: CustomEditor, event: KeyboardEvent) => {
 };
 
 export const Heading3Helper: CustomHelper = {
+    elementType: 'heading-3',
+    isVoid: false,
+    isInline: false,
     active: active,
     toggle: toggle,
     onEnter: onEnter

@@ -21,6 +21,9 @@ const toggle = (editor: CustomEditor) => {
 };
 
 export const OrderedListHelper: CustomHelper = {
+    elementType: 'ordered-list',
+    isVoid: false,
+    isInline: false,
     active: active,
     toggle: toggle
 };

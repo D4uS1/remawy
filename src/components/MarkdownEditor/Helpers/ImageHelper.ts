@@ -63,6 +63,9 @@ const onUpsert = (editor: CustomEditor, props: Partial<CustomElement>) => {
 };
 
 export const ImageHelper: CustomHelper = {
+    elementType: 'image',
+    isVoid: true,
+    isInline: true,
     active: active,
     toggle: toggle,
     onUpsert: onUpsert

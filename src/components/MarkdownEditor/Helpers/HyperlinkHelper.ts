@@ -65,6 +65,9 @@ const onUpsert = (editor: CustomEditor, props: Partial<CustomElement>) => {
 };
 
 export const HyperlinkHelper: CustomHelper = {
+    elementType: 'hyperlink',
+    isVoid: false,
+    isInline: true,
     active: active,
     toggle: toggle,
     onUpsert: onUpsert

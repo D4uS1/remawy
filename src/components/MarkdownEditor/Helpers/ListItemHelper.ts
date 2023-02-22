@@ -155,6 +155,9 @@ export const ListItemHelper: CustomHelper & {
     toggleOrderedListItem: CustomHelperToggleFunc;
     toggleUnorderedListItem: CustomHelperToggleFunc;
 } = {
+    elementType: 'list-item',
+    isVoid: false,
+    isInline: false,
     active: active,
     toggle: toggle,
     toggleOrderedListItem: toggleOrderedListItem,
