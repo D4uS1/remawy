@@ -46,3 +46,51 @@ HelpersArray.forEach((helper) => {
 });
 
 export { Helpers };
+
+/**
+ * Holds all available helpers rendering block elements.
+ */
+export const BlockHelpersArray: CustomHelper[] = HelpersArray.filter((helper) => !helper.isInline);
+
+/**
+ * Holds a map of { elementType: helper } to make all block helpers accessible by its type more easily.
+ */
+const BlockHelpers: Partial<Record<CustomElementType, CustomHelper>> = {};
+
+BlockHelpersArray.forEach((helper) => {
+    BlockHelpers[helper.elementType] = helper;
+});
+
+export { BlockHelpers };
+
+/**
+ * Holds all available helpers rendering inline elements.
+ */
+export const InlineHelpersArray: CustomHelper[] = HelpersArray.filter((helper) => helper.isInline);
+
+/**
+ * Holds a map of { elementType: helper } to make all inline helpers accessible by its type more easily.
+ */
+const InlineHelpers: Partial<Record<CustomElementType, CustomHelper>> = {};
+
+InlineHelpersArray.forEach((helper) => {
+    InlineHelpers[helper.elementType] = helper;
+});
+
+export { InlineHelpers };
+
+/**
+ * Holds all available helpers rendering void elements.
+ */
+export const VoidHelpersArray: CustomHelper[] = HelpersArray.filter((helper) => helper.isVoid);
+
+/**
+ * Holds a map of { elementType: helper } to make all inline helpers accessible by its type more easily.
+ */
+const VoidHelpers: Partial<Record<CustomElementType, CustomHelper>> = {};
+
+VoidHelpersArray.forEach((helper) => {
+    VoidHelpers[helper.elementType] = helper;
+});
+
+export { VoidHelpers };
