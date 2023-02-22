@@ -15,7 +15,7 @@ type ImageElementProps = RenderElementProps;
 export const ImageElement = (props: ImageElementProps) => {
     return (
         <span contentEditable={false} {...props.attributes}>
-            <img src={props.element.src} />
+            <img src={props.element.src} alt={props.element.altText || 'Image'} />
             {props.children}
         </span>
     );

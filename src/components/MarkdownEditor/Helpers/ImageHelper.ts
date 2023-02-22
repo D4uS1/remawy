@@ -29,7 +29,7 @@ const toggle = (editor: CustomEditor, options?: ToggleOptions, props?: Partial<C
         const src = shortcutMatch[2];
 
         SlateUtils.createNewNode(editor, 'image', {
-            props: { src: src }
+            props: { src: src, altText: altText }
         });
     } else {
         HelperUtils.toggleInlineNode(editor, 'image', props);

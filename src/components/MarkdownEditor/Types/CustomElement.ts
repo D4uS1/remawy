@@ -29,6 +29,9 @@ export type CustomElement = {
     // used by image
     src?: string;
 
+    // used by image
+    altText?: string;
+
     // used by hyperlink
     href?: string;
 
