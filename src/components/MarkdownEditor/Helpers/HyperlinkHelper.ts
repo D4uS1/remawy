@@ -21,7 +21,20 @@ const active = (editor: CustomEditor): boolean => {
  * @param props
  */
 const toggle = (editor: CustomEditor, options?: ToggleOptions, props?: Partial<CustomElement>) => {
-    HelperUtils.toggleInlineNode(editor, 'hyperlink', props, [{ text: 'Link' }]);
+    if (options?.actor == 'shortcut' && options.actorShortcut) {
+        const shortcutMatch = options.actorShortcut.match(/\[(.+)]\((.+)\)$/);
+        if (!shortcutMatch || shortcutMatch.length < 3) return;
+
+        const linkText = shortcutMatch[1];
+        const href = shortcutMatch[2];
+
+        SlateUtils.createNewNode(editor, 'hyperlink', {
+            children: [{ text: linkText }],
+            props: { href: href }
+        });
+    } else {
+        HelperUtils.toggleInlineNode(editor, 'hyperlink', props, [{ text: 'Link' }]);
+    }
 };
 
 /**

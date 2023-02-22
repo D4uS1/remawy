@@ -1,4 +1,4 @@
-import { CustomHelper } from '../Types/CustomHelper';
+import { CustomHelper, ToggleOptions } from '../Types/CustomHelper';
 import { CustomEditor } from '../Types/CustomEditor';
 import { HelperUtils } from '../Utils/HelperUtils';
 import { CustomElement } from '../Types/CustomElement';
@@ -15,13 +15,25 @@ const active = (editor: CustomEditor): boolean => {
 
 /**
  * Toggles the rendering of the Image in the specified editor.
- * This is a no op, because the image has no children and needs only to be upserted because it needs additional props.
  *
  * @param editor
+ * @param options
+ * @param props
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const toggle = (editor: CustomEditor) => {
-    return;
+const toggle = (editor: CustomEditor, options?: ToggleOptions, props?: Partial<CustomElement>) => {
+    if (options?.actor == 'shortcut' && options.actorShortcut) {
+        const shortcutMatch = options.actorShortcut.match(/!\[(.+)]\((.+)\)$/);
+        if (!shortcutMatch || shortcutMatch.length < 3) return;
+
+        const altText = shortcutMatch[1];
+        const src = shortcutMatch[2];
+
+        SlateUtils.createNewNode(editor, 'image', {
+            props: { src: src }
+        });
+    } else {
+        HelperUtils.toggleInlineNode(editor, 'image', props);
+    }
 };
 
 /**

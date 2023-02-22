@@ -139,6 +139,44 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
     }, []);
 
     /**
+     * Tries to find an inline shortcut at the end of the specified shortcut text. Since an inline shortcut must not
+     * start at the block beginning, not only the shortcut type is returned, but the information needed to locate the concrete
+     * shortcut inside the text is also included.
+     * Returns the type for an inline element that is defined at the end of the specified shortcut text
+     * and the concrete part that defines the shortcut from the text and its start position inside the shortcut text.
+     * If no shortcut can be found defining some inline element, null will be returned.
+     */
+    const inlineTypeByShortcut = useCallback(
+        (shortcut: string): { offset: number; shortcutText: string; elementType: CustomElementType } | null => {
+            // skip following regexes for performance reasons, if not necessary
+            if (!shortcut.endsWith(')')) return null;
+
+            // images
+            let match = shortcut.match(/!\[.+]\(.+\)$/);
+            if (match) {
+                return {
+                    shortcutText: match[0],
+                    offset: shortcut.length - match[0].length,
+                    elementType: 'image'
+                };
+            }
+
+            // hyperlink
+            match = shortcut.match(/\[.+]\(.+\)$/);
+            if (match) {
+                return {
+                    shortcutText: match[0],
+                    offset: shortcut.length - match[0].length,
+                    elementType: 'hyperlink'
+                };
+            }
+
+            return null;
+        },
+        []
+    );
+
+    /**
      * Defines all custom renderers for elements, based on its element type given by the props.
      */
     const renderElement = useCallback((props: RenderElementProps) => {
@@ -205,21 +243,42 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
             case 'Dead': {
                 // We want to see if the text since block start is a markdown shortcut
                 const shortcutText = SlateUtils.textSinceBlockStart(editor);
-                if (!shortcutText) {
-                    break;
-                }
+                if (!shortcutText) break;
 
                 // If the typed in characters define a shortcut, get it
                 const shortcutType = typeByShortcut(shortcutText);
-                if (!shortcutType) {
+                if (shortcutType) {
+                    // Render the corresponding markdown element
+                    Helpers[shortcutType].toggle(editor, { actor: 'shortcut', actorShortcut: shortcutText });
+
+                    // remove the shortcut text
+                    SlateUtils.deleteFromLeft(editor, shortcutText.length);
+
+                    // Prevent the newest key from being printed
+                    event.preventDefault();
+
                     break;
                 }
 
-                // Render the corresponding markdown element
-                Helpers[shortcutType].toggle(editor, { actor: 'shortcut', actorShortcut: shortcutText });
+                if (!editor.selection) return;
 
-                // remove the shortcut text
-                SlateUtils.deleteFromLeft(editor, shortcutText.length);
+                // If the typed in characters define a inline shortcut, meaning some element
+                // that must not start at a block beginning
+                const inlineShortcutInfo = inlineTypeByShortcut(shortcutText);
+                if (!inlineShortcutInfo) break;
+
+                // Delete shortcut text
+                SlateUtils.deleteAt(
+                    editor,
+                    { path: editor.selection.focus.path, offset: inlineShortcutInfo.offset },
+                    inlineShortcutInfo.shortcutText.length
+                );
+
+                // Render the corresponding markdown element
+                Helpers[inlineShortcutInfo.elementType].toggle(editor, {
+                    actor: 'shortcut',
+                    actorShortcut: inlineShortcutInfo.shortcutText
+                });
 
                 // Prevent the newest key from being printed
                 event.preventDefault();
