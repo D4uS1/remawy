@@ -9,8 +9,15 @@ export interface ToggleOptions {
     // The actor that called the toggle function
     actor: 'toolbar' | 'shortcut';
 
-    // The shortcut text this toggle was called by, needed if actor is shortcut
+    // The shortcut text this toggle was called by. This is set if the shortcut was identified
+    // Using the helpers shortcutText property. If the helper was identified via the helpers shortcutRegex property,
+    // the actorShortcutMatch should be used.
     actorShortcut?: string;
+
+    // The shortcut regex match this toggle was called by. This is set if the shortcut was identified
+    // Using the helpers shortcutRegex property. If the helper was identified via the helpers shortcutText property,
+    // the actorShortcut should be used.
+    actorShortcutMatch?: RegExpMatchArray;
 }
 
 /**

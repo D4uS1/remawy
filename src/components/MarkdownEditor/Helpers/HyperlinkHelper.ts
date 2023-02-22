@@ -21,12 +21,11 @@ const active = (editor: CustomEditor): boolean => {
  * @param props
  */
 const toggle = (editor: CustomEditor, options?: ToggleOptions, props?: Partial<CustomElement>) => {
-    if (options?.actor == 'shortcut' && options.actorShortcut) {
-        const shortcutMatch = options.actorShortcut.match(/\[(.+)]\((.+)\)$/);
-        if (!shortcutMatch || shortcutMatch.length < 3) return;
+    if (options?.actor == 'shortcut' && options.actorShortcutMatch) {
+        if (options.actorShortcutMatch.length < 3) return;
 
-        const linkText = shortcutMatch[1];
-        const href = shortcutMatch[2];
+        const linkText = options.actorShortcutMatch[1];
+        const href = options.actorShortcutMatch[2];
 
         SlateUtils.createNewNode(editor, 'hyperlink', {
             children: [{ text: linkText }],
@@ -66,6 +65,7 @@ const onUpsert = (editor: CustomEditor, props: Partial<CustomElement>) => {
 
 export const HyperlinkHelper: CustomHelper = {
     elementType: 'hyperlink',
+    shortcutRegex: /\[(.+)]\((.+)\)$/,
     isVoid: false,
     isInline: true,
     active: active,

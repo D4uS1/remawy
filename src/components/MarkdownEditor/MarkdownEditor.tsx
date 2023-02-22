@@ -3,7 +3,7 @@ import { createEditor, Descendant } from 'slate';
 import { Slate, Editable, withReact, RenderElementProps, ReactEditor } from 'slate-react';
 import { CodeElement } from './Elements/CodeElement';
 import { ParagraphElement } from './Elements/ParagraphElement';
-import { CustomElement, CustomElementType } from './Types/CustomElement';
+import { CustomElement } from './Types/CustomElement';
 import { CustomText } from './Types/CustomText';
 import { CustomEditor } from './Types/CustomEditor';
 import { BlockquoteElement } from './Elements/BlockquoteElement';
@@ -86,62 +86,6 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
     }>({ show: false });
 
     /**
-     * Returns the name of the custom element behind a markdown shortcut that defines some block element.
-     * If no shortcut can be found, null will be returned.
-     */
-    const typeByBlockShortcut = useCallback((shortcut: string): CustomElementType | null => {
-        for (const helper of BlockHelpersArray) {
-            if (helper.shortcutText && shortcut == helper.shortcutText) {
-                return helper.elementType;
-            }
-
-            if (helper.shortcutRegex && helper.shortcutRegex.test(shortcut)) {
-                return helper.elementType;
-            }
-        }
-
-        return null;
-    }, []);
-
-    /**
-     * Tries to find an inline shortcut at the end of the specified shortcut text. Since an inline shortcut must not
-     * start at the block beginning, not only the shortcut type is returned, but the information needed to locate the concrete
-     * shortcut inside the text is also included.
-     * Returns the type for an inline element that is defined at the end of the specified shortcut text
-     * and the concrete part that defines the shortcut from the text and its start position inside the shortcut text.
-     * If no shortcut can be found defining some inline element, null will be returned.
-     */
-    const typeByInlineShortcut = useCallback(
-        (shortcut: string): { offset: number; shortcutText: string; elementType: CustomElementType } | null => {
-            // skip following regexes for performance reasons, if not necessary
-            if (!shortcut.endsWith(')')) return null;
-
-            // images
-            let match = shortcut.match(/!\[.+]\(.+\)$/);
-            if (match) {
-                return {
-                    shortcutText: match[0],
-                    offset: shortcut.length - match[0].length,
-                    elementType: 'image'
-                };
-            }
-
-            // hyperlink
-            match = shortcut.match(/\[.+]\(.+\)$/);
-            if (match) {
-                return {
-                    shortcutText: match[0],
-                    offset: shortcut.length - match[0].length,
-                    elementType: 'hyperlink'
-                };
-            }
-
-            return null;
-        },
-        []
-    );
-
-    /**
      * Defines all custom renderers for elements, based on its element type given by the props.
      */
     const renderElement = useCallback((props: RenderElementProps) => {
@@ -210,43 +154,47 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
                 const shortcutText = SlateUtils.textSinceBlockStart(editor);
                 if (!shortcutText) break;
 
-                // If the typed in characters define a shortcut, get it
-                const shortcutType = typeByBlockShortcut(shortcutText);
-                if (shortcutType) {
-                    // Render the corresponding markdown element
-                    Helpers[shortcutType].toggle(editor, { actor: 'shortcut', actorShortcut: shortcutText });
+                // Find block matching shortcuts
+                for (const helper of BlockHelpersArray) {
+                    // matching shortcut with text or regex possible
+                    if (shortcutText === helper.shortcutText || helper.shortcutRegex?.test(shortcutText)) {
+                        // remove the shortcut text
+                        SlateUtils.deleteFromLeft(editor, shortcutText.length);
 
-                    // remove the shortcut text
-                    SlateUtils.deleteFromLeft(editor, shortcutText.length);
+                        // Render the corresponding markdown element
+                        helper.toggle(editor, { actor: 'shortcut', actorShortcut: shortcutText });
+
+                        // Prevent the newest key from being printed
+                        event.preventDefault();
+
+                        break; // TODO: must be double break here
+                    }
+                }
+
+                if (!editor.selection) return;
+
+                // Find inline matching shortcuts
+                for (const helper of InlineHelpersArray) {
+                    if (!helper.shortcutRegex) continue;
+
+                    const match = shortcutText.match(helper.shortcutRegex);
+                    if (!match) continue;
+
+                    // Delete shortcut text
+                    SlateUtils.deleteAt(
+                        editor,
+                        { path: editor.selection.anchor.path, offset: shortcutText.length - match[0].length },
+                        match[0].length
+                    );
+
+                    // toggle inline node
+                    helper.toggle(editor, { actor: 'shortcut', actorShortcutMatch: match });
 
                     // Prevent the newest key from being printed
                     event.preventDefault();
 
                     break;
                 }
-
-                if (!editor.selection) return;
-
-                // If the typed in characters define a inline shortcut, meaning some element
-                // that must not start at a block beginning
-                const inlineShortcutInfo = typeByInlineShortcut(shortcutText);
-                if (!inlineShortcutInfo) break;
-
-                // Delete shortcut text
-                SlateUtils.deleteAt(
-                    editor,
-                    { path: editor.selection.focus.path, offset: inlineShortcutInfo.offset },
-                    inlineShortcutInfo.shortcutText.length
-                );
-
-                // Render the corresponding markdown element
-                Helpers[inlineShortcutInfo.elementType].toggle(editor, {
-                    actor: 'shortcut',
-                    actorShortcut: inlineShortcutInfo.shortcutText
-                });
-
-                // Prevent the newest key from being printed
-                event.preventDefault();
 
                 break;
             }
