@@ -86,10 +86,10 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
     }>({ show: false });
 
     /**
-     * Returns the name of the custom element behind a markdown shortcut.
+     * Returns the name of the custom element behind a markdown shortcut that defines some block element.
      * If no shortcut can be found, null will be returned.
      */
-    const typeByShortcut = useCallback((shortcut: string): CustomElementType | null => {
+    const typeByBlockShortcut = useCallback((shortcut: string): CustomElementType | null => {
         switch (shortcut) {
             case '#': {
                 return 'heading-1';
@@ -146,7 +146,7 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
      * and the concrete part that defines the shortcut from the text and its start position inside the shortcut text.
      * If no shortcut can be found defining some inline element, null will be returned.
      */
-    const inlineTypeByShortcut = useCallback(
+    const typeByInlineShortcut = useCallback(
         (shortcut: string): { offset: number; shortcutText: string; elementType: CustomElementType } | null => {
             // skip following regexes for performance reasons, if not necessary
             if (!shortcut.endsWith(')')) return null;
@@ -246,7 +246,7 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
                 if (!shortcutText) break;
 
                 // If the typed in characters define a shortcut, get it
-                const shortcutType = typeByShortcut(shortcutText);
+                const shortcutType = typeByBlockShortcut(shortcutText);
                 if (shortcutType) {
                     // Render the corresponding markdown element
                     Helpers[shortcutType].toggle(editor, { actor: 'shortcut', actorShortcut: shortcutText });
@@ -264,7 +264,7 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
 
                 // If the typed in characters define a inline shortcut, meaning some element
                 // that must not start at a block beginning
-                const inlineShortcutInfo = inlineTypeByShortcut(shortcutText);
+                const inlineShortcutInfo = typeByInlineShortcut(shortcutText);
                 if (!inlineShortcutInfo) break;
 
                 // Delete shortcut text
