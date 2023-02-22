@@ -156,6 +156,8 @@ export const ListItemHelper: CustomHelper & {
     toggleUnorderedListItem: CustomHelperToggleFunc;
 } = {
     elementType: 'list-item',
+    shortcutText: '*',
+    shortcutRegex: /^\d+\.$/,
     isVoid: false,
     isInline: false,
     active: active,

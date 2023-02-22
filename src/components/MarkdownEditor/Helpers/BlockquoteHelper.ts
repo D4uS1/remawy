@@ -35,6 +35,7 @@ const onEnter = (editor: CustomEditor, event: KeyboardEvent) => {
 
 export const BlockquoteHelper: CustomHelper = {
     elementType: 'blockquote',
+    shortcutText: '>',
     isVoid: false,
     isInline: false,
     active: active,

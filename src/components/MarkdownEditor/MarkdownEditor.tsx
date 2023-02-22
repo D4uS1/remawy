@@ -20,7 +20,7 @@ import { SlateUtils } from './Utils/SlateUtils';
 import { CustomLeafProps, CustomLeaf } from './Leafs/CustomLeaf';
 import { CustomLeafHelper } from './Helpers/CustomLeafHelper';
 import { Toolbar } from './Toolbar/Toolbar';
-import { Helpers, InlineHelpersArray, VoidHelpersArray } from './Helpers/Helpers';
+import { BlockHelpersArray, Helpers, InlineHelpersArray, VoidHelpersArray } from './Helpers/Helpers';
 import styles from './MarkdownEditor.module.css';
 import { UploadModal } from './UploadModal/UploadModal';
 import { AbstractUploader, UploaderFinishCallback } from './Upload/Uploader/AbstractUploader';
@@ -90,48 +90,13 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
      * If no shortcut can be found, null will be returned.
      */
     const typeByBlockShortcut = useCallback((shortcut: string): CustomElementType | null => {
-        switch (shortcut) {
-            case '#': {
-                return 'heading-1';
+        for (const helper of BlockHelpersArray) {
+            if (helper.shortcutText && shortcut == helper.shortcutText) {
+                return helper.elementType;
             }
 
-            case '##': {
-                return 'heading-2';
-            }
-
-            case '###': {
-                return 'heading-3';
-            }
-
-            case '####': {
-                return 'heading-4';
-            }
-
-            case '#####': {
-                return 'heading-5';
-            }
-
-            case '######': {
-                return 'heading-6';
-            }
-
-            case '>': {
-                return 'blockquote';
-            }
-
-            case '```': {
-                return 'code';
-            }
-
-            case '*': {
-                return 'list-item';
-            }
-
-            default: {
-                // for ordered lists: 1. 2. ...
-                if (/^\d+\.$/.test(shortcut)) {
-                    return 'list-item';
-                }
+            if (helper.shortcutRegex && helper.shortcutRegex.test(shortcut)) {
+                return helper.elementType;
             }
         }
 

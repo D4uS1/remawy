@@ -39,6 +39,18 @@ export interface CustomHelper {
     // between inline texts. This is eg. the case for hyperlinks.
     isInline: boolean;
 
+    // Defines a text that indicates a markdown shortcut for this element.
+    // If the user types this shortcutText into the editor, the element should be toggled.
+    // For block elements (not inline) the shortcut must be at the beginning of the block.
+    // For inline elements this property is unused, since no "surrounding" inline shortcut exists.
+    shortcutText?: string;
+
+    // Defines a regex that indicates a markdown shortcut for this element if the regex matches.
+    // If the user types some text and the typed in text matches the specified shortcutRegex, the element should be toggle.
+    // This is especially useful for inline elements.
+    // For block elements the regex should match at the beginning of a string, since the regex is matched against the block text.
+    shortcutRegex?: RegExp;
+
     // Returns whether the element is active in the specified slate editor.
     // Being active means that the element is currently rendered in editor at the current users selection.
     active: (editor: CustomEditor) => boolean;
