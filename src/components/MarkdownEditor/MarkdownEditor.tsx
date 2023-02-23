@@ -189,7 +189,7 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
                         event.preventDefault();
 
                         // used to skip execution of inline element rendering
-                        blockRendered = true
+                        blockRendered = true;
 
                         break;
                     }

@@ -33,25 +33,7 @@ type CustomElementSerializerFunc = (value: CustomElement, parents: CustomElement
  */
 const serializers: Record<CustomElementType, CustomElementSerializerFunc> = {
     blockquote: (value: CustomElement, parents: CustomElementType[]) => {
-        let result = '> '
-
-        // this appends a > for every line in the leaf that is separated with \n
-        value.children?.forEach((child) => {
-            if (SlateUtils.isLeaf(child)) {
-                const leaf = child as CustomText;
-
-                const lines = leaf.text.split('\n')
-                if (lines.length > 1) {
-                    result += lines.map((text) => serializeLeaf({...child, text: text})).join('\n> ')
-                } else {
-                    result += serializeLeaf({...child, text: lines[0]});
-                }
-            } else {
-                result += serializeElement(child as CustomElement, parents);
-            }
-        });
-
-        return result;
+        return `> ${serializeChildren(value.children, [...parents, 'blockquote'])}\n`;
     },
     code: (value: CustomElement, parents: CustomElementType[]) => {
         return `\`\`\`\n${serializeChildren(value.children, [...parents, 'code'])}\n\`\`\`\n`;
@@ -137,7 +119,7 @@ const serializeElement = (value: CustomElement, parents: CustomElementType[]): s
     if (!func) return '';
 
     return func(value, parents);
-}
+};
 
 /**
  * Serializes the specified element or leaf to markdown.
