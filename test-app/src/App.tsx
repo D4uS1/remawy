@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react';
+import React, {useMemo, useState, FocusEvent} from 'react';
 import {MarkdownEditor, MarkdownView} from "@d4us1/remawy";
 import styles from './App.module.css'
 import {EzOnRailsAuthInfo, LoginForm, EzOnRails} from "ez-on-rails-react";
@@ -23,6 +23,10 @@ function App() {
         return new EzOnRails.integrations.remawy.uploader('http://localhost:3000', authInfo, '1.0')
     }, [authInfo])
 
+    const onBlur = (event: FocusEvent<HTMLDivElement>, values: unknown) => {
+        console.log("onBlur", values);
+    }
+
     return (
         <div className={styles.container}>
             <div>
@@ -34,6 +38,7 @@ function App() {
                                         editorContainerClassName: styles.editorContainer
                                     }
                                 }}
+                                onBlur={onBlur}
                                 uploadInfo={uploader ? {
                                     uploader: uploader
                                 } : undefined}/>

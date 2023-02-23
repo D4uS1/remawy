@@ -1,4 +1,4 @@
-import React, { useCallback, useState, KeyboardEvent } from 'react';
+import React, {useCallback, useState, KeyboardEvent, FocusEvent, useRef} from 'react';
 import { createEditor, Descendant } from 'slate';
 import { Slate, Editable, withReact, RenderElementProps, ReactEditor } from 'slate-react';
 import { CodeElement } from './Elements/CodeElement';
@@ -46,6 +46,16 @@ declare module 'slate' {
  * Props for the MarkdownEditor component.
  */
 export interface MarkdownEditorProps {
+
+    // Called after each editor change.
+    // Passes the current ast of elements, that can be saved anywhere. Note that this is called everytime the user
+    // changes something in the editor. If you do not want to track every change, you can use onBlur instead.
+    onChange?: (value: Descendant[]) => void;
+
+    // Called after the focus of the editor was lost.
+    // Passes the current ast, hence it can be saved anywhere.
+    onBlur?: (event: FocusEvent<HTMLDivElement>, value: Descendant[]) => void;
+
     // The current markdown
     markdown: string;
 
@@ -84,6 +94,8 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
         accept?: string;
         forceAttachment?: boolean;
     }>({ show: false });
+
+    const currentAst = useRef<Descendant[]>([]);
 
     /**
      * Defines all custom renderers for elements, based on its element type given by the props.
@@ -244,11 +256,25 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
         const isAstChange = editor.operations.some((op) => 'set_selection' !== op.type);
 
         if (isAstChange) {
-            // Save the value to Local Storage.
-            const content = JSON.stringify(value);
-            console.log('Change', content);
+            currentAst.current = value;
+
+            if (!props.onChange) return;
+
+            props.onChange(value);
         }
     };
+
+    /**
+     * Called if the editor looses focus. Calls the onBlur callback, if given by the props.
+     * Passes the current Ast value to that callback.
+     */
+    const onBlur = (event: FocusEvent<HTMLDivElement>) => {
+        if (!props.onBlur) return;
+
+        props.onBlur(event, currentAst.current);
+
+        event.preventDefault();
+    }
 
     /**
      * Called if the user requests some file upload.
@@ -325,6 +351,7 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
                         renderElement={renderElement}
                         renderLeaf={renderLeaf}
                         onKeyDown={onKeyDown}
+                        onBlur={onBlur}
                     />
                 </div>
 
