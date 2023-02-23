@@ -2,6 +2,8 @@ import React, { useMemo } from 'react';
 import { EditorValue } from '../MarkdownEditor/MarkdownEditor';
 import { toMarkdown } from '../../shared/serializers/EditorValueMarkdownSerializer';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import remarkBreaks from 'remark-breaks';
 
 /**
  * Props for the Editor component.
@@ -27,5 +29,5 @@ export const MarkdownView = (props: MarkdownViewProps) => {
         return serializedMarkdown;
     }, [props.value]);
 
-    return <ReactMarkdown>{markdown}</ReactMarkdown>;
+    return <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>{markdown}</ReactMarkdown>;
 };

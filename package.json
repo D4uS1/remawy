@@ -38,6 +38,8 @@
     "prettier": "^2.8.3",
     "react-icons": "^4.7.1",
     "react-markdown": "^8.0.5",
+    "remark-breaks": "^3.0.2",
+    "remark-gfm": "^3.0.1",
     "slate": "^0.90.0",
     "slate-react": "^0.90.0",
     "tslib": "^2.5.0",
