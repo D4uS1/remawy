@@ -51,7 +51,7 @@ function App() {
 
             <div>
                 <span>View: </span>
-                <MarkdownView markdown={''} />
+                { initialValue && <MarkdownView value={initialValue} /> }
             </div>
 
             { !authInfo && (

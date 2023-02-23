@@ -45,7 +45,7 @@ declare module 'slate' {
 /**
  * Describes the type of the value the editor holds.
  */
-export type EditorValue = Descendant[];
+export type EditorValue = CustomElement[];
 
 /**
  * Props for the MarkdownEditor component.
@@ -100,7 +100,7 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
     }>({ show: false });
 
     // Use ref instead state here to prevent rerender
-    const currentAst = useRef<Descendant[]>([]);
+    const currentAst = useRef<CustomElement[]>([]);
 
     /**
      * Defines all custom renderers for elements, based on its element type given by the props.
@@ -261,11 +261,11 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
         const isAstChange = editor.operations.some((op) => 'set_selection' !== op.type);
 
         if (isAstChange) {
-            currentAst.current = value;
+            currentAst.current = value as EditorValue;
 
             if (!props.onChange) return;
 
-            props.onChange(value);
+            props.onChange(value as EditorValue);
         }
     };
 
@@ -340,7 +340,7 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
      * Called if the initialValue or defaultText in the props changes.
      * Returns the initial value for the slate editor.
      */
-    const initialValue: Descendant[] = useMemo(() => {
+    const initialValue: CustomElement[] = useMemo(() => {
         if (props.initialValue && props.initialValue.length > 0) {
             return props.initialValue;
         }
