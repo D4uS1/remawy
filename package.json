@@ -37,6 +37,7 @@
     "eslint-plugin-react": "^7.32.2",
     "prettier": "^2.8.3",
     "react-icons": "^4.7.1",
+    "react-markdown": "^8.0.5",
     "slate": "^0.90.0",
     "slate-react": "^0.90.0",
     "tslib": "^2.5.0",

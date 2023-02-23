@@ -1,13 +1,15 @@
 import React, { useMemo } from 'react';
 import { EditorValue } from '../MarkdownEditor/MarkdownEditor';
 import { toMarkdown } from '../../shared/serializers/EditorValueMarkdownSerializer';
+import ReactMarkdown from 'react-markdown'
+
 
 /**
  * Props for the Editor component.
  */
 export interface MarkdownViewProps {
-    // The editor value that serialized markdown should be shown
-    value: EditorValue;
+    // The markdown value as string or the editor value that is serialized to markdown
+    value: EditorValue | string;
 }
 
 /**
@@ -18,8 +20,13 @@ export interface MarkdownViewProps {
  */
 export const MarkdownView = (props: MarkdownViewProps) => {
     const markdown = useMemo(() => {
-        return toMarkdown(props.value);
+        if (typeof props.value === 'string') return props.value;
+
+        const serializedMarkdown = toMarkdown(props.value);
+        console.log("serializedMarkdown", serializedMarkdown);
+
+        return serializedMarkdown;
     }, [props.value]);
 
-    return <div>{markdown}</div>;
+    return <ReactMarkdown>{markdown}</ReactMarkdown>;
 };
