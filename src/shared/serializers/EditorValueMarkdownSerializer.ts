@@ -51,28 +51,28 @@ type CustomElementSerializerFunc = (value: CustomElement, parents: CustomElement
  */
 const serializers: Record<CustomElementType, CustomElementSerializerFunc> = {
     blockquote: (value: CustomElement, parents: CustomElementType[]) => {
-        return ``;
+        return `> ${serializeChildren(value.children, [...parents, 'code'])}\n`;
     },
     code: (value: CustomElement, parents: CustomElementType[]) => {
-        return `\`\`\`\n${serializeChildren(value.children, [...parents, 'code'])}\n\`\`\``;
+        return `\`\`\`\n${serializeChildren(value.children, [...parents, 'code'])}\n\`\`\`\n`;
     },
     'heading-1': (value: CustomElement, parents: CustomElementType[]) => {
-        return `# ${serializeChildren(value.children, [...parents, 'heading-1'])}`;
+        return `# ${serializeChildren(value.children, [...parents, 'heading-1'])}\n`;
     },
     'heading-2': (value: CustomElement, parents: CustomElementType[]) => {
-        return `## ${serializeChildren(value.children, [...parents, 'heading-2'])}`;
+        return `## ${serializeChildren(value.children, [...parents, 'heading-2'])}\n`;
     },
     'heading-3': (value: CustomElement, parents: CustomElementType[]) => {
-        return `### ${serializeChildren(value.children, [...parents, 'heading-3'])}`;
+        return `### ${serializeChildren(value.children, [...parents, 'heading-3'])}\n`;
     },
     'heading-4': (value: CustomElement, parents: CustomElementType[]) => {
-        return `#### ${serializeChildren(value.children, [...parents, 'heading-4'])}`;
+        return `#### ${serializeChildren(value.children, [...parents, 'heading-4'])}\n`;
     },
     'heading-5': (value: CustomElement, parents: CustomElementType[]) => {
-        return `##### ${serializeChildren(value.children, [...parents, 'heading-5'])}`;
+        return `##### ${serializeChildren(value.children, [...parents, 'heading-5'])}\n`;
     },
     'heading-6': (value: CustomElement, parents: CustomElementType[]) => {
-        return `###### ${serializeChildren(value.children, [...parents, 'heading-6'])}`;
+        return `###### ${serializeChildren(value.children, [...parents, 'heading-6'])}\n`;
     },
     hyperlink: (value: CustomElement, parents: CustomElementType[]) => {
         return `[${serializeChildren(value.children, [...parents, 'hyperlink'])}](${value.href || ''})`;
@@ -93,7 +93,7 @@ const serializers: Record<CustomElementType, CustomElementSerializerFunc> = {
         return result;
     },
     paragraph: (value: CustomElement, parents: CustomElementType[]) => {
-        return `${serializeChildren(value.children, [...parents, 'paragraph'])}\n`;
+        return `\n${serializeChildren(value.children, [...parents, 'paragraph'])}\n`;
     },
     'unordered-list': (value: CustomElement, parents: CustomElementType[]) => {
         return serializeChildren(value.children, [...parents, 'unordered-list']);
@@ -154,7 +154,7 @@ const serializeChildren = (
  * @param editorValue
  */
 export const toMarkdown = (editorValue: EditorValue): string => {
-    const result = serializeChildren(editorValue, [], '\n');
+    const result = serializeChildren(editorValue, []);
     console.log('serialized value', result);
     return result;
 };
