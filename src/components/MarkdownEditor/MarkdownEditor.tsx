@@ -202,14 +202,10 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
             // Some components like list actions react on a tab press.
             case 'Tab': {
                 const currentBlockType = SlateUtils.currentBlockType(editor);
-                if (!currentBlockType) {
-                    break;
-                }
+                if (!currentBlockType) break;
 
                 const onTabFunc = Helpers[currentBlockType].onTab;
-                if (!onTabFunc) {
-                    break;
-                }
+                if (!onTabFunc) break;
 
                 onTabFunc(editor, event);
 
@@ -221,16 +217,12 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
             // Normally pressing enter should create a new paragraph, but for some cases this should not be the case.
             // If some onEnter callback for the current block type exists, this will be handled instead of the default case
             case 'Enter': {
-                const currentBlockType = SlateUtils.currentBlockType(editor);
-                if (!currentBlockType) {
-                    break;
-                }
+                const currentElementType = SlateUtils.currentElementType(editor);
+                if (!currentElementType) break;
 
                 // onEnter exists on current type => call onEnter
-                const onEnterFunc = Helpers[currentBlockType].onEnter;
-                if (!onEnterFunc) {
-                    break;
-                }
+                const onEnterFunc = Helpers[currentElementType].onEnter;
+                if (!onEnterFunc) break;
 
                 onEnterFunc(editor, event);
 

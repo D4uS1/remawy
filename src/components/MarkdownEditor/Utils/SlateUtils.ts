@@ -63,6 +63,25 @@ const currentElement = (editor: CustomEditor): CustomElement | null => {
 };
 
 /**
+ * Returns the type name of the element node the user is currently located in.
+ * If the type could not be found, null will be returned.
+ * Note that this returns the type of the element, including inline elements. If you need
+ * the type of the block, use currentBlockType instead.
+ *
+ * @param editor
+ */
+const currentElementType = (editor: CustomEditor): CustomElementType | null => {
+    if (!editor.selection) return null;
+
+    const element = currentElement(editor);
+    if (!element) {
+        return null;
+    }
+
+    return element.type;
+};
+
+/**
  * Returns the nearest element having the specified type in the parents and the node itself at the current users selection.
  * If no element was found, null will be returned.
  *
@@ -778,6 +797,7 @@ export const SlateUtils = {
     currentBlock: currentBlock,
     currentBlockType: currentBlockType,
     currentElement: currentElement,
+    currentElementType: currentElementType,
     currentElementPath: currentElementPath,
     parentBlock: parentBlock,
     parentBlockType: parentBlockType,
