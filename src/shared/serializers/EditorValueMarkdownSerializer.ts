@@ -24,24 +24,6 @@ const getIndentsText = (num: number): string => {
 };
 
 /**
- * Returns the markdown of the specified value that is expected to be a leaf.
- */
-const serializeLeaf = (value: CustomText): string => {
-    if (!value.text) return '';
-
-    let text = value.text;
-    if (value.bold) {
-        text = `**${text}**`;
-    }
-
-    if (value.italic) {
-        text = `*${text}*`;
-    }
-
-    return text;
-};
-
-/**
  * value is the element to render and parents is a list of element types this element is located in.
  */
 type CustomElementSerializerFunc = (value: CustomElement, parents: CustomElementType[]) => string;
@@ -51,7 +33,25 @@ type CustomElementSerializerFunc = (value: CustomElement, parents: CustomElement
  */
 const serializers: Record<CustomElementType, CustomElementSerializerFunc> = {
     blockquote: (value: CustomElement, parents: CustomElementType[]) => {
-        return `> ${serializeChildren(value.children, [...parents, 'code'])}\n`;
+        let result = '> '
+
+        // this appends a > for every line in the leaf that is separated with \n
+        value.children?.forEach((child) => {
+            if (SlateUtils.isLeaf(child)) {
+                const leaf = child as CustomText;
+
+                const lines = leaf.text.split('\n')
+                if (lines.length > 1) {
+                    result += lines.map((text) => serializeLeaf({...child, text: text})).join('\n> ')
+                } else {
+                    result += serializeLeaf({...child, text: lines[0]});
+                }
+            } else {
+                result += serializeElement(child as CustomElement, parents);
+            }
+        });
+
+        return result;
     },
     code: (value: CustomElement, parents: CustomElementType[]) => {
         return `\`\`\`\n${serializeChildren(value.children, [...parents, 'code'])}\n\`\`\`\n`;
@@ -109,6 +109,37 @@ const serializers: Record<CustomElementType, CustomElementSerializerFunc> = {
 };
 
 /**
+ * Returns the markdown of the specified value that is expected to be a leaf.
+ */
+const serializeLeaf = (value: CustomText): string => {
+    if (!value.text) return '';
+
+    let text = value.text;
+    if (value.bold) {
+        text = `**${text}**`;
+    }
+
+    if (value.italic) {
+        text = `*${text}*`;
+    }
+
+    return text;
+};
+
+/**
+ * Returns the markdown of the custom element having the specified parents.
+ *
+ * @param value
+ * @param parents
+ */
+const serializeElement = (value: CustomElement, parents: CustomElementType[]): string => {
+    const func: CustomElementSerializerFunc = serializers[value.type];
+    if (!func) return '';
+
+    return func(value, parents);
+}
+
+/**
  * Serializes the specified element or leaf to markdown.
  * Parents are all the parents element types the element is located in from the rot to the element itself.
  *
@@ -123,10 +154,7 @@ const serializeElementOrLeaf = (element: CustomElement | CustomText, parents: Cu
     const customElement: CustomElement = element as CustomElement;
     if (!customElement['type']) return '';
 
-    const func: CustomElementSerializerFunc = serializers[customElement.type];
-    if (!func) return '';
-
-    return func(customElement, parents);
+    return serializeElement(customElement, parents);
 };
 
 /**
