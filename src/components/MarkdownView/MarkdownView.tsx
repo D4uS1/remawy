@@ -23,10 +23,7 @@ export const MarkdownView = (props: MarkdownViewProps) => {
     const markdown = useMemo(() => {
         if (typeof props.value === 'string') return props.value;
 
-        const serializedMarkdown = toMarkdown(props.value);
-        console.log('serializedMarkdown', serializedMarkdown);
-
-        return serializedMarkdown;
+        return toMarkdown(props.value);
     }, [props.value]);
 
     return <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>{markdown}</ReactMarkdown>;
