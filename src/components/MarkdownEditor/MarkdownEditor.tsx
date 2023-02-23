@@ -175,6 +175,7 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
                 if (!shortcutText) break;
 
                 // Find block matching shortcuts
+                let blockRendered = false;
                 for (const helper of BlockHelpersArray) {
                     // matching shortcut with text or regex possible
                     if (shortcutText === helper.shortcutText || helper.shortcutRegex?.test(shortcutText)) {
@@ -187,11 +188,14 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
                         // Prevent the newest key from being printed
                         event.preventDefault();
 
-                        break; // TODO: must be double break here
+                        // used to skip execution of inline element rendering
+                        blockRendered = true
+
+                        break;
                     }
                 }
 
-                if (!editor.selection) return;
+                if (blockRendered || !editor.selection) return;
 
                 // Find inline matching shortcuts
                 for (const helper of InlineHelpersArray) {

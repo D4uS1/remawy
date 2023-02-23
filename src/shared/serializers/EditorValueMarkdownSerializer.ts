@@ -183,6 +183,5 @@ const serializeChildren = (
  */
 export const toMarkdown = (editorValue: EditorValue): string => {
     const result = serializeChildren(editorValue, []);
-    console.log('serialized value', result);
     return result;
 };
