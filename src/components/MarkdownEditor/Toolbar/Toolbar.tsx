@@ -19,7 +19,7 @@ import { useSlate } from 'slate-react';
 import { HyperlinkToolbarButton } from '../HyperlinkToolbarButton/HyperlinkToolbarButton';
 import { HyperlinkHelper } from '../Helpers/HyperlinkHelper';
 import { ImageToolbarButton } from '../ImageToolbarButton/ImageToolbarButton';
-import { CustomStyle, CustomStyleContext } from '../../shared/contexts/CustomStyle/Context';
+import { CustomStyle, CustomStyleContext } from '../../../shared/contexts/CustomStyle/Context';
 
 /**
  * Props for the ToolBar component.

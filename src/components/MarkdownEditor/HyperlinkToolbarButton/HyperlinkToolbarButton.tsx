@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { ToolbarButton } from '../ToolbarButton/ToolbarButton';
-import { Popover } from '../../shared/components/Popover/Popover';
+import { Popover } from '../../../shared/components/Popover/Popover';
 import styles from './HyperlinkToolbarButton.module.css';
 import { ReactEditor, useSlate } from 'slate-react';
 import { HyperlinkHelper } from '../Helpers/HyperlinkHelper';
 import { SlateUtils } from '../Utils/SlateUtils';
-import { Form } from '../../shared/components/Form/Form';
-import { CustomStyle, CustomStyleContext } from '../../shared/contexts/CustomStyle/Context';
+import { Form } from '../../../shared/components/Form/Form';
+import { CustomStyle, CustomStyleContext } from '../../../shared/contexts/CustomStyle/Context';
 
 /**
  * Shows a toolbar button for creating or editing an hyperlink.

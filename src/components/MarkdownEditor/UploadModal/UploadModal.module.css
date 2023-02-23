@@ -1,5 +1,5 @@
-@value colors: "../../shared/styles/colors.module.css";
-@value distances: "../../shared/styles/distances.module.css";
+@value colors: "../../../shared/styles/colors.module.css";
+@value distances: "../../../shared/styles/distances.module.css";
 @value color-background-progress from colors;
 @value size-font-large from distances;
 

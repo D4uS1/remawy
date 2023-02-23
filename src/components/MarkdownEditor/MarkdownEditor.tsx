@@ -28,8 +28,8 @@ import { ImageElement } from './Elements/ImageElement';
 import { HyperlinkElement } from './Elements/HyperlinkElement';
 import { HyperlinkHelper } from './Helpers/HyperlinkHelper';
 import { ImageHelper } from './Helpers/ImageHelper';
-import { CustomStyleContextProvider } from '../shared/contexts/CustomStyle/Provider';
-import { CustomStyle } from '../shared/contexts/CustomStyle/Context';
+import { CustomStyleContextProvider } from '../../shared/contexts/CustomStyle/Provider';
+import { CustomStyle } from '../../shared/contexts/CustomStyle/Context';
 
 /**
  * Extend the CustomTypes in the slate module to tell slate what custom elements we have.

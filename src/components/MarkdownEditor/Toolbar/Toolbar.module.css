@@ -1,6 +1,6 @@
-@value colors: "../../shared/styles/colors.module.css";
+@value colors: "../../../shared/styles/colors.module.css";
 @value color-border-dark, color-background-toolbar from colors;
-@value distances: "../../shared/styles/distances.module.css";
+@value distances: "../../../shared/styles/distances.module.css";
 @value size-border-medium, radius-border-medium from distances;
 
 .container {

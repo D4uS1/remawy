@@ -1,6 +1,6 @@
-@value colors: "../shared/styles/colors.module.css";
-@value distances: "../shared/styles/distances.module.css";
-@value fonts: "../shared/styles/fonts.module.css";
+@value colors: "../../shared/styles/colors.module.css";
+@value distances: "../../shared/styles/distances.module.css";
+@value fonts: "../../shared/styles/fonts.module.css";
 @value color-border-dark from colors;
 @value size-border-large, radius-border-medium, padding-medium from distances;
 @value font-family-default from fonts;

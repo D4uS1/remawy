@@ -6,10 +6,10 @@ import {
     UploaderProgressCallback
 } from '../Upload/Uploader/AbstractUploader';
 import styles from './UploadModal.module.css';
-import { Modal } from '../../shared/components/Modal/Modal';
-import { Form } from '../../shared/components/Form/Form';
-import { FormGroup } from '../../shared/components/FormGroup/FormGroup';
-import { CustomStyle, CustomStyleContext } from '../../shared/contexts/CustomStyle/Context';
+import { Modal } from '../../../shared/components/Modal/Modal';
+import { Form } from '../../../shared/components/Form/Form';
+import { FormGroup } from '../../../shared/components/FormGroup/FormGroup';
+import { CustomStyle, CustomStyleContext } from '../../../shared/contexts/CustomStyle/Context';
 
 /**
  * Props for the UploadModal component.

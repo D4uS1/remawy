@@ -1,6 +1,6 @@
-@value colors: "../../shared/styles/colors.module.css";
+@value colors: "../../../shared/styles/colors.module.css";
 @value color-background-toolbar-active from colors;
-@value distances: "../../shared/styles/distances.module.css";
+@value distances: "../../../shared/styles/distances.module.css";
 @value margin-small, padding-medium, radius-border-small from distances;
 
 .button {

@@ -3,10 +3,10 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { SlateUtils } from '../Utils/SlateUtils';
 import styles from './ImageToolbarButton.module.css';
 import { ToolbarButton } from '../ToolbarButton/ToolbarButton';
-import { Popover } from '../../shared/components/Popover/Popover';
+import { Popover } from '../../../shared/components/Popover/Popover';
 import { ImageHelper } from '../Helpers/ImageHelper';
-import { Form } from '../../shared/components/Form/Form';
-import { CustomStyle, CustomStyleContext } from '../../shared/contexts/CustomStyle/Context';
+import { Form } from '../../../shared/components/Form/Form';
+import { CustomStyle, CustomStyleContext } from '../../../shared/contexts/CustomStyle/Context';
 
 /**
  * Props for the ImageToolbarButton component.

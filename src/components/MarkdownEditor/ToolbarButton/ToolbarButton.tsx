@@ -1,7 +1,7 @@
 import React, { useMemo, MouseEvent, useContext } from 'react';
 import styles from './ToolbarButton.module.css';
 import { FaBold, FaItalic, FaListOl, FaList, FaQuoteLeft, FaCode, FaUpload, FaLink, FaImage } from 'react-icons/fa';
-import { CustomStyle, CustomStyleContext } from '../../shared/contexts/CustomStyle/Context';
+import { CustomStyle, CustomStyleContext } from '../../../shared/contexts/CustomStyle/Context';
 
 /**
  * Props for the ToolbarButton component.

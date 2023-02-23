@@ -1,4 +1,4 @@
-@value distances: "../../shared/styles/distances.module.css";
+@value distances: "../../../shared/styles/distances.module.css";
 @value margin-small, margin-medium, size-border-small from distances;
 
 .container {
