@@ -21,8 +21,15 @@ function App() {
         return new EzOnRails.integrations.remawy.uploader('http://localhost:3000', authInfo, '1.0')
     }, [authInfo])
 
-    const onBlur = (event: FocusEvent<HTMLDivElement>, values: EditorValue) => {
-        console.log("onBlur", values);
+    const initialValue: EditorValue | undefined = useMemo(() => {
+        const editorValue = localStorage.getItem("editorValue");
+        if (!editorValue) return undefined;
+
+        return JSON.parse(editorValue);
+    }, []);
+
+    const onBlur = (event: FocusEvent<HTMLDivElement>, value: EditorValue) => {
+        localStorage.setItem("editorValue", JSON.stringify(value))
     }
 
     return (
@@ -34,7 +41,7 @@ function App() {
                                         editorContainerClassName: styles.editorContainer
                                     }
                                 }}
-                                initialValue={undefined}
+                                initialValue={initialValue}
                                 defaultText='Default Text'
                                 onBlur={onBlur}
                                 uploadInfo={uploader ? {
