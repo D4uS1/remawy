@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { ToolbarButton } from '../ToolbarButton/ToolbarButton';
 import { Popover } from '../../shared/components/Popover/Popover';
 import styles from './HyperlinkToolbarButton.module.css';
-import { useSlate } from 'slate-react';
+import { ReactEditor, useSlate } from 'slate-react';
 import { HyperlinkHelper } from '../Helpers/HyperlinkHelper';
 import { SlateUtils } from '../Utils/SlateUtils';
 import { Form } from '../../shared/components/Form/Form';
@@ -43,6 +43,8 @@ export const HyperlinkToolbarButton = () => {
      */
     const onClosePopover = () => {
         setShowPopover(false);
+
+        ReactEditor.focus(editor);
     };
 
     /**

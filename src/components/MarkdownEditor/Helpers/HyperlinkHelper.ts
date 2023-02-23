@@ -30,7 +30,7 @@ const toggle = (editor: CustomEditor, options?: ToggleOptions, props?: Partial<C
         SlateUtils.createNewNode(editor, 'hyperlink', {
             children: [{ text: linkText }],
             props: { href: href },
-            createFollowingLeaf: true
+            createFollowingText: ' '
         });
     } else {
         HelperUtils.toggleInlineNode(editor, 'hyperlink', props, [{ text: 'Link' }]);
@@ -55,7 +55,8 @@ const onUpsert = (editor: CustomEditor, props: Partial<CustomElement>) => {
             return SlateUtils.createNewNode(editor, 'hyperlink', {
                 children: props.children,
                 props: props,
-                voids: true
+                voids: true,
+                createFollowingText: ' '
             });
         }
     }

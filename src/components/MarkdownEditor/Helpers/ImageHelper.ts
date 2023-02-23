@@ -29,7 +29,7 @@ const toggle = (editor: CustomEditor, options?: ToggleOptions, props?: Partial<C
 
         SlateUtils.createNewNode(editor, 'image', {
             props: { src: src, altText: altText },
-            createFollowingLeaf: true
+            createFollowingText: ' '
         });
     } else {
         HelperUtils.toggleInlineNode(editor, 'image', props);
@@ -57,7 +57,8 @@ const onUpsert = (editor: CustomEditor, props: Partial<CustomElement>) => {
     } else {
         SlateUtils.createNewNode(editor, 'image', {
             props: props,
-            voids: true
+            voids: true,
+            createFollowingText: ' '
         });
     }
 };

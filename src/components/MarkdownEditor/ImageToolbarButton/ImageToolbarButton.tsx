@@ -1,4 +1,4 @@
-import { useSlate } from 'slate-react';
+import { ReactEditor, useSlate } from 'slate-react';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { SlateUtils } from '../Utils/SlateUtils';
 import styles from './ImageToolbarButton.module.css';
@@ -53,6 +53,8 @@ export const ImageToolbarButton = (props: ImageToolbarButtonProps) => {
      */
     const onClosePopover = () => {
         setShowPopover(false);
+
+        ReactEditor.focus(editor);
     };
 
     /**
