@@ -28,7 +28,8 @@ const toggle = (editor: CustomEditor, options?: ToggleOptions, props?: Partial<C
         const src = options.actorShortcutMatch[2];
 
         SlateUtils.createNewNode(editor, 'image', {
-            props: { src: src, altText: altText }
+            props: { src: src, altText: altText },
+            createFollowingLeaf: true
         });
     } else {
         HelperUtils.toggleInlineNode(editor, 'image', props);

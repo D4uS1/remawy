@@ -109,6 +109,7 @@ const createNewNodeOfCurrentType = (editor: CustomEditor) => {
  * If createFollowingParagraph is set to true, a paragraph after the inserted node will be created. This makes the cursor of the editor
  * to move not into the created node, but to the paragraph after the created node. Note that the paragraph is not a voide node,
  * even if you defined it for the inserted one.
+ * If createFollowingLeaf is set to true, a following empty leaf having a space will be created beside the created node.
  *
  * @param editor
  * @param type
@@ -122,6 +123,7 @@ const createNewNode = (
         props?: Partial<CustomElement>;
         voids?: boolean;
         createFollowingParagraph?: boolean;
+        createFollowingLeaf?: boolean;
     } = {}
 ) => {
     Transforms.insertNodes(
@@ -136,6 +138,20 @@ const createNewNode = (
 
     if (options.createFollowingParagraph) {
         Transforms.insertNodes(editor, { type: 'paragraph', children: [{ text: '' }] });
+    }
+
+    if (options.createFollowingLeaf) {
+        if (!editor.selection) return;
+
+        // target path for inserting the empty leaf
+        const targetPath = Editor.parent(editor, editor.selection)[1];
+        targetPath[targetPath.length - 1]++;
+
+        // insert at target path
+        Transforms.insertNodes(editor, { text: ' ' }, { at: targetPath });
+
+        // point cursor to the new target
+        Transforms.select(editor, { anchor: { path: targetPath, offset: 1 }, focus: { path: targetPath, offset: 1 } });
     }
 };
 

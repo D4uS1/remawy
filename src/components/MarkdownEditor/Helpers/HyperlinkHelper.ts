@@ -29,7 +29,8 @@ const toggle = (editor: CustomEditor, options?: ToggleOptions, props?: Partial<C
 
         SlateUtils.createNewNode(editor, 'hyperlink', {
             children: [{ text: linkText }],
-            props: { href: href }
+            props: { href: href },
+            createFollowingLeaf: true
         });
     } else {
         HelperUtils.toggleInlineNode(editor, 'hyperlink', props, [{ text: 'Link' }]);
