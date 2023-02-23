@@ -1,5 +1,5 @@
 import React, {useMemo, useState, FocusEvent} from 'react';
-import {MarkdownEditor, MarkdownView} from "@d4us1/remawy";
+import {MarkdownEditor, MarkdownView, EditorValue} from "@d4us1/remawy";
 import styles from './App.module.css'
 import {EzOnRailsAuthInfo, LoginForm, EzOnRails} from "ez-on-rails-react";
 
@@ -15,15 +15,13 @@ function App() {
         setAuthInfo(authInfo);
     }
 
-    const [markdown, setMarkdown] = useState<string>('')
-
     const uploader = useMemo(() => {
         if (!authInfo) return undefined;
 
         return new EzOnRails.integrations.remawy.uploader('http://localhost:3000', authInfo, '1.0')
     }, [authInfo])
 
-    const onBlur = (event: FocusEvent<HTMLDivElement>, values: unknown) => {
+    const onBlur = (event: FocusEvent<HTMLDivElement>, values: EditorValue) => {
         console.log("onBlur", values);
     }
 
@@ -31,13 +29,13 @@ function App() {
         <div className={styles.container}>
             <div>
                 <span>Editor: </span>
-                <MarkdownEditor markdown={markdown}
-                                onSubmit={setMarkdown}
-                                customStyle={{
+                <MarkdownEditor customStyle={{
                                     editor: {
                                         editorContainerClassName: styles.editorContainer
                                     }
                                 }}
+                                initialValue={undefined}
+                                defaultText='Default Text'
                                 onBlur={onBlur}
                                 uploadInfo={uploader ? {
                                     uploader: uploader
@@ -46,7 +44,7 @@ function App() {
 
             <div>
                 <span>View: </span>
-                <MarkdownView markdown={markdown} />
+                <MarkdownView markdown={''} />
             </div>
 
             { !authInfo && (

@@ -1,4 +1,4 @@
-import React, {useCallback, useState, KeyboardEvent, FocusEvent, useRef} from 'react';
+import React, { useCallback, useState, KeyboardEvent, FocusEvent, useRef, useMemo } from 'react';
 import { createEditor, Descendant } from 'slate';
 import { Slate, Editable, withReact, RenderElementProps, ReactEditor } from 'slate-react';
 import { CodeElement } from './Elements/CodeElement';
@@ -43,24 +43,28 @@ declare module 'slate' {
 }
 
 /**
+ * Describes the type of the value the editor holds.
+ */
+export type EditorValue = Descendant[];
+
+/**
  * Props for the MarkdownEditor component.
  */
 export interface MarkdownEditorProps {
-
     // Called after each editor change.
     // Passes the current ast of elements, that can be saved anywhere. Note that this is called everytime the user
     // changes something in the editor. If you do not want to track every change, you can use onBlur instead.
-    onChange?: (value: Descendant[]) => void;
+    onChange?: (value: EditorValue) => void;
 
     // Called after the focus of the editor was lost.
     // Passes the current ast, hence it can be saved anywhere.
-    onBlur?: (event: FocusEvent<HTMLDivElement>, value: Descendant[]) => void;
+    onBlur?: (event: FocusEvent<HTMLDivElement>, value: EditorValue) => void;
 
-    // The current markdown
-    markdown: string;
+    // The initial value the editor should have. If this is passed, it will be prioritized instead of defaultText.
+    initialValue?: EditorValue;
 
-    // Called if the Markdown content was changed and submitted
-    onSubmit: (markdown: string) => void;
+    // The optional initial text the value of the editor should be if no initial value was passed or was empty.
+    defaultText?: string;
 
     // Holds css classes and values to customize the style of the editor
     customStyle?: CustomStyle;
@@ -95,6 +99,7 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
         forceAttachment?: boolean;
     }>({ show: false });
 
+    // Use ref instead state here to prevent rerender
     const currentAst = useRef<Descendant[]>([]);
 
     /**
@@ -274,7 +279,7 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
         props.onBlur(event, currentAst.current);
 
         event.preventDefault();
-    }
+    };
 
     /**
      * Called if the user requests some file upload.
@@ -331,18 +336,26 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
         onCloseUploadModal();
     };
 
+    /**
+     * Called if the initialValue or defaultText in the props changes.
+     * Returns the initial value for the slate editor.
+     */
+    const initialValue: Descendant[] = useMemo(() => {
+        if (props.initialValue && props.initialValue.length > 0) {
+            return props.initialValue;
+        }
+
+        return [
+            {
+                type: 'paragraph',
+                children: [{ text: props.defaultText !== undefined ? props.defaultText : '' }]
+            }
+        ];
+    }, [props.initialValue, props.defaultText]);
+
     return (
         <CustomStyleContextProvider value={props.customStyle}>
-            <Slate
-                editor={editor}
-                value={[
-                    {
-                        type: 'paragraph',
-                        children: [{ text: 'A line of text in a paragraph.' }]
-                    }
-                ]}
-                onChange={onSlateChange}
-            >
+            <Slate editor={editor} value={initialValue} onChange={onSlateChange}>
                 <div className={`${styles.container} ${props.customStyle?.editor?.containerClassName || ''}`}>
                     <Toolbar onUploadRequest={props.uploadInfo ? onUploadRequest : undefined} />
 

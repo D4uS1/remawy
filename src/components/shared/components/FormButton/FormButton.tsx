@@ -29,7 +29,7 @@ export const FormButton = (props: FormButtonProps) => {
      */
     const onMouseDown = (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
-    }
+    };
 
     return (
         <button
