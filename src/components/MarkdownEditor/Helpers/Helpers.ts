@@ -8,12 +8,13 @@ import { Heading3Helper } from './Heading3Helper';
 import { Heading4Helper } from './Heading4Helper';
 import { Heading5Helper } from './Heading5Helper';
 import { Heading6Helper } from './Heading6Helper';
-import { ListItemHelper } from './ListItemHelper';
+import { UnorderedListItemHelper } from './UnorderedListItemHelper';
 import { OrderedListHelper } from './OrderedListHelper';
 import { ParagraphHelper } from './ParagraphHelper';
 import { UnorderedListHelper } from './UnorderedListHelper';
 import { HyperlinkHelper } from './HyperlinkHelper';
 import { ImageHelper } from './ImageHelper';
+import { OrderedListItemHelper } from './OrderedListItemHelper';
 
 /**
  * Holds all available Helpers that can render an element.
@@ -32,10 +33,11 @@ export const HelpersArray: CustomHelper[] = [
     ImageHelper,
     HyperlinkHelper,
 
-    ListItemHelper,
     OrderedListHelper,
+    OrderedListItemHelper,
     ParagraphHelper,
-    UnorderedListHelper
+    UnorderedListHelper,
+    UnorderedListItemHelper
 ];
 
 /**

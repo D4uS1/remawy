@@ -464,6 +464,23 @@ const deleteAt = (editor: CustomEditor, start: Point, numChars: number) => {
 };
 
 /**
+ * Checks whether the cursor is in a node being a child of a node having any of the specified elementTypes.
+ * This checks recursively in the tree, not only one parent.
+ *
+ * @param editor
+ * @param elementTypes
+ */
+const isChildOfAny = (editor: CustomEditor, elementTypes: CustomElementType[]): boolean => {
+    if (!editor.selection) return false;
+
+    return (
+        Editor.above(editor, {
+            match: (n) => elementTypes.includes((n as Element).type)
+        }) !== undefined
+    );
+};
+
+/**
  * Checks whether the cursor is in a node being a child of a node having the specified type elementType.
  * This checks recursively in the tree, not only one parent.
  *
@@ -473,11 +490,7 @@ const deleteAt = (editor: CustomEditor, start: Point, numChars: number) => {
 const isChildOf = (editor: CustomEditor, elementType: CustomElementType): boolean => {
     if (!editor.selection) return false;
 
-    return (
-        Editor.above(editor, {
-            match: (n) => (n as Element).type === elementType
-        }) !== undefined
-    );
+    return isChildOfAny(editor, [elementType]);
 };
 
 /**
@@ -793,6 +806,7 @@ export const SlateUtils = {
     deleteFromRight: deleteFromRight,
     deleteAt: deleteAt,
     isChildOf: isChildOf,
+    isChildOfAny: isChildOfAny,
     nearestElementOfType: nearestElementOfType,
     currentBlock: currentBlock,
     currentBlockType: currentBlockType,

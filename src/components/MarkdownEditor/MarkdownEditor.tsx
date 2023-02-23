@@ -15,7 +15,7 @@ import { Heading5Element } from './Elements/Heading5Element';
 import { Heading6Element } from './Elements/Heading6Element';
 import { OrderedListElement } from './Elements/OrderedListElement';
 import { UnorderedListElement } from './Elements/UnorderedListElement';
-import { ListItemElement } from './Elements/ListItemElement';
+import { UnorderedListItemElement } from './Elements/UnorderedListItemElement';
 import { SlateUtils } from './Utils/SlateUtils';
 import { CustomLeafProps, CustomLeaf } from './Leafs/CustomLeaf';
 import { CustomLeafHelper } from './Helpers/CustomLeafHelper';
@@ -30,6 +30,7 @@ import { HyperlinkHelper } from './Helpers/HyperlinkHelper';
 import { ImageHelper } from './Helpers/ImageHelper';
 import { CustomStyleContextProvider } from '../../shared/contexts/CustomStyle/Provider';
 import { CustomStyle } from '../../shared/contexts/CustomStyle/Context';
+import { OrderedListItemElement } from './Elements/OrderedListItemElement';
 
 /**
  * Extend the CustomTypes in the slate module to tell slate what custom elements we have.
@@ -127,12 +128,14 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
                 return <ImageElement {...props} />;
             case 'hyperlink':
                 return <HyperlinkElement {...props} />;
-            case 'list-item':
-                return <ListItemElement {...props} />;
+            case 'ordered-list-item':
+                return <OrderedListItemElement {...props} />;
             case 'ordered-list':
                 return <OrderedListElement {...props} />;
             case 'unordered-list':
                 return <UnorderedListElement {...props} />;
+            case 'unordered-list-item':
+                return <UnorderedListItemElement {...props} />;
             default:
                 return <ParagraphElement {...props} />;
         }

@@ -14,10 +14,11 @@ export type CustomElementType =
     | 'heading-6'
     | 'hyperlink'
     | 'image'
-    | 'list-item'
     | 'ordered-list'
+    | 'ordered-list-item'
     | 'paragraph'
-    | 'unordered-list';
+    | 'unordered-list'
+    | 'unordered-list-item';
 
 /**
  * Defines one definition of an element in our editor.

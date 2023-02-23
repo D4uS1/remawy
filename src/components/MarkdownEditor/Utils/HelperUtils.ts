@@ -3,6 +3,7 @@ import { Descendant, Editor, Element } from 'slate';
 import { CustomEditor } from '../Types/CustomEditor';
 import { SlateUtils } from './SlateUtils';
 import { KeyboardEvent } from 'react';
+import { ToggleOptions } from '../Types/CustomHelper';
 
 /**
  * Can be used by helpers to check whether the element of the specified elementType is
@@ -99,7 +100,9 @@ const toggleInlineNode = (
  */
 const toggleWithListAllowed = (editor: CustomEditor, elementType: CustomElementType) => {
     const isActive = defaultIsActive(editor, elementType);
-    const isInList = SlateUtils.isChildOf(editor, 'list-item');
+    const isInOrderedList = SlateUtils.isChildOf(editor, 'ordered-list-item');
+    const isInUnorderedList = SlateUtils.isChildOf(editor, 'unordered-list-item');
+    const isInList = isInOrderedList || isInUnorderedList;
 
     if (isActive && isInList) {
         return SlateUtils.unwrapLeaf(editor);
@@ -111,7 +114,7 @@ const toggleWithListAllowed = (editor: CustomEditor, elementType: CustomElementT
 
     if (!isInList) return;
 
-    SlateUtils.wrapNode(editor, 'list-item');
+    SlateUtils.wrapNode(editor, isInOrderedList ? 'ordered-list-item' : 'unordered-list-item');
 };
 
 /**
@@ -142,7 +145,9 @@ const onEnterWithShiftLinebreak = (editor: CustomEditor, event: KeyboardEvent) =
  * @param event
  */
 const onEnterWithListAndNewlineAllowed = (editor: CustomEditor, event: KeyboardEvent) => {
-    const isInList = SlateUtils.isChildOf(editor, 'list-item');
+    const isInOrderedList = SlateUtils.isChildOf(editor, 'ordered-list-item');
+    const isInUnorderedList = SlateUtils.isChildOf(editor, 'unordered-list-item');
+    const isInList = isInOrderedList || isInUnorderedList;
 
     // If the item is not in a list, do the default behavior
     // If shiftKey is pressed we just want to have a newline, that is also handled in the default function
@@ -154,12 +159,108 @@ const onEnterWithListAndNewlineAllowed = (editor: CustomEditor, event: KeyboardE
     if (isInList) {
         SlateUtils.createNewNodeOfCurrentType(editor);
 
-        SlateUtils.changeCurrentNodeType(editor, 'list-item');
+        SlateUtils.changeCurrentNodeType(editor, isInOrderedList ? 'ordered-list-item' : 'unordered-list-item');
 
         return event.preventDefault();
     }
 
     onEnterWithShiftLinebreak(editor, event);
+};
+
+/**
+ * Deactivates the list item at the cursor position of the editor, by setting it to paragraph
+ * and removing all indents.
+ *
+ * @param editor
+ * @param listType
+ */
+const deactivateListItem = (editor: CustomEditor, listType: 'ordered-list' | 'unordered-list') => {
+    // Remove lists and indented lists until we are in the "root"
+    do {
+        SlateUtils.unwrapNode(editor);
+    } while (SlateUtils.parentBlockType(editor) === listType);
+
+    // Change the list-item element to paragraph
+    SlateUtils.changeCurrentNodeType(editor, 'paragraph');
+};
+
+/**
+ * Toggles the rendering of the ListItemElement in the specified editor in a list of the specified listType.
+ *
+ * @param editor
+ * @param listType
+ * @param options
+ */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const toggleListItem = (editor: CustomEditor, listType: 'ordered-list' | 'unordered-list', options?: ToggleOptions) => {
+    const listItemType = listType === 'ordered-list' ? 'ordered-list-item' : 'unordered-list-item';
+
+    // currently we are in a list item, hence we need to deactivate it.
+    if (defaultIsActive(editor, listItemType)) {
+        return deactivateListItem(editor, listType);
+    }
+
+    if (!SlateUtils.isChildOf(editor, listType)) {
+        SlateUtils.wrapNode(editor, listType);
+    }
+
+    SlateUtils.changeCurrentNodeType(editor, listItemType);
+};
+
+/**
+ * Called if the user presses tab in a list-item element of the specified listType.
+ * Forces the list to get into a sub list, to enable indent behavior.
+ *
+ * @param editor
+ * @param listType
+ * @param event
+ */
+const onTabListItem = (editor: CustomEditor, listType: 'ordered-list' | 'unordered-list', event: KeyboardEvent) => {
+    // if shift is pressed, the list current list should be unintended
+    if (event.shiftKey) {
+        SlateUtils.unwrapNode(editor);
+
+        // If the parent is no list (after lifting), convert it to paragraph
+        // If the parentElement is null, it is assumed that the parent element is the root node, hence
+        // we want to convert it back here, too
+        const parentBlock = SlateUtils.parentBlock(editor);
+        if (!parentBlock || parentBlock.type !== listType) {
+            SlateUtils.changeCurrentNodeType(editor, 'paragraph');
+        }
+
+        // if shift is not pressed, the list should be intended
+    } else {
+        const parentBlock = SlateUtils.parentBlock(editor);
+        const currentBlock = SlateUtils.currentBlock(editor);
+        if (!currentBlock || !parentBlock) return;
+
+        SlateUtils.wrapNode(editor, listType);
+    }
+
+    // prevent default tab handler from being processed
+    event.preventDefault();
+};
+
+/**
+ * Overwrites the default behavior if the user presses enter in a list item in the specified listType.
+ * If the curent textnode is empty, a new paragraph will be created. This should be the case if the user
+ * is inside an empty list-entry.
+ * Otherwise a new list entry will be created. This is done by just doing nothing, because this shoul cause slate
+ * to do its default action that is creating a new list-entry.
+ *
+ * @param editor
+ * @param listType
+ * @param event
+ */
+const onEnterListItem = (editor: CustomEditor, listType: 'ordered-list' | 'unordered-list', event: KeyboardEvent) => {
+    // only remove list item it enter was pressed twice
+    const textSinceBlockStart = SlateUtils.textSinceBlockStart(editor);
+    if (textSinceBlockStart !== '') return;
+
+    deactivateListItem(editor, listType);
+
+    // Prevent default slate action
+    event.preventDefault();
 };
 
 export const HelperUtils = {
@@ -169,5 +270,8 @@ export const HelperUtils = {
     toggleAtRoot: toggleAtRoot,
     toggleWithListAllowed: toggleWithListAllowed,
     onEnterWithShiftLinebreak: onEnterWithShiftLinebreak,
-    onEnterWithListAndNewlineAllowed: onEnterWithListAndNewlineAllowed
+    onEnterWithListAndNewlineAllowed: onEnterWithListAndNewlineAllowed,
+    toggleListItem: toggleListItem,
+    onTabListItem: onTabListItem,
+    onEnterListItem: onEnterListItem
 };

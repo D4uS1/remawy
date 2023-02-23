@@ -7,7 +7,7 @@ import { BlockquoteHelper } from '../Helpers/BlockquoteHelper';
 import { CodeHelper } from '../Helpers/CodeHelper';
 import { Helpers } from '../Helpers/Helpers';
 import { CustomLeafHelper } from '../Helpers/CustomLeafHelper';
-import { ListItemHelper } from '../Helpers/ListItemHelper';
+import { UnorderedListItemHelper } from '../Helpers/UnorderedListItemHelper';
 import { ToolbarButtonSpacer } from '../ToolbarButtonSpacer/ToolbarButtonSpacer';
 import { Heading1Helper } from '../Helpers/Heading1Helper';
 import { Heading2Helper } from '../Helpers/Heading2Helper';
@@ -20,6 +20,7 @@ import { HyperlinkToolbarButton } from '../HyperlinkToolbarButton/HyperlinkToolb
 import { HyperlinkHelper } from '../Helpers/HyperlinkHelper';
 import { ImageToolbarButton } from '../ImageToolbarButton/ImageToolbarButton';
 import { CustomStyle, CustomStyleContext } from '../../../shared/contexts/CustomStyle/Context';
+import { OrderedListItemHelper } from '../Helpers/OrderedListItemHelper';
 
 /**
  * Props for the ToolBar component.
@@ -79,7 +80,7 @@ export const Toolbar = (props: ToolbarProps) => {
      */
     const onClickUnorderedList = () => {
         // This is a special case because we want to have the cursor in a list item directly
-        ListItemHelper.toggleUnorderedListItem(editor, { actor: 'toolbar' });
+        UnorderedListItemHelper.toggle(editor, { actor: 'toolbar' });
     };
 
     /**
@@ -89,7 +90,7 @@ export const Toolbar = (props: ToolbarProps) => {
      */
     const onClickOrderedList = () => {
         // This is a special case because we want to have the cursor in a list item directly
-        ListItemHelper.toggleOrderedListItem(editor, { actor: 'toolbar' });
+        OrderedListItemHelper.toggle(editor, { actor: 'toolbar' });
     };
 
     /**

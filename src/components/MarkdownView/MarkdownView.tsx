@@ -1,6 +1,6 @@
-import React, {useMemo} from 'react';
-import {EditorValue} from "../MarkdownEditor/MarkdownEditor";
-import {toMarkdown} from "../../shared/serializers/EditorValueMarkdownSerializer";
+import React, { useMemo } from 'react';
+import { EditorValue } from '../MarkdownEditor/MarkdownEditor';
+import { toMarkdown } from '../../shared/serializers/EditorValueMarkdownSerializer';
 
 /**
  * Props for the Editor component.
