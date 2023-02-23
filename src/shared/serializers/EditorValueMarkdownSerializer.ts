@@ -5,6 +5,25 @@ import { SlateUtils } from '../../components/MarkdownEditor/Utils/SlateUtils';
 import { CustomText } from '../../components/MarkdownEditor/Types/CustomText';
 
 /**
+ * Returns the number of elementTypes having the specified targetType in the elementTypes array.
+ *
+ * @param elementTypes
+ * @param targetType
+ */
+const elementTypesCount = (elementTypes: CustomElementType[], targetType: CustomElementType) => {
+    return elementTypes.filter((elementType) => elementType === targetType).length;
+};
+
+/**
+ * Returns the number of indents as text.
+ *
+ * @param num
+ */
+const getIndentsText = (num: number): string => {
+    return Array(num * 4).join(' ');
+};
+
+/**
  * Returns the markdown of the specified value that is expected to be a leaf.
  */
 const serializeLeaf = (value: CustomText): string => {
@@ -22,65 +41,81 @@ const serializeLeaf = (value: CustomText): string => {
     return text;
 };
 
-type CustomElementSerializerFunc = (value: CustomElement) => string;
+/**
+ * value is the element to render and parents is a list of element types this element is located in.
+ */
+type CustomElementSerializerFunc = (value: CustomElement, parents: CustomElementType[]) => string;
 
 /**
  * Maps the elements to its serializer functions.
  */
 const serializers: Record<CustomElementType, CustomElementSerializerFunc> = {
-    blockquote: (value: CustomElement) => {
+    blockquote: (value: CustomElement, parents: CustomElementType[]) => {
         return ``;
     },
-    code: (value: CustomElement) => {
-        return `\`\`\`\n${serializeChildren(value.children)}\`\`\``;
+    code: (value: CustomElement, parents: CustomElementType[]) => {
+        return `\`\`\`\n${serializeChildren(value.children, [...parents, 'code'])}\n\`\`\``;
     },
-    'heading-1': (value: CustomElement) => {
-        return `# ${serializeChildren(value.children)}`;
+    'heading-1': (value: CustomElement, parents: CustomElementType[]) => {
+        return `# ${serializeChildren(value.children, [...parents, 'heading-1'])}`;
     },
-    'heading-2': (value: CustomElement) => {
-        return `## ${serializeChildren(value.children)}`;
+    'heading-2': (value: CustomElement, parents: CustomElementType[]) => {
+        return `## ${serializeChildren(value.children, [...parents, 'heading-2'])}`;
     },
-    'heading-3': (value: CustomElement) => {
-        return `### ${serializeChildren(value.children)}`;
+    'heading-3': (value: CustomElement, parents: CustomElementType[]) => {
+        return `### ${serializeChildren(value.children, [...parents, 'heading-3'])}`;
     },
-    'heading-4': (value: CustomElement) => {
-        return `#### ${serializeChildren(value.children)}`;
+    'heading-4': (value: CustomElement, parents: CustomElementType[]) => {
+        return `#### ${serializeChildren(value.children, [...parents, 'heading-4'])}`;
     },
-    'heading-5': (value: CustomElement) => {
-        return `##### ${serializeChildren(value.children)}`;
+    'heading-5': (value: CustomElement, parents: CustomElementType[]) => {
+        return `##### ${serializeChildren(value.children, [...parents, 'heading-5'])}`;
     },
-    'heading-6': (value: CustomElement) => {
-        return `###### ${serializeChildren(value.children)}`;
+    'heading-6': (value: CustomElement, parents: CustomElementType[]) => {
+        return `###### ${serializeChildren(value.children, [...parents, 'heading-6'])}`;
     },
-    hyperlink: (value: CustomElement) => {
-        return `[${serializeChildren(value.children)}](${value.href || ''})`;
+    hyperlink: (value: CustomElement, parents: CustomElementType[]) => {
+        return `[${serializeChildren(value.children, [...parents, 'hyperlink'])}](${value.href || ''})`;
     },
-    image: (value: CustomElement) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    image: (value: CustomElement, parents: CustomElementType[]) => {
         return `![${value.altText || ''}](${value.src || ''})`;
     },
-    'ordered-list': (value: CustomElement) => {
-        return serializeChildren(value.children);
+    'ordered-list': (value: CustomElement, parents: CustomElementType[]) => {
+        return serializeChildren(value.children, [...parents, 'ordered-list']);
     },
-    'ordered-list-item': (value: CustomElement) => {
-        return `* ${serializeChildren(value.children)}`;
+    'ordered-list-item': (value: CustomElement, parents: CustomElementType[]) => {
+        const listsCount = elementTypesCount(parents, 'ordered-list');
+
+        let result = getIndentsText(listsCount - 1);
+        result = `${result}1. ${serializeChildren(value.children, [...parents, 'ordered-list-item'])}\n`;
+
+        return result;
     },
-    paragraph: (value: CustomElement) => {
-        return `${serializeChildren(value.children)}\n`;
+    paragraph: (value: CustomElement, parents: CustomElementType[]) => {
+        return `${serializeChildren(value.children, [...parents, 'paragraph'])}\n`;
     },
-    'unordered-list': (value: CustomElement) => {
-        return serializeChildren(value.children);
+    'unordered-list': (value: CustomElement, parents: CustomElementType[]) => {
+        return serializeChildren(value.children, [...parents, 'unordered-list']);
     },
-    'unordered-list-item': (value: CustomElement) => {
-        return `1. ${serializeChildren(value.children)}`;
+    'unordered-list-item': (value: CustomElement, parents: CustomElementType[]) => {
+        const listsCount = elementTypesCount(parents, 'unordered-list');
+
+        let result = getIndentsText(listsCount - 1);
+        result = `${result}* ${serializeChildren(value.children, [...parents, 'unordered-list-item'])}\n`;
+
+        return result;
     }
 };
 
 /**
  * Serializes the specified element or leaf to markdown.
+ * Parents are all the parents element types the element is located in from the rot to the element itself.
  *
  * @param element
+ * @param parents
  */
-const serializeElementOrLeaf = (element: CustomElement | CustomText): string => {
+const serializeElementOrLeaf = (element: CustomElement | CustomText, parents: CustomElementType[]): string => {
     if (SlateUtils.isLeaf(element)) {
         return serializeLeaf(element as CustomText);
     }
@@ -91,20 +126,26 @@ const serializeElementOrLeaf = (element: CustomElement | CustomText): string => 
     const func: CustomElementSerializerFunc = serializers[customElement.type];
     if (!func) return '';
 
-    return func(customElement);
+    return func(customElement, parents);
 };
 
 /**
  * Serializes the specified children to markdown. If joinValue is given, the children will be connected
  * using this value.
+ * Parents are the element types all the parents from the root to the element that contains the children.
  *
  * @param children
+ * @param parents
  * @param joinValue
  */
-const serializeChildren = (children: Descendant[] | undefined, joinValue = ''): string => {
+const serializeChildren = (
+    children: Descendant[] | undefined,
+    parents: CustomElementType[],
+    joinValue = ''
+): string => {
     if (!children) return '';
 
-    return children?.map(serializeElementOrLeaf).join(joinValue);
+    return children?.map((child) => serializeElementOrLeaf(child, parents)).join(joinValue);
 };
 
 /**
@@ -113,7 +154,7 @@ const serializeChildren = (children: Descendant[] | undefined, joinValue = ''): 
  * @param editorValue
  */
 export const toMarkdown = (editorValue: EditorValue): string => {
-    const result = serializeChildren(editorValue, '\n');
+    const result = serializeChildren(editorValue, [], '\n');
     console.log('serialized value', result);
     return result;
 };
