@@ -1,0 +1,27 @@
+@value fonts: "../../shared/styles/fonts.module.css";
+@value colors: "../../shared/styles/colors.module.css";
+@value distances: "../../shared/styles/distances.module.css";
+@value font-family-default from fonts;
+@value color-border-light from colors;
+@value size-border-large, margin-large, padding-medium, padding-small from distances;
+
+/* base container that can be used in markdown editor and view to restyle html elements inside the container */
+.container {
+    font-family: font-family-default;
+}
+
+.container blockquote {
+    margin-left: margin-large;
+    padding-left: padding-medium;
+    padding-top: padding-small;
+    padding-bottom: padding-small;
+    border-left: size-border-large solid color-border-light;
+}
+
+.container blockquote:before {
+    content: "„"
+}
+
+.container blockquote:after {
+    content: "“"
+}

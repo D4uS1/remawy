@@ -19,5 +19,5 @@
 @value radius-border-large: 1rem;
 
 @value size-border-small: 1px;
-@value size-border-medium: 1px;
-@value size-border-large: 1px;
+@value size-border-medium: 2px;
+@value size-border-large: 5px;

@@ -22,6 +22,7 @@ import { CustomLeafHelper } from './Helpers/CustomLeafHelper';
 import { Toolbar } from './Toolbar/Toolbar';
 import { BlockHelpersArray, Helpers, InlineHelpersArray, VoidHelpersArray } from './Helpers/Helpers';
 import styles from './MarkdownEditor.module.css';
+import elementStyles from '../../shared/styles/elements.module.css';
 import { UploadModal } from './UploadModal/UploadModal';
 import { AbstractUploader, UploaderFinishCallback } from './Upload/Uploader/AbstractUploader';
 import { ImageElement } from './Elements/ImageElement';
@@ -367,7 +368,9 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
                     <Toolbar onUploadRequest={props.uploadInfo ? onUploadRequest : undefined} />
 
                     <Editable
-                        className={`${styles.editor} ${props.customStyle?.editor?.editorContainerClassName || ''}`}
+                        className={`${styles.editor} ${elementStyles.container} ${
+                            props.customStyle?.editor?.editorContainerClassName || ''
+                        }`}
                         renderElement={renderElement}
                         renderLeaf={renderLeaf}
                         onKeyDown={onKeyDown}

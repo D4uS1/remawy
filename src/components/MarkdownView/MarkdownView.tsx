@@ -4,6 +4,7 @@ import { toMarkdown } from '../../shared/serializers/EditorValueMarkdownSerializ
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkBreaks from 'remark-breaks';
+import elementStyles from '../../shared/styles/elements.module.css';
 
 /**
  * Props for the Editor component.
@@ -11,6 +12,9 @@ import remarkBreaks from 'remark-breaks';
 export interface MarkdownViewProps {
     // The markdown value as string or the editor value that is serialized to markdown
     value: EditorValue | string;
+
+    // Optional class name that is appended to the root container
+    className?: string;
 }
 
 /**
@@ -26,5 +30,12 @@ export const MarkdownView = (props: MarkdownViewProps) => {
         return toMarkdown(props.value);
     }, [props.value]);
 
-    return <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>{markdown}</ReactMarkdown>;
+    return (
+        <ReactMarkdown
+            className={`${elementStyles.container} ${props.className || ''}`}
+            remarkPlugins={[remarkGfm, remarkBreaks]}
+        >
+            {markdown}
+        </ReactMarkdown>
+    );
 };

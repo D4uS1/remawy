@@ -1,7 +1,7 @@
 @value colors: "../../../shared/styles/colors.module.css";
 @value color-border-dark, color-background-toolbar from colors;
 @value distances: "../../../shared/styles/distances.module.css";
-@value size-border-medium, radius-border-medium from distances;
+@value size-border-small, radius-border-medium from distances;
 
 .container {
     display: flex;
@@ -9,7 +9,7 @@
     justify-content: stretch;
     align-items: flex-start;
     background-color: color-background-toolbar;
-    border-bottom: color-border-dark size-border-medium solid;
+    border-bottom: color-border-dark size-border-small solid;
     border-top-left-radius: radius-border-medium;
     border-top-right-radius: radius-border-medium;
 }

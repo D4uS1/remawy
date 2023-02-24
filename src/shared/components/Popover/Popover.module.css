@@ -1,7 +1,7 @@
 @value colors: "../../styles/colors.module.css";
 @value distances: "../../styles/distances.module.css";
 @value color-border-light, color-background-modal from colors;
-@value size-border-medium, radius-border-medium, padding-medium from distances;
+@value size-border-small, radius-border-medium, padding-medium from distances;
 
 .container {
     position: relative;
@@ -12,7 +12,7 @@
 .innerContainer {
     position: absolute;
     background-color: color-background-modal;
-    border: size-border-medium solid color-border-light;
+    border: size-border-small solid color-border-light;
     border-radius: radius-border-medium;
     padding: padding-medium;
     display: flex;
