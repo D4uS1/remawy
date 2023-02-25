@@ -28,6 +28,7 @@ export const Editor = () => {
     return (
         <MarkdownEditor 
             defaultText='Create some content here.'
+            initialValue={[]}
             onBlur={(event: FocusEvent<HTMLDivElement>, value: EditorValue) => {
                 // save the value somewhere
             }}
