@@ -1,0 +1,62 @@
+import { CustomEditor } from '../Types/CustomEditor';
+import { Node, Point, Descendant } from 'slate';
+import { CustomElement, CustomElementType } from '../Types/CustomElement';
+import { CustomText } from '../Types/CustomText';
+export declare const SlateUtils: {
+    removeInlineNode: (editor: CustomEditor) => void;
+    changeCurrentNodeType: (editor: CustomEditor, elementType: CustomElementType, props?: Partial<CustomElement>) => void;
+    createNewNode: (editor: CustomEditor, type: CustomElementType, options?: {
+        children?: Descendant[];
+        props?: Partial<CustomElement>;
+        voids?: boolean;
+        createFollowingParagraph?: boolean;
+        createFollowingText?: string;
+    }) => void;
+    createNewNodeOfCurrentType: (editor: CustomEditor) => void;
+    wrapNode: (editor: CustomEditor, elementType: CustomElementType, props?: Partial<CustomElement>) => void;
+    unwrapNode: (editor: CustomEditor) => void;
+    unwrapLeaf: (editor: CustomEditor) => void;
+    isCursor: (editor: CustomEditor) => boolean;
+    isSelection: (editor: CustomEditor) => boolean;
+    nearestBlockPath: (editor: CustomEditor, path: number[]) => number[] | null;
+    currentBlockStart: (editor: CustomEditor) => Point;
+    currentBlockEnd: (editor: CustomEditor) => Point;
+    textSinceBlockStart: (editor: CustomEditor) => string | null;
+    textToBlockEnd: (editor: CustomEditor) => string | null;
+    lastPosOf: (editor: CustomEditor, searchText: string, options?: {
+        isolated?: true;
+    }) => Point | null;
+    cursorIsBehind: (editor: CustomEditor, searchText: string) => boolean;
+    currentBlockText: (editor: CustomEditor) => string | null;
+    setCurrentBlockText: (editor: CustomEditor, text: string) => void;
+    deleteFromLeft: (editor: CustomEditor, numChars: number) => void;
+    deleteFromRight: (editor: CustomEditor, numChars: number) => void;
+    deleteAt: (editor: CustomEditor, start: Point, numChars: number) => void;
+    isChildOf: (editor: CustomEditor, elementType: CustomElementType) => boolean;
+    isChildOfAny: (editor: CustomEditor, elementTypes: CustomElementType[]) => boolean;
+    nearestElementOfType: (editor: CustomEditor, elementType: CustomElementType) => CustomElement | null;
+    currentBlock: (editor: CustomEditor) => CustomElement | null;
+    currentBlockType: (editor: CustomEditor) => CustomElementType | null;
+    currentElement: (editor: CustomEditor) => CustomElement | null;
+    currentElementType: (editor: CustomEditor) => CustomElementType | null;
+    currentElementPath: (editor: CustomEditor) => number[] | null;
+    parentBlock: (editor: CustomEditor) => CustomElement | null;
+    parentBlockType: (editor: CustomEditor) => CustomElementType | null;
+    currentLeaf: (editor: CustomEditor) => CustomText | null;
+    isElement: (node: Node) => boolean;
+    isLeaf: (node: Node) => boolean;
+    isRoot: (node: Node) => boolean;
+    isEmpty: (editor: CustomEditor) => boolean;
+    isAtRoot: (editor: CustomEditor) => boolean;
+    createRootParagraph: (editor: CustomEditor) => void;
+    createNewline: (editor: CustomEditor) => void;
+    liftToRoot: (editor: CustomEditor) => void;
+    setLeafFormat: (editor: CustomEditor, formatOptions: {
+        bold?: boolean;
+        italic?: boolean;
+    }, range?: {
+        anchor: Point;
+        focus: Point;
+    }) => void;
+    changeNearestNodeProps: (editor: CustomEditor, elementType: CustomElementType, props: Partial<CustomElement>) => void;
+};
