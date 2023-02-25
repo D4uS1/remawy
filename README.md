@@ -1,6 +1,6 @@
 # React (Markdown) Wysiwyg Editor (ReMaWy)
 A small customizable wysiwyg editor for react with the ability to use markdown shortcuts.
-It also supports file uploads by providing an abstract interface to implement the upload for your needs.
+It also supports file uploads by providing an abstract class to implement the upload for your needs.
 
 ## Installation
 Install the package using npm
@@ -193,7 +193,7 @@ cd test-app
 npm start
 ```
 
-If you visit *https://localhost:3001* you should see the test-app having the editor and markdown view.
+If you visit *http://localhost:3001* you should see the test-app having the editor and markdown view.
 
 If you changed something you can now call the build script in the root of the project.
 
