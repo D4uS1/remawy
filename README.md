@@ -31,9 +31,7 @@ export const Editor = () => {
             onBlur={(event: FocusEvent<HTMLDivElement>, value: EditorValue) => {
                 // save the value somewhere
             }}
-            uploadInfo={uploader ? {
-                uploader: uploader
-            } : undefined}/>
+          />
     );
 }
 ```
