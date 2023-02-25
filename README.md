@@ -123,7 +123,7 @@ class CustomUploader extends AbstractUploader {
      * @param file
      */
     public override startUpload(file: File): Promise<void> {
-        new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             // Start some upload
             
             // While uploading, you can give feedback about the upload progress
