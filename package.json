@@ -1,6 +1,6 @@
 {
   "name": "@d4us1/remawy",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "React Markdown Wysiwyg Editor.",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
