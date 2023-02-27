@@ -6,13 +6,13 @@ It also supports file uploads by providing an abstract class to implement the up
 Install the package using npm
 
 ```
-npm install https://github.com/D4uS1/ReMaWy#v0.1.0
+npm install https://github.com/D4uS1/remawy#v0.1.0
 ```
 
 or yarn.
 
 ```
-yarn add https://github.com/D4uS1/ReMaWy#v0.1.0
+yarn add https://github.com/D4uS1/remawy#v0.1.0
 ```
 
 There is a branch for each released version. I recommend to use always the newest one.
@@ -90,7 +90,7 @@ The view accepts markdown or the raw editor value.
 ## Customize
 Cou can make use of the **customStyle** prop of the MarkdownEditor to customize it.
 
-Have a look at the CustomStyle interface [here](https://github.com/D4uS1/ReMaWy/blob/main/src/shared/contexts/CustomStyle/Context.tsx) to see the possible texts and css classes.
+Have a look at the CustomStyle interface [here](https://github.com/D4uS1/remawy/blob/main/src/shared/contexts/CustomStyle/Context.tsx) to see the possible texts and css classes.
 
 You can change the style of the editor by passing the css classes for your needs.
 You can also change the default texts for buttons eg.

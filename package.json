@@ -14,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/D4uS1/ReMaWy.git"
+    "url": "git+https://github.com/D4uS1/remawy.git"
   },
   "author": "Andreas Dausenau",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/D4uS1/ReMaWy/issues"
+    "url": "https://github.com/D4uS1/remawy/issues"
   },
-  "homepage": "https://github.com/D4uS1/ReMaWy#readme",
+  "homepage": "https://github.com/D4uS1/remawy#readme",
   "devDependencies": {
     "@rails/activestorage": "^7.0.4-2",
     "@types/rails__activestorage": "^7.0.1",
