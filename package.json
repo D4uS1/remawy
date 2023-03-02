@@ -22,8 +22,18 @@
     "url": "https://github.com/D4uS1/remawy/issues"
   },
   "homepage": "https://github.com/D4uS1/remawy#readme",
-  "devDependencies": {
+  "dependencies": {
     "@rails/activestorage": "^7.0.4-2",
+    "react-icons": "^4.7.1",
+    "react-markdown": "^8.0.5",
+    "remark-breaks": "^3.0.2",
+    "remark-gfm": "^3.0.1",
+    "slate": "^0.90.0",
+    "slate-react": "^0.90.0",
+    "usehooks-ts": "^2.9.1",
+    "tslib": "^2.5.0"
+  },
+  "devDependencies": {
     "@types/rails__activestorage": "^7.0.1",
     "@types/react": "^18.0.27",
     "@typescript-eslint/eslint-plugin": "^5.50.0",
@@ -36,15 +46,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
     "prettier": "^2.8.3",
-    "react-icons": "^4.7.1",
-    "react-markdown": "^8.0.5",
-    "remark-breaks": "^3.0.2",
-    "remark-gfm": "^3.0.1",
-    "slate": "^0.90.0",
-    "slate-react": "^0.90.0",
-    "tslib": "^2.5.0",
-    "typescript": "^4.9.5",
-    "usehooks-ts": "^2.9.1"
+    "typescript": "^4.9.5"
   },
   "peerDependencies": {
     "react": "^18.2.0",
