@@ -1,7 +1,7 @@
 import React, {useMemo, useState, FocusEvent} from 'react';
 import {MarkdownEditor, MarkdownView, EditorValue} from "@d4us1/remawy";
 import styles from './App.module.css'
-import {EzOnRailsAuthInfo, LoginForm, EzOnRails} from "ez-on-rails-react";
+import {EzOnRailsAuthInfo, LoginForm, EzOnRailsIntegrations, EzOnRails} from "@d4us1/ez-on-rails-react";
 
 function App() {
     // must be set before we update, hence the user needs to login first
@@ -18,7 +18,7 @@ function App() {
     const uploader = useMemo(() => {
         if (!authInfo) return undefined;
 
-        return new EzOnRails.integrations.remawy.uploader('http://localhost:3000', authInfo, '1.0')
+        return new EzOnRailsIntegrations.remawy.uploader('http://localhost:3000', authInfo, '1.0')
     }, [authInfo])
 
     const initialValue: EditorValue | undefined = useMemo(() => {
@@ -33,32 +33,34 @@ function App() {
     }
 
     return (
-        <div className={styles.container}>
-            <div>
-                <span>Editor: </span>
-                <MarkdownEditor customStyle={{
-                                    editor: {
-                                        editorContainerClassName: styles.editorContainer
-                                    }
-                                }}
-                                initialValue={initialValue}
-                                defaultText='Default Text'
-                                onBlur={onBlur}
-                                uploadInfo={uploader ? {
-                                    uploader: uploader
-                                } : undefined}/>
-            </div>
+        <EzOnRails apiVersion={'1.0'} backendUrl={'http://localhost:3000'}>
+            <div className={styles.container}>
+                <div>
+                    <span>Editor: </span>
+                    <MarkdownEditor customStyle={{
+                        editor: {
+                            editorContainerClassName: styles.editorContainer
+                        }
+                    }}
+                                    initialValue={initialValue}
+                                    defaultText='Default Text'
+                                    onBlur={onBlur}
+                                    uploadInfo={uploader ? {
+                                        uploader: uploader
+                                    } : undefined}/>
+                </div>
 
-            <div>
-                <span>View: </span>
-                { initialValue && <MarkdownView value={initialValue} /> }
-            </div>
+                <div>
+                    <span>View: </span>
+                    { initialValue && <MarkdownView value={initialValue} /> }
+                </div>
 
-            { !authInfo && (
-                <LoginForm onLoginSuccess={onLoginSuccess}
-                           onLoginError={onLoginError} />
-            )}
-        </div>
+                { !authInfo && (
+                    <LoginForm onLoginSuccess={onLoginSuccess}
+                               onLoginError={onLoginError} />
+                )}
+            </div>
+        </EzOnRails>
     );
 }
 
