@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React from 'react';
 import { EditorValue } from '../MarkdownEditor/MarkdownEditor';
 /**
  * Props for the Editor component.
@@ -13,4 +13,4 @@ export interface MarkdownViewProps {
  * @param props
  * @constructor
  */
-export declare const MarkdownView: (props: MarkdownViewProps) => JSX.Element;
+export declare const MarkdownView: (props: MarkdownViewProps) => React.JSX.Element;

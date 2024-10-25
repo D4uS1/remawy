@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React from 'react';
 import { RenderElementProps } from 'slate-react';
 /**
  * Props for the OrderedListElement component.
@@ -10,5 +10,5 @@ type OrderedListElementProps = RenderElementProps;
  * @param props
  * @constructor
  */
-export declare const OrderedListElement: (props: OrderedListElementProps) => JSX.Element;
+export declare const OrderedListElement: (props: OrderedListElementProps) => React.JSX.Element;
 export {};

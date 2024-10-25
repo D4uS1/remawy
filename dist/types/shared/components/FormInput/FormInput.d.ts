@@ -1,4 +1,4 @@
-import { Ref } from 'react';
+import React, { Ref } from 'react';
 /**
  * Props for the Input component.
  */
@@ -14,4 +14,4 @@ export interface FormInputProps {
  * @param props
  * @constructor
  */
-export declare const FormInput: (props: FormInputProps) => JSX.Element;
+export declare const FormInput: (props: FormInputProps) => React.JSX.Element;

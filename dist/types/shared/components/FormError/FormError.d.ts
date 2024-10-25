@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React from 'react';
 /**
  * Props for the FormError component.
  */
@@ -11,4 +11,4 @@ export interface FormErrorProps {
  * @param props
  * @constructor
  */
-export declare const FormError: (props: FormErrorProps) => JSX.Element;
+export declare const FormError: (props: FormErrorProps) => React.JSX.Element;

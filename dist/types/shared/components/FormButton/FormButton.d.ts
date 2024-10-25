@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 /**
  * Props for the Button component.
  */
@@ -7,4 +7,4 @@ export interface FormButtonProps {
     onClick: () => void;
     children: ReactNode;
 }
-export declare const FormButton: (props: FormButtonProps) => JSX.Element;
+export declare const FormButton: (props: FormButtonProps) => React.JSX.Element;

@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React from 'react';
 /**
  * Props for the FormLabel component.
  */
@@ -11,4 +11,4 @@ export interface FormLabelProps {
  * @param props
  * @constructor
  */
-export declare const FormLabel: (props: FormLabelProps) => JSX.Element;
+export declare const FormLabel: (props: FormLabelProps) => React.JSX.Element;

@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React from 'react';
 import { RenderElementProps } from 'slate-react';
 /**
  * Props for the CodeElement component.
@@ -10,5 +10,5 @@ type CodeElementProps = RenderElementProps;
  * @param props
  * @constructor
  */
-export declare const CodeElement: (props: CodeElementProps) => JSX.Element;
+export declare const CodeElement: (props: CodeElementProps) => React.JSX.Element;
 export {};

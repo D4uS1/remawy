@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React from 'react';
 import { AbstractUploader, UploaderFinishCallback } from '../Upload/Uploader/AbstractUploader';
 /**
  * Props for the UploadModal component.
@@ -16,5 +16,5 @@ interface UploadModalProps {
  * @param props
  * @constructor
  */
-export declare const UploadModal: (props: UploadModalProps) => JSX.Element;
+export declare const UploadModal: (props: UploadModalProps) => React.JSX.Element;
 export {};

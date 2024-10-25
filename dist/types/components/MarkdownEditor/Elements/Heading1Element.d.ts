@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React from 'react';
 import { RenderElementProps } from 'slate-react';
 /**
  * Props for the Heading1Element component.
@@ -10,5 +10,5 @@ type Heading1ElementProps = RenderElementProps;
  * @param props
  * @constructor
  */
-export declare const Heading1Element: (props: Heading1ElementProps) => JSX.Element;
+export declare const Heading1Element: (props: Heading1ElementProps) => React.JSX.Element;
 export {};

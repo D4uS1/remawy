@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { CustomStyle } from './Context';
 /**
  * Props for the CustomStyleContextProvider.
@@ -10,5 +10,5 @@ interface CustomStyleContextProviderProps {
 /**
  * Context provider for the CustomStyle value.
  */
-export declare const CustomStyleContextProvider: (props: CustomStyleContextProviderProps) => JSX.Element;
+export declare const CustomStyleContextProvider: (props: CustomStyleContextProviderProps) => React.JSX.Element;
 export {};

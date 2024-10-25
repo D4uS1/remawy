@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React from 'react';
 /**
  * Props for the ImageToolbarButton component.
  */
@@ -10,5 +10,5 @@ interface ImageToolbarButtonProps {
  *
  * @constructor
  */
-export declare const ImageToolbarButton: (props: ImageToolbarButtonProps) => JSX.Element;
+export declare const ImageToolbarButton: (props: ImageToolbarButtonProps) => React.JSX.Element;
 export {};

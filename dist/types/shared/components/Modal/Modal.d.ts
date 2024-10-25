@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 /**
  * Props for the Modal component.
  */
@@ -15,5 +15,5 @@ interface ModalProps {
  * @param props
  * @constructor
  */
-export declare const Modal: (props: ModalProps) => JSX.Element;
+export declare const Modal: (props: ModalProps) => React.JSX.Element;
 export {};

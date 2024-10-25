@@ -1,4 +1,3 @@
-/// <reference types="react" />
 /**
  * Defines the value that is saved in the context.
  * Holds all css classes and other attributes needed to customize the style of ReMaWy.

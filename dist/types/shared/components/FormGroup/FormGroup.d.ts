@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 /**
  * Props for the FormGroup component.
  */
@@ -11,4 +11,4 @@ export interface FormGroupProps {
  * @param props
  * @constructor
  */
-export declare const FormGroup: (props: FormGroupProps) => JSX.Element;
+export declare const FormGroup: (props: FormGroupProps) => React.JSX.Element;

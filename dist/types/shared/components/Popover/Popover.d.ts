@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 /**
  * Props for the Popover component.
  */
@@ -15,5 +15,5 @@ interface PopoverProps {
  * @param props
  * @constructor
  */
-export declare const Popover: (props: PopoverProps) => JSX.Element;
+export declare const Popover: (props: PopoverProps) => React.JSX.Element;
 export {};

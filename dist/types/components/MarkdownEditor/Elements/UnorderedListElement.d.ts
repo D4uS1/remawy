@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React from 'react';
 import { RenderElementProps } from 'slate-react';
 /**
  * Props for the UnorderedListElement component.
@@ -10,5 +10,5 @@ type UnorderedListElementProps = RenderElementProps;
  * @param props
  * @constructor
  */
-export declare const UnorderedListElement: (props: UnorderedListElementProps) => JSX.Element;
+export declare const UnorderedListElement: (props: UnorderedListElementProps) => React.JSX.Element;
 export {};

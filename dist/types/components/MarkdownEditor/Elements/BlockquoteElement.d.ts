@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React from 'react';
 import { RenderElementProps } from 'slate-react';
 /**
  * Props for the CodeElement component.
@@ -10,5 +10,5 @@ type BlockquoteElementProps = RenderElementProps;
  * @param props
  * @constructor
  */
-export declare const BlockquoteElement: (props: BlockquoteElementProps) => JSX.Element;
+export declare const BlockquoteElement: (props: BlockquoteElementProps) => React.JSX.Element;
 export {};

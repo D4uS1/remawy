@@ -1,4 +1,4 @@
-import { FocusEvent } from 'react';
+import React, { FocusEvent } from 'react';
 import { CustomElement } from './Types/CustomElement';
 import { CustomText } from './Types/CustomText';
 import { CustomEditor } from './Types/CustomEditor';
@@ -41,4 +41,4 @@ export interface MarkdownEditorProps {
  * @param props
  * @constructor
  */
-export declare const MarkdownEditor: (props: MarkdownEditorProps) => JSX.Element;
+export declare const MarkdownEditor: (props: MarkdownEditorProps) => React.JSX.Element;

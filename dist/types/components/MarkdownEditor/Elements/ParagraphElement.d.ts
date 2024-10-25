@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React from 'react';
 import { RenderElementProps } from 'slate-react';
 /**
  * Props for the ParagraphElement component.
@@ -10,5 +10,5 @@ type ParagraphElementProps = RenderElementProps;
  * @param props
  * @constructor
  */
-export declare const ParagraphElement: (props: ParagraphElementProps) => JSX.Element;
+export declare const ParagraphElement: (props: ParagraphElementProps) => React.JSX.Element;
 export {};

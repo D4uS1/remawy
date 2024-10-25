@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React from 'react';
 /**
  * Props for the ToolbarButton component.
  */
@@ -14,5 +14,5 @@ interface ToolbarButtonProps {
  * @param props
  * @constructor
  */
-export declare const ToolbarButton: (props: ToolbarButtonProps) => JSX.Element;
+export declare const ToolbarButton: (props: ToolbarButtonProps) => React.JSX.Element;
 export {};

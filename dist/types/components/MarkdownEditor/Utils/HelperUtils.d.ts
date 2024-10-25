@@ -11,7 +11,7 @@ export declare const HelperUtils: {
     toggleWithListAllowed: (editor: CustomEditor, elementType: CustomElementType) => void;
     onEnterWithShiftLinebreak: (editor: CustomEditor, event: KeyboardEvent) => void;
     onEnterWithListAndNewlineAllowed: (editor: CustomEditor, event: KeyboardEvent) => void;
-    toggleListItem: (editor: CustomEditor, listType: 'ordered-list' | 'unordered-list', options?: ToggleOptions) => void;
-    onTabListItem: (editor: CustomEditor, listType: 'ordered-list' | 'unordered-list', event: KeyboardEvent) => void;
-    onEnterListItem: (editor: CustomEditor, listType: 'ordered-list' | 'unordered-list', event: KeyboardEvent) => void;
+    toggleListItem: (editor: CustomEditor, listType: "ordered-list" | "unordered-list", options?: ToggleOptions) => void;
+    onTabListItem: (editor: CustomEditor, listType: "ordered-list" | "unordered-list", event: KeyboardEvent) => void;
+    onEnterListItem: (editor: CustomEditor, listType: "ordered-list" | "unordered-list", event: KeyboardEvent) => void;
 };

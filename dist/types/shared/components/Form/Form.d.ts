@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 /**
  * Props for the Form component.
  */
@@ -12,12 +12,12 @@ interface FormProps {
  * @constructor
  */
 export declare const Form: {
-    (props: FormProps): JSX.Element;
-    Group: (props: import("../FormGroup/FormGroup").FormGroupProps) => JSX.Element;
-    Label: (props: import("../FormLabel/FormLabel").FormLabelProps) => JSX.Element;
-    Input: (props: import("../FormInput/FormInput").FormInputProps) => JSX.Element;
-    Error: (props: import("../FormError/FormError").FormErrorProps) => JSX.Element;
-    ButtonGroup: (props: import("../FormButtonGroup/FormButtonGroup").FormButtonGroupProps) => JSX.Element;
-    Button: (props: import("../FormButton/FormButton").FormButtonProps) => JSX.Element;
+    (props: FormProps): React.JSX.Element;
+    Group: (props: import("../FormGroup/FormGroup").FormGroupProps) => React.JSX.Element;
+    Label: (props: import("../FormLabel/FormLabel").FormLabelProps) => React.JSX.Element;
+    Input: (props: import("../FormInput/FormInput").FormInputProps) => React.JSX.Element;
+    Error: (props: import("../FormError/FormError").FormErrorProps) => React.JSX.Element;
+    ButtonGroup: (props: import("../FormButtonGroup/FormButtonGroup").FormButtonGroupProps) => React.JSX.Element;
+    Button: (props: import("../FormButton/FormButton").FormButtonProps) => React.JSX.Element;
 };
 export {};

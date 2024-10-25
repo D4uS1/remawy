@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React from 'react';
 import { RenderLeafProps } from 'slate-react';
 /**
  * Props for the CustomLeaf component.
@@ -10,4 +10,4 @@ export type CustomLeafProps = RenderLeafProps;
  * @param props
  * @constructor
  */
-export declare const CustomLeaf: (props: CustomLeafProps) => JSX.Element;
+export declare const CustomLeaf: (props: CustomLeafProps) => React.JSX.Element;
