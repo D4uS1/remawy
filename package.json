@@ -1,6 +1,6 @@
 {
   "name": "@d4us1/remawy",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "React Markdown Wysiwyg Editor.",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -24,37 +24,31 @@
   },
   "homepage": "https://github.com/D4uS1/remawy#readme",
   "dependencies": {
-    "@rails/activestorage": "^7.2.102",
-    "react-icons": "^5.3.0",
-    "react-markdown": "^9.0.1",
+    "@rails/activestorage": "^8.0.300",
+    "react-icons": "^5.5.0",
+    "react-markdown": "^10.1.0",
     "remark-breaks": "^4.0.0",
-    "remark-gfm": "^4.0.0",
-    "slate": "^0.110.2",
-    "slate-react": "^0.110.3",
-    "tslib": "^2.8.0",
-    "usehooks-ts": "^3.1.0"
+    "remark-gfm": "^4.0.1",
+    "slate": "^0.118.1",
+    "slate-react": "^0.117.4",
+    "tslib": "^2.8.1",
+    "usehooks-ts": "^3.1.1"
   },
   "devDependencies": {
     "@types/rails__activestorage": "^7.1.1",
-    "@types/react": "^18.3.12",
-    "@typescript-eslint/eslint-plugin": "^8.11.0",
-    "@typescript-eslint/parser": "^8.11.0",
-    "esbuild": "0.24.0",
-    "esbuild-css-modules-plugin": "^3.1.2",
-    "eslint": "^9.13.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prefer-arrow": "^1.2.3",
-    "eslint-plugin-prettier": "^5.2.1",
-    "eslint-plugin-react": "^7.37.2",
-    "prettier": "^3.3.3",
-    "typescript": "^5.6.3"
+    "@types/react": "^19.2.2",
+    "@typescript-eslint/eslint-plugin": "^8.46.1",
+    "@typescript-eslint/parser": "^8.46.1",
+    "esbuild": "0.25.11",
+    "esbuild-css-modules-plugin": "^3.1.5",
+    "eslint": "^9.38.0",
+    "typescript": "^5.9.3"
   },
   "peerDependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
   },
   "engines": {
     "node": ">=22 <23"
-  },
-  "packageManager": "yarn@4.5.1"
+  }
 }

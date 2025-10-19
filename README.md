@@ -6,13 +6,7 @@ It also supports file uploads by providing an abstract class to implement the up
 Install the package using npm
 
 ```
-npm install https://github.com/D4uS1/remawy#v0.1.0
-```
-
-or yarn.
-
-```
-yarn add https://github.com/D4uS1/remawy#v0.1.0
+npm install https://github.com/D4uS1/remawy#v0.3.0
 ```
 
 There is a branch for each released version. I recommend to use always the newest one.

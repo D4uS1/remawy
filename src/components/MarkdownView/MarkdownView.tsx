@@ -31,11 +31,12 @@ export const MarkdownView = (props: MarkdownViewProps) => {
     }, [props.value]);
 
     return (
-        <ReactMarkdown
-            className={`${elementStyles.container} ${props.className || ''}`}
-            remarkPlugins={[remarkGfm, remarkBreaks]}
-        >
-            {markdown}
-        </ReactMarkdown>
+        <div className={`${elementStyles.container} ${props.className || ''}`}>
+            <ReactMarkdown
+                remarkPlugins={[remarkGfm, remarkBreaks]}
+            >
+                {markdown}
+            </ReactMarkdown>
+        </div>
     );
 };

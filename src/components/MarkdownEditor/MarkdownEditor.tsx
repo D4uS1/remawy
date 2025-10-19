@@ -363,7 +363,7 @@ export const MarkdownEditor = (props: MarkdownEditorProps) => {
 
     return (
         <CustomStyleContextProvider value={props.customStyle}>
-            <Slate editor={editor} value={initialValue} onChange={onSlateChange}>
+            <Slate editor={editor}  initialValue={initialValue} onChange={onSlateChange}>
                 <div className={`${styles.container} ${props.customStyle?.editor?.containerClassName || ''}`}>
                     <Toolbar onUploadRequest={props.uploadInfo ? onUploadRequest : undefined} />
 

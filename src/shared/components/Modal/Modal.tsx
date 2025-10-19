@@ -31,6 +31,7 @@ export const Modal = (props: ModalProps) => {
     const clickOutsideRef = useRef<HTMLDivElement>(null);
 
     // Clicking outside the modal should close the modal
+    // @ts-ignore TODO remove if https://github.com/juliencrn/usehooks-ts/issues/663 is fixed
     useOnClickOutside(clickOutsideRef, props.onClose);
 
     return (
