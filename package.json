@@ -1,6 +1,6 @@
 {
   "name": "@d4us1/remawy",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "React Markdown Wysiwyg Editor.",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -24,31 +24,31 @@
   },
   "homepage": "https://github.com/D4uS1/remawy#readme",
   "dependencies": {
-    "@rails/activestorage": "^8.0.300",
+    "@rails/activestorage": "^8.1.200",
     "react-icons": "^5.5.0",
     "react-markdown": "^10.1.0",
     "remark-breaks": "^4.0.0",
     "remark-gfm": "^4.0.1",
-    "slate": "^0.118.1",
-    "slate-react": "^0.117.4",
+    "slate": "^0.123.0",
+    "slate-react": "^0.123.0",
     "tslib": "^2.8.1",
     "usehooks-ts": "^3.1.1"
   },
   "devDependencies": {
-    "@types/rails__activestorage": "^7.1.1",
-    "@types/react": "^19.2.2",
-    "@typescript-eslint/eslint-plugin": "^8.46.1",
-    "@typescript-eslint/parser": "^8.46.1",
-    "esbuild": "0.25.11",
+    "@types/rails__activestorage": "^8.0.1",
+    "@types/react": "^19.2.13",
+    "@typescript-eslint/eslint-plugin": "^8.54.0",
+    "@typescript-eslint/parser": "^8.54.0",
+    "esbuild": "0.27.3",
     "esbuild-css-modules-plugin": "^3.1.5",
-    "eslint": "^9.38.0",
+    "eslint": "^9.39.2",
     "typescript": "^5.9.3"
   },
   "peerDependencies": {
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
   },
   "engines": {
-    "node": ">=22 <23"
+    "node": ">=24 <25"
   }
 }
