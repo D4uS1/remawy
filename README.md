@@ -1,3 +1,6 @@
+#!!!! IMPORTANT NOTE !!!!
+This repository was moved to [Codeberg](https://codeberg.org/D4uS1/remawy). The github repository is not maintained anymore.
+
 # React (Markdown) Wysiwyg Editor (ReMaWy)
 A small customizable wysiwyg editor for react with the ability to use markdown shortcuts.
 It also supports file uploads by providing an abstract class to implement the upload for your needs.
